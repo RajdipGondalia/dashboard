@@ -11,7 +11,18 @@
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
+            <!-- Type -->
+            <div>
+                <x-label for="type" :value="__('type')" />
 
+                <!-- <label class="labels">Type<code>*</code></label> -->
+                <select class="form-control" name="type" id="type" >
+                    <option value="">Select Type</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Senior Employee</option>
+                    <option value="3">Employee</option>
+                </select>
+            </div>
             <!-- Name -->
             <div>
                 <x-label for="name" :value="__('Name')" />
@@ -41,8 +52,8 @@
                 <x-label for="password_confirmation" :value="__('Confirm Password')" />
 
                 <x-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required />
+                    type="password"
+                    name="password_confirmation" required />
             </div>
 
             <div class="flex items-center justify-end mt-4">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2022 at 02:48 PM
+-- Generation Time: Jul 14, 2022 at 02:14 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -127,7 +127,8 @@ CREATE TABLE `profile` (
 --
 
 INSERT INTO `profile` (`id`, `family_name`, `given_name`, `dob`, `edu_qualification`, `job_role`, `work_location`, `present_address`, `permanent_address`, `skills`, `contact_number`, `contact_number_2`, `working_location`, `email`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'Gondalia', 'Rajdip', '1999-05-29', 'edu q', 'Developer', NULL, 'ahmedabad', 'rajkot', 'dshj jdfsgh', '9797979797', '9898989898', 'Ahmedabad', 'test@gmail.com', 1, '2022-07-06 03:04:34', '2022-07-06 03:04:34');
+(1, 'Gondalia', 'Rajdip', '1999-05-29', 'edu q', 'Developer', NULL, 'ahmedabad', 'rajkot', 'dshj jdfsgh', '9797979797', '9898989898', 'Ahmedabad', 'test@gmail.com', 1, '2022-07-06 03:04:34', '2022-07-06 03:04:34'),
+(2, 'family name', 'Test one', '2022-07-06', 'BE in IT', 'Developer', NULL, 'near itc narmada', NULL, NULL, '9999999999', NULL, 'Ahmedabad', 'a@gmail.com', 3, '2022-07-14 06:21:49', '2022-07-14 06:21:49');
 
 -- --------------------------------------------------------
 
@@ -156,7 +157,19 @@ CREATE TABLE `task` (
 --
 
 INSERT INTO `task` (`id`, `task_title`, `task_desc`, `assign_to`, `due_date`, `status`, `start_time`, `start_by`, `stop_time`, `stop_by`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'make game', 'new game changes on mail', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, '2022-07-08 00:18:55', '2022-07-08 00:18:55');
+(1, 'make game', 'new game changes on mail', '1,3', NULL, 3, '2022-07-12 18:20:59', 3, '2022-07-13 00:00:00', NULL, 3, '2022-07-08 00:18:55', '2022-07-12 23:05:49'),
+(2, 'a', 'ko', '1', NULL, 1, '2022-07-12 18:21:23', 3, '0000-00-00 00:00:00', 3, 3, '2022-07-08 07:34:05', '2022-07-12 07:21:24'),
+(3, 'one', 'ok', '3', NULL, 1, '2022-07-12 18:21:49', 3, NULL, 1, 3, '2022-07-11 22:55:09', '2022-07-12 07:21:49'),
+(4, 'demo1', 'demo1', '1,3', '2022-07-12', 3, '2022-07-14 12:57:28', 3, '2022-07-14 12:57:35', 3, 3, '2022-07-12 00:17:59', '2022-07-14 01:57:46'),
+(5, 'demo2 title', 'demo2 title desc', '1,3', '2022-07-12', 0, '2022-07-12 18:22:47', 3, NULL, 1, 3, '2022-07-12 00:19:20', '2022-07-12 07:22:47'),
+(9, 'Optio iusto molesti', 'Consequatur et nost', '1,3', '2020-02-19', 0, '2022-07-12 18:27:35', 3, NULL, NULL, 3, '2022-07-12 07:01:36', '2022-07-12 07:27:35'),
+(10, 'ggh', 'ok', '1,3', '2022-07-12', 1, '2022-07-12 18:34:51', 3, NULL, NULL, 3, '2022-07-12 07:14:46', '2022-07-12 07:34:51'),
+(14, 'new pc install', NULL, '1,3', '2022-07-13', 0, NULL, NULL, NULL, NULL, 3, '2022-07-13 01:19:24', '2022-07-13 01:19:24'),
+(15, 'aa', 'aa', '1', '2022-07-14', 0, NULL, NULL, NULL, NULL, 3, '2022-07-13 23:30:29', '2022-07-13 23:30:29'),
+(16, NULL, NULL, '', '1970-01-01', 0, NULL, NULL, NULL, NULL, 3, '2022-07-13 23:34:22', '2022-07-13 23:34:22'),
+(17, 'ss', NULL, '1', '1970-01-01', 0, NULL, NULL, NULL, NULL, 3, '2022-07-13 23:49:24', '2022-07-13 23:49:24'),
+(18, 'clean pc', 'all', '1', '2022-07-15', 3, '2022-07-14 16:59:33', 3, '2022-07-14 16:59:45', 3, 3, '2022-07-14 05:59:04', '2022-07-14 06:00:09'),
+(19, 'make new game', 'kiki', '1,2,3', '2022-07-20', 3, '2022-07-14 17:23:35', 3, '2022-07-14 17:23:42', 3, 3, '2022-07-14 06:23:21', '2022-07-14 06:23:51');
 
 -- --------------------------------------------------------
 
@@ -186,7 +199,17 @@ INSERT INTO `time_tracker` (`id`, `flag`, `user_id`, `current_time`, `created_at
 (6, 'start', 3, '2022-07-06 18:12:09', '2022-07-06 07:12:10', '2022-07-06 07:12:10'),
 (7, 'stop', 3, '2022-07-06 18:16:22', '2022-07-06 07:16:22', '2022-07-06 07:16:22'),
 (8, 'start', 3, '2022-07-07 18:39:11', '2022-07-07 07:39:12', '2022-07-07 07:39:12'),
-(9, 'stop', 3, '2022-07-07 18:39:20', '2022-07-07 07:39:20', '2022-07-07 07:39:20');
+(9, 'stop', 3, '2022-07-07 18:39:20', '2022-07-07 07:39:20', '2022-07-07 07:39:20'),
+(10, 'start', 3, '2022-07-14 10:00:00', '2022-07-13 01:12:03', '2022-07-13 01:12:03'),
+(11, 'stop', 3, '2022-07-14 12:12:04', '2022-07-14 00:12:04', '2022-07-14 01:12:04'),
+(14, 'start', 3, '2022-07-14 15:16:02', '2022-07-14 04:16:02', '2022-07-14 04:16:02'),
+(15, 'stop', 3, '2022-07-14 15:16:12', '2022-07-14 04:16:13', '2022-07-14 04:16:13'),
+(16, 'start', 3, '2022-07-14 15:43:42', '2022-07-14 04:43:43', '2022-07-14 04:43:43'),
+(17, 'stop', 3, '2022-07-14 15:43:50', '2022-07-14 04:43:50', '2022-07-14 04:43:50'),
+(18, 'start', 3, '2022-07-14 16:57:52', '2022-07-14 05:57:52', '2022-07-14 05:57:52'),
+(19, 'stop', 3, '2022-07-14 16:58:01', '2022-07-14 05:58:01', '2022-07-14 05:58:01'),
+(20, 'start', 3, '2022-07-14 17:22:16', '2022-07-14 06:22:17', '2022-07-14 06:22:17'),
+(21, 'stop', 3, '2022-07-14 17:22:30', '2022-07-14 06:22:30', '2022-07-14 06:22:30');
 
 -- --------------------------------------------------------
 
@@ -235,7 +258,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'test', 'test@gmail.com', NULL, '$2y$10$YmMWBNgF3riWEIf.WvM3E.BsZ/IFkM/hrkEj0yrWUaRxTstMzxQdG', NULL, NULL, NULL),
 (2, 'Prudhvi', 'm@gmail.com', NULL, '$2y$10$YmMWBNgF3riWEIf.WvM3E.BsZ/IFkM/hrkEj0yrWUaRxTstMzxQdG', NULL, '2022-07-01 06:24:59', '2022-07-01 06:24:59'),
-(3, 'rajdip', 'rajdip@gmail.com', NULL, '$2y$10$Guc7kRDc.6E7jdwNyp/9tuaDWxHrBmDgKQEcf.L.VmpplIu6QhOxe', 'jVzGOabBNzYY88QF7QTV2M5yN63QoOPq7f489QBfLomhV8Dp0mntFMM4nAZH', '2022-07-01 06:35:15', '2022-07-01 06:35:15');
+(3, 'rajdip', 'rajdip@gmail.com', NULL, '$2y$10$Guc7kRDc.6E7jdwNyp/9tuaDWxHrBmDgKQEcf.L.VmpplIu6QhOxe', 'T92TruMPpSaNZT2BXuEwdRyK73lhvVP4Ek2aXDOmrz262RJvhCeC1L0sHnLq', '2022-07-01 06:35:15', '2022-07-01 06:35:15');
 
 --
 -- Indexes for dumped tables
@@ -329,19 +352,19 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `time_tracker`
 --
 ALTER TABLE `time_tracker`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `todolist`

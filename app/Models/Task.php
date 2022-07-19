@@ -14,4 +14,14 @@ class Task extends Model
     public function user_name(){
         return $this->belongsTo(User::class,'user_id');
     }
+    public function task_start_name(){
+        return $this->belongsTo(User::class,'start_by');
+    }
+    public function task_stop_name(){
+        return $this->belongsTo(User::class,'stop_by');
+    }
+    public function assign_to_name(){
+        return $this->belongsTo(User::class,'assign_to');
+    }
+    
 }

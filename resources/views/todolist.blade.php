@@ -234,8 +234,9 @@
                             @method('POST')
                             <div class="row mt-2">
                                 <div class="col-md-12">
-                                    <label class="labels">To-Do Title</label>
+                                    <label class="labels">To-Do Title<code>*</code></label>
                                     <input type="text" class="form-control" placeholder="Task Title" name="todo_title">
+                                    <span style="color:red">@error('todo_title'){{$message}}@enderror</span>
                                 </div>
                             </div>
                             <div class="row mt-2">

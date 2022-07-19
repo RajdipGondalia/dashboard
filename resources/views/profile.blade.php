@@ -235,12 +235,14 @@
                             @method('POST')
                             <div class="row mt-2">
                                 <div class="col-md-6">
-                                    <label class="labels">Given Name</label>
+                                    <label class="labels">Given Name<code>*</code></label>
                                     <input type="text" class="form-control" placeholder="Given Name" name="given_name">
+                                    <span style="color:red">@error('given_name'){{$message}}@enderror</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="labels">Family Name</label>
+                                    <label class="labels">Family Name<code>*</code></label>
                                     <input type="text" class="form-control" name="family_name" placeholder="Family Name">
+                                    <span style="color:red">@error('family_name'){{$message}}@enderror</span>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -280,8 +282,9 @@
                             </div>
                             <div class="row mt-3">  
                                 <div class="col-md-6">
-                                    <label class="labels">Primary Contact Number</label>
-                                    <input type="text" class="form-control" placeholder="enter Primary Contact Number" name="contact_number">
+                                    <label class="labels">Primary Contact Number<code>*</code></label>
+                                    <input type="text" class="form-control" placeholder="enter Primary Contact Number" name="contact_number" id="contact_number">
+                                    <span style="color:red">@error('contact_number'){{$message}}@enderror</span>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="labels">Secondary Contact Number</label>
@@ -299,8 +302,9 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="labels">Email</label>
+                                    <label class="labels">Email<code>*</code></label>
                                     <input type="text" class="form-control" placeholder="enter Email" name="email">
+                                    <span style="color:red">@error('email'){{$message}}@enderror</span>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -370,6 +374,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js"></script>
   
 
 
@@ -377,6 +382,25 @@
 
 </html>
 <script>
+  // $(document).ready(function(){
+  //     $("#contact_number").numeric();
+  // });
+  $('input[name="contact_number"]').keyup(function(e)
+  {
+    if (/\D/g.test(this.value))
+    {
+      // Filter non-digits from input value.
+      this.value = this.value.replace(/\D/g, '');
+    }
+  });
+  $('input[name="contact_number_2"]').keyup(function(e)
+  {
+    if (/\D/g.test(this.value))
+    {
+      // Filter non-digits from input value.
+      this.value = this.value.replace(/\D/g, '');
+    }
+  });
     $(document).on("click", ".browse", function() {
     var file = $(this).parents().find(".file");
     file.trigger("click");

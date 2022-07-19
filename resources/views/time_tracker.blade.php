@@ -28,6 +28,31 @@ use Illuminate\Http\Request;
   <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .date-main{
+      display: flex;
+      flex-direction: column;
+      width: 12.5rem;
+      height: 7.5rem;
+      border: 1px solid #ececec;
+      background-color: #2a2a2a;
+      color: white;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .date-title{
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: antiquewhite;
+    }
+    .date-details{
+      color: khaki;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  </style>
   <!-- endinject -->
   <style>
     .file {
@@ -222,15 +247,31 @@ use Illuminate\Http\Request;
                 <div class="row">
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
                     <div class="row">
-                        <div class="col-md-6">
-                            @php
-                            $user_id=1;
-                            @endphp
-                            <button type="button" class="btn btn-info mb-5" style="margin-left:35px;" id="TimeStart"  >Start</button> 
-                            <!-- href="{{ route('time_start') }}" -->
-                            <button type="button" class="btn btn-danger mb-5" style="margin-left:35px;" id="TimeStop">Stop</button>  
+                      <div class="col-md-9">
+                        @php
+                        $user_id=1;
+                        @endphp
+                        @if($user_last_flag=="stop")
+                          <button type="button" class="btn btn-info mb-5" style="margin-left:35px;" id="TimeStart">Start</button>
+                        @elseif($user_last_flag=="start")
+                          <button type="button" class="btn btn-danger mb-5" style="margin-left:35px;" id="TimeStop">Stop</button>  
+                        @else
+                          <button type="button" class="btn btn-info mb-5" style="margin-left:35px;" id="TimeStart">Start</button>
+                        @endif
+                      </div>
+                      <div class="col-md-3">
+                        @php
+                          $days = floor($total_seconds/86400);
+                          $hours = floor(($total_seconds - $days*86400) / 3600);
+                          $minutes = floor(($total_seconds / 60) % 60);
+                          $seconds = floor($total_seconds % 60);
+                        @endphp
+                        <div class="date-main">
+                          <div class="date-title">{{date("d-m-Y")}}</div>
+                          <div class="date-title"> Today's Total Time</div>
+                          <div class="date-details">{{$hours}}:{{$minutes}}:{{$seconds}}</div>
                         </div>
-                        <div class="col-md-6"></div>
+                      </div>  
                     </div>
                   </div>
                 </div>
@@ -261,10 +302,13 @@ use Illuminate\Http\Request;
                         
                         @endphp
                         @foreach($time_trackers as $time_tracker)
+                          @php
+                          $current_time = date("d-m-Y h:i A",strtotime($time_tracker->current_time));
+                          @endphp
                           <tr>
                             <td>{{++$count}}</td>
                             <td>{{$time_tracker->flag}}</td>
-                            <td>{{$time_tracker->current_time}}</td>
+                            <td>{{$current_time}}</td>
                             <td>{{$time_tracker->user_name->name}}</td>
                           </tr>
                         @endforeach

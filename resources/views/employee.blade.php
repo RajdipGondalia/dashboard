@@ -220,8 +220,8 @@
                     <table class="table table-striped table-responsive" style="display: inline-table!important;">
                       <thead>
                         <tr>
-                          <th></th>
-                          <th>Sr. No.</th>
+                          <th style="width:2%"></th>
+                          <th style="width:4%">Sr. No.</th>
                           <th>Given Name</th>
                           <!-- <th>Family Name</th> -->
                           <!-- <th>DOB</th> -->
@@ -295,20 +295,20 @@
 <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel"
   aria-hidden="true">
   <div class="modal-dialog " role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Employee Details</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-                <!-- the result to be displayed apply here -->
-          </div>
-          <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+    <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Employee Details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <!-- the result to be displayed apply here -->
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
       </div>
+    </div>
   </div>
 </div>
 
@@ -348,7 +348,7 @@
     event.preventDefault();
     let href = $(this).attr('data-attr');
     let id = $(this).attr('data-id');
-    console.log(href);
+    // console.log(href);
     $.ajax({
       url: href,
       beforeSend: function() {
@@ -356,33 +356,56 @@
       },
       // return the result
       success: function(result) {
-        console.log(result.employee);
+        // console.log(result.employee);
 
-          $('#smallModal').modal("show");
-          
-            var object = result.employee;
-            // $(".modal-title").html(object.given_name);
-            $(".modal-body").html(
-              `<table class="table table-bordered">
-              <tr><td>Given Name : </td><td>${object.given_name}</td></tr>
-              <tr><td>Family Name : </td><td>${object.family_name}</td></tr>
-              <tr><td>DOB : </td><td>${object.dob}</td></tr>
-              <tr><td>Job Role : </td><td>${object.job_role}</td></tr>
-              <tr><td>Education Qualification : </td><td>${object.edu_qualification}</td></tr>
-              <tr><td>Skills : </td><td>${object.skills}</td></tr>
-              <tr><td>Present Address : </td><td>${object.present_address}</td></tr>
-              <tr><td>Permanent Address : </td><td>${object.permanent_address}</td></tr>
-              <tr><td>Primary Contact Number : </td><td>${object.contact_number}</td></tr>
-              <tr><td>Secondary Contact Number : </td><td>${object.contact_number_2}</td></tr>
-              <tr><td>Working Location : </td><td>${object.working_location}</td></tr>
-              <tr><td>Email : </td><td>${object.email}</td></tr>
-              </table>`
-            );
-          
-          //$('#smallBody').html(result).show();
+        $('#smallModal').modal("show");
+        
+          var object = result.employee;
 
-          //$("#given_name").prev().val(result.employee[given_name]);
-          // $("#file").val(fileName);
+          var date    = new Date(object.dob),
+          yr      = date.getFullYear(),
+          month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+          day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+          dob = day + '-' + month + '-' + yr;
+
+          var given_name = (object.given_name!=null) ? object.given_name : "";
+          var family_name = (object.family_name!=null) ? object.family_name : "";
+          var dob = (dob!=null) ? dob : "";
+          var job_role = (object.job_role!=null) ? object.job_role : "";
+          var edu_qualification = (object.edu_qualification!=null) ? object.edu_qualification : "";
+          var skills = (object.skills!=null) ? object.skills : "";
+          var present_address = (object.present_address!=null) ? object.present_address : "";
+          var permanent_address = (object.permanent_address!=null) ? object.permanent_address : "";
+          var contact_number = (object.contact_number!=null) ? object.contact_number : "";
+          var contact_number_2 = (object.contact_number_2!=null) ? object.contact_number_2 : "";
+          var working_location = (object.working_location!=null) ? object.working_location : "";
+          var email = (object.email!=null) ? object.email : "";
+
+          // var dob = object.dob;
+          // var new_dob = dob.getByFormat('dd/MM/yyyy');
+          // date '%(%Y-%m-%d)
+          // $(".modal-title").html(object.given_name);
+          $(".modal-body").html(
+            `<table class="table table-bordered">
+            <tr><td>Given Name : </td><td>${given_name}</td></tr>
+            <tr><td>Family Name : </td><td>${family_name}</td></tr>
+            <tr><td>DOB : </td><td>${dob}</td></tr>
+            <tr><td>Job Role : </td><td>${job_role}</td></tr>
+            <tr><td>Education Qualification : </td><td>${edu_qualification}</td></tr>
+            <tr><td>Skills : </td><td>${skills}</td></tr>
+            <tr><td>Present Address : </td><td>${present_address}</td></tr>
+            <tr><td>Permanent Address : </td><td>${permanent_address}</td></tr>
+            <tr><td>Primary Contact Number : </td><td>${contact_number}</td></tr>
+            <tr><td>Secondary Contact Number : </td><td>${contact_number_2}</td></tr>
+            <tr><td>Working Location : </td><td>${working_location}</td></tr>
+            <tr><td>Email : </td><td>${email}</td></tr>
+            </table>`
+          );
+        
+        //$('#smallBody').html(result).show();
+
+        //$("#given_name").prev().val(result.employee[given_name]);
+        // $("#file").val(fileName);
       },
       complete: function() {
           $('#loader').hide();
@@ -413,5 +436,6 @@
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
     });
+    
 </script>
 
