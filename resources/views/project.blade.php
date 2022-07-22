@@ -1,3 +1,6 @@
+<?php
+use App\Http\Controllers\DashboardController;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,6 +25,9 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+ 
+
   <!-- endinject -->
   <style>
     .file {
@@ -52,7 +58,7 @@
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-top"> 
         <ul class="navbar-nav">
-          <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+          <li class="nav-item font-weight-semibold d-nfunction  d-lg-block ms-0">
             <!-- <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">John Doe</span></h1>
             <h3 class="welcome-sub-text">Your performance summary this week </h3> -->
           </li>
@@ -85,7 +91,6 @@
           </div>
         </div>
       </div>
-      
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -237,113 +242,141 @@
         <div class="content-wrapper">
           <div class="row">
             <div class="col-sm-12">
-                <div class="container rounded bg-white mt-5 mb-5">
-                    <div class="row">
-                    <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                        <h4 class="text-center" style="font-size: 40px;color:#404040;">Profile</h4>
-                        </div>
-                        <form action="{{ route('user_profile_update') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('POST')
-                            <div class="row mt-2">
-                              <div class="col-md-6">
-                                <label class="labels">Given Name<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="Given Name" name="given_name">
-                                <span style="color:red">@error('given_name'){{$message}}@enderror</span>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Family Name<code>*</code></label>
-                                <input type="text" class="form-control" name="family_name" placeholder="Family Name">
-                                <span style="color:red">@error('family_name'){{$message}}@enderror</span>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">DOB</label>
-                                <input type="date" class="form-control" placeholder="Select DOB" name="dob">
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Job Role</label>
-                                <select class="form-control" name="job_role">
-                                  <option value="0">Select Job Role</option>
-                                  @foreach($job_roles as $job_role)
-                                  <option value="{{ $job_role->id }}">{{ $job_role->name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Education Qualification</label>
-                                <textarea type="text" class="form-control" placeholder="enter Education Qualification" name="education_qualification">
-                                </textarea>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Skills</label>
-                                <textarea type="text" class="form-control" placeholder="enter Skills" name="skills"></textarea>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Present Address</label>
-                                <textarea type="text" class="form-control" placeholder="enter Present Address" name="present_address"></textarea>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Permanent Address</label>
-                                <textarea type="text" class="form-control" placeholder="enter Permanent Address" name="permanent_address"></textarea>
-                              </div>
-                            </div>
-                            <div class="row mt-3">  
-                              <div class="col-md-6">
-                                <label class="labels">Primary Contact Number<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="enter Primary Contact Number" name="contact_number" id="contact_number">
-                                <span style="color:red">@error('contact_number'){{$message}}@enderror</span>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Secondary Contact Number</label>
-                                <input type="text" class="form-control" placeholder="enter Secondary Contact Number" name="contact_number_2">
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Working Location</label>
-                                <select class="form-control" name="working_location">
-                                  <option value ="0">Select Working Location</option>
-                                  @foreach($working_locations as $working_location)
-                                    <option value="{{ $working_location->id }}">{{ $working_location->name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Email<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="enter Email" name="email">
-                                <span style="color:red">@error('email'){{$message}}@enderror</span>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <div id="msg"></div>
-                                <label class="labels">Profile Photo</label>
-                                <input type="file" name="img" class="file" accept="image/*">
-                                <div class="input-group my-3">
-                                  <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
-                                  <div class="input-group-append">
-                                    <button type="button" class="browse btn btn-primary">Browse...</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                              </div>
-                              <div class="col-md-6">
-                                <img  id="preview" class="img-thumbnail">
-                              </div>
-                            </div>
-                            <div class="mt-5 mb-5 text-center">
-                              <button class="btn btn-primary profile-button" type="submit" >Save Profile</button>
-                            </div>
-                        </form>
+              <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Add Project</h4>
+                  </div>
+                  
+                  <form action="{{ route('project_add') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('POST')
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <label class="labels">Title<code>*</code></label>
+                        <input type="text" class="form-control" placeholder="Title" name="title">
+                        <span style="color:red">@error('title'){{$message}}@enderror</span>
+                      </div>
                     </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Client</label>
+                            <select class="form-control" name="client_id" id="client_id">
+                                <option value="0">Select Client</option>
+                                @foreach($clients as $client)
+                                <option value="{{ $client->id }}">{{ $client->company_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="labels">Due Date</label>
+                            <input type="date" class="form-control" placeholder="Due Date" name="due_date" id="due_date">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6">
+                        <label class="labels">Assign To<code>*</code></label>
+                        <select class="form-control" name="assign_to[]" id="assign_to" multiple="multiple">
+                          <option value="">Select Assign To</option>
+                          @foreach($users as $user)
+                          <option value="{{ $user->id }}">{{ $user->name }}</option>
+                          @endforeach
+                        </select>
+                        <span style="color:red">@error('assign_to'){{$message}}@enderror</span>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="labels">Project Manager</label>
+                        <select class="form-control" name="project_manager" id="project_manager">
+                            <option value="0">Select Project Manager</option>
+                            @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    </div>
+                    <div class="mt-5 mb-5 text-center">
+                      <button class="btn btn-primary profile-button" type="submit" >Save</button>
+                    </div>
+                  </form>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class=" rounded bg-white mt-2 mb-2">
+                <div class="row">
+                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Project List</h4>
+                    <table class="table table-striped table-responsive" style="display: inline-table!important;">
+                      <thead>
+                        <tr>
+                          <th style="width:5%">Sr. No.</th>
+                          <th>Title</th>
+                          <th>Client</th>
+                          <th>Assign To</th>
+                          <th>Project Manager</th>
+                          <th>Due Date</th>
+                          <th>Project Created By</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @php
+                          $count = 0;
+                        @endphp
+                        @foreach($projects as $project)
+                          <tr class='clickable-row' data-href="{{ route('project_details', $project->id) }}" style="cursor: pointer;" >
+                            <td>{{++$count}}</td>
+                            <td>{{$project->title}}</td>
+                            <td>
+                              @if($project->client_id!=0)
+                                {{$project->client_name->company_name}}
+                              @endif
+                            </td>
+                            <td>
+                              @php
+                                $assign_to_ids = $project->assign_to;
+                                $assign_to_ids_arrays = (explode(",",$assign_to_ids));
+                              @endphp
+                              @foreach($assign_to_ids_arrays as $assign_to_ids_array)
+                                @php
+                                  $result = app('app\Http\Controllers\DashboardController')->get_assignto_names_from_ids($assign_to_ids_array);
+                                  $json_toArray = json_decode($result,true);
+                                  $array_names = array_map(function ($array) {return $array['name'];}, $json_toArray);
+                                  $assign_to_names = (implode(",",$array_names));
+                                @endphp
+                                {{$assign_to_names}}<br>
+                              @endforeach
+                            </td>
+                            <td>
+                              @if($project->project_manager!=0)
+                                {{$project->project_manager_name->name}}
+                              @endif
+                            </td>
+                            <td>
+                              @php
+                                $duedate=$project->due_date;
+                                if($duedate!="" && $duedate!="NULL" && $duedate!="0000-00-00"  && $duedate!="1970-01-01")
+                                {
+                                echo date("d-m-Y",strtotime($duedate));
+                                }
+                              @endphp
+                            </td>
+                            <td>{{$project->user_name->name}}</td>
+                            <td>
+                              @php
+                                $StatuaArray = array("0"=>"Not Started","1"=>"In Progress","2"=>"On Hold","3"=>"Completed","4"=>"Cancel");
+                              @endphp
+                              {{$StatuaArray[$project->status]}}
+                            </td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -387,33 +420,17 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
 
 </body>
 
 </html>
 <script>
-  // $(document).ready(function(){
-  //     $("#contact_number").numeric();
-  // });
-  $('input[name="contact_number"]').keyup(function(e)
-  {
-    if (/\D/g.test(this.value))
-    {
-      // Filter non-digits from input value.
-      this.value = this.value.replace(/\D/g, '');
-    }
-  });
-  $('input[name="contact_number_2"]').keyup(function(e)
-  {
-    if (/\D/g.test(this.value))
-    {
-      // Filter non-digits from input value.
-      this.value = this.value.replace(/\D/g, '');
-    }
-  });
+  // $("#assign_to").select2();
+  // $("#assign_to").fselect();
     $(document).on("click", ".browse", function() {
     var file = $(this).parents().find(".file");
     file.trigger("click");
@@ -429,6 +446,19 @@
     };
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
+    });
+    // $('#startButton').on('click', function(){
+    //   console.log("Function called");
+    //   var user_id = `{{Auth::user()->id}}`;
+    //   let id = $(this).attr('data-id');
+    //   task_start(user_id,id);
+
+    // })
+
+    jQuery(document).ready(function($) {
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
     });
 </script>
 

@@ -1,3 +1,7 @@
+<?php
+use App\Models\Profile;
+use App\Models\JobRoleMaster;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,7 +77,6 @@
           </div>
         </div>
       </div>
-      
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -112,6 +115,18 @@
             <a class="nav-link" href="{{ route('todolist') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Employee To-Do List</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('all_client') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Clients</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('all_projects') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Projects</span>
             </a>
           </li>
 
@@ -256,14 +271,22 @@
                             <td>{{$employee->given_name}}</td>
                             <!-- <td>{{$employee->family_name}}</td> -->
                             <!-- <td>{{$employee->dob}}</td> -->
-                            <td>{{$employee->job_role}}</td>
+                            <td>
+                              @if($employee->job_role!=0)
+                              {{$employee->job_role_name->name}}
+                              @endif
+                            </td>
                             <!-- <td>{{$employee->edu_qualification}}</td> -->
                             <!-- <td>{{$employee->skills}}</td> -->
                             <!-- <td>{{$employee->present_address}}</td> -->
                             <!-- <td>{{$employee->permanent_address}}</td> -->
                             <td>{{$employee->contact_number}}</td>
                             <!-- <td>{{$employee->contact_number_2}}</td> -->
-                            <td>{{$employee->working_location}}</td>
+                            <td>
+                              @if($employee->working_location!=0)
+                              {{$employee->working_location_name->name}}
+                              @endif
+                            </td>
                             <td>{{$employee->email}}</td>
                           </tr>
                         @endforeach
@@ -337,8 +360,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
   
-
-
 </body>
 
 </html>
@@ -352,90 +373,63 @@
     $.ajax({
       url: href,
       beforeSend: function() {
-          $('#loader').show();
+        $('#loader').show();
       },
       // return the result
       success: function(result) {
         // console.log(result.employee);
-
         $('#smallModal').modal("show");
-        
-          var object = result.employee;
+        var object = result.employee;
 
-          var date    = new Date(object.dob),
-          yr      = date.getFullYear(),
-          month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
-          day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
-          dob = day + '-' + month + '-' + yr;
-
-          var given_name = (object.given_name!=null) ? object.given_name : "";
-          var family_name = (object.family_name!=null) ? object.family_name : "";
-          var dob = (dob!=null) ? dob : "";
-          var job_role = (object.job_role!=null) ? object.job_role : "";
-          var edu_qualification = (object.edu_qualification!=null) ? object.edu_qualification : "";
-          var skills = (object.skills!=null) ? object.skills : "";
-          var present_address = (object.present_address!=null) ? object.present_address : "";
-          var permanent_address = (object.permanent_address!=null) ? object.permanent_address : "";
-          var contact_number = (object.contact_number!=null) ? object.contact_number : "";
-          var contact_number_2 = (object.contact_number_2!=null) ? object.contact_number_2 : "";
-          var working_location = (object.working_location!=null) ? object.working_location : "";
-          var email = (object.email!=null) ? object.email : "";
-
-          // var dob = object.dob;
-          // var new_dob = dob.getByFormat('dd/MM/yyyy');
-          // date '%(%Y-%m-%d)
-          // $(".modal-title").html(object.given_name);
-          $(".modal-body").html(
-            `<table class="table table-bordered">
-            <tr><td>Given Name : </td><td>${given_name}</td></tr>
-            <tr><td>Family Name : </td><td>${family_name}</td></tr>
-            <tr><td>DOB : </td><td>${dob}</td></tr>
-            <tr><td>Job Role : </td><td>${job_role}</td></tr>
-            <tr><td>Education Qualification : </td><td>${edu_qualification}</td></tr>
-            <tr><td>Skills : </td><td>${skills}</td></tr>
-            <tr><td>Present Address : </td><td>${present_address}</td></tr>
-            <tr><td>Permanent Address : </td><td>${permanent_address}</td></tr>
-            <tr><td>Primary Contact Number : </td><td>${contact_number}</td></tr>
-            <tr><td>Secondary Contact Number : </td><td>${contact_number_2}</td></tr>
-            <tr><td>Working Location : </td><td>${working_location}</td></tr>
-            <tr><td>Email : </td><td>${email}</td></tr>
-            </table>`
-          );
+        $(".modal-body").html(
+          `<table class="table table-bordered">
+          <tr><td>Given Name : </td><td>${object.given_name}</td></tr>
+          <tr><td>Family Name : </td><td>${object.family_name}</td></tr>
+          <tr><td>DOB : </td><td>${object.dob}</td></tr>
+          <tr><td>Job Role : </td><td>${object.job_role}</td></tr>
+          <tr><td>Education Qualification : </td><td>${object.edu_qualification}</td></tr>
+          <tr><td>Skills : </td><td>${object.skills}</td></tr>
+          <tr><td>Present Address : </td><td>${object.present_address}</td></tr>
+          <tr><td>Permanent Address : </td><td>${object.permanent_address}</td></tr>
+          <tr><td>Primary Contact Number : </td><td>${object.contact_number}</td></tr>
+          <tr><td>Secondary Contact Number : </td><td>${object.contact_number_2}</td></tr>
+          <tr><td>Working Location : </td><td>${object.working_location}</td></tr>
+          <tr><td>Email : </td><td>${object.email}</td></tr>
+          </table>`
+        );
         
         //$('#smallBody').html(result).show();
-
         //$("#given_name").prev().val(result.employee[given_name]);
         // $("#file").val(fileName);
       },
       complete: function() {
-          $('#loader').hide();
+        $('#loader').hide();
       },
       error: function(jqXHR, testStatus, error) {
-          console.log(error);
-          alert("Page " + href + " cannot open. Error:" + error);
-          $('#loader').hide();
+        console.log(error);
+        alert("Page " + href + " cannot open. Error:" + error);
+        $('#loader').hide();
       },
       timeout: 8000
     })
   });
 
+  $(document).on("click", ".browse", function() {
+  var file = $(this).parents().find(".file");
+  file.trigger("click");
+  });
+  $('input[type="file"]').change(function(e) {
+  var fileName = e.target.files[0].name;
+  $("#file").val(fileName);
 
-    $(document).on("click", ".browse", function() {
-    var file = $(this).parents().find(".file");
-    file.trigger("click");
-    });
-    $('input[type="file"]').change(function(e) {
-    var fileName = e.target.files[0].name;
-    $("#file").val(fileName);
-
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        // get loaded data and render thumbnail.
-        document.getElementById("preview").src = e.target.result;
-    };
-    // read the image file as a data URL.
-    reader.readAsDataURL(this.files[0]);
-    });
+  var reader = new FileReader();
+  reader.onload = function(e) {
+      // get loaded data and render thumbnail.
+      document.getElementById("preview").src = e.target.result;
+  };
+  // read the image file as a data URL.
+  reader.readAsDataURL(this.files[0]);
+  });
     
 </script>
 

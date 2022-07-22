@@ -20,10 +20,10 @@ use App\Http\Controllers\DashboardController;
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <!-- <link rel="stylesheet" href="/datatables.net-bs4/dataTables.bootstrap4.css"> -->
-  <link rel="stylesheet" href="../js/select.dataTables.min.css">
+  <link rel="stylesheet" href="../../js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
  
@@ -35,7 +35,7 @@ use App\Http\Controllers\DashboardController;
         position: absolute;
     }
   </style>
-  <link rel="shortcut icon" href="../images/favicon.png" />
+  <link rel="shortcut icon" href="../../images/favicon.png" />
 </head>
 <body>
   <div class="container-scroller">
@@ -49,10 +49,10 @@ use App\Http\Controllers\DashboardController;
         </div>
         <div>
           <a class="navbar-brand brand-logo" href="index.html">
-            <img src="../images/logo.svg" alt="logo" />
+            <img src="../../images/logo.svg" alt="logo" />
           </a>
           <a class="navbar-brand brand-logo-mini" href="index.html">
-            <img src="../images/logo-mini.svg" alt="logo" />
+            <img src="../../images/logo-mini.svg" alt="logo" />
           </a>
         </div>
       </div>
@@ -241,69 +241,21 @@ use App\Http\Controllers\DashboardController;
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
               <div class="container rounded bg-white mt-5 mb-5">
                 <div class="row">
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Employee Task</h4>
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Files</h4>
                   </div>
-                  
-                  <form action="{{ route('task_add') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('POST')
-                    <div class="row mt-2">
-                      <div class="col-md-6">
-                        <label class="labels">Project<code>*</code></label>
-                        <select class="form-control" name="project_id" id="project_id">
-                          <option value="">Select Project</option>
-                          @foreach($projects as $project)
-                          <option value="{{ $project->id }}">{{ $project->title }}</option>
-                          @endforeach
-                        </select>
-                        <span style="color:red">@error('project_id'){{$message}}@enderror</span>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="labels">Task Title<code>*</code></label>
-                        <input type="text" class="form-control" placeholder="Task Title" name="task_title">
-                        <span style="color:red">@error('task_title'){{$message}}@enderror</span>
-                      </div>
-                    </div>
-                    <div class="row mt-2">
-                      <div class="col-md-12">
-                        <label class="labels">Task Description</label>
-                        <textarea type="text" class="form-control" placeholder="Task Description" name="task_desc"></textarea>
-                      </div>
-                    </div>
-                    <div class="row mt-2">
-                      <div class="col-md-4">
-                        <label class="labels">Assign To<code>*</code></label>
-                        <select class="form-control" name="assign_to[]" id="assign_to" multiple="multiple">
-                          <option value="">Select Assign To</option>
-                          @foreach($users as $user)
-                          <option value="{{ $user->id }}">{{ $user->name }}</option>
-                          @endforeach
-                        </select>
-                        <span style="color:red">@error('assign_to'){{$message}}@enderror</span>
-                      </div>
-                      <div class="col-md-4">
-                        <label class="labels">Priority<code>*</code></label>
-                        <select class="form-control" name="priority" id="priority">
-                          <option value="">Select Priority</option>
-                          <option value="1">Low</option>
-                          <option value="2">Medium</option>
-                          <option value="3">High</option>
-                        </select>
-                        <span style="color:red">@error('priority'){{$message}}@enderror</span>
-                      </div>
-                      <div class="col-md-3">
-                        <label class="labels">Due Date</label>
-                        <input type="date" class="form-control" placeholder="Due Date" name="due_date" id="due_date">
-                      </div>
-                    </div>
-                    <div class="mt-5 mb-5 text-center">
-                      <button class="btn btn-primary profile-button" type="submit" >Save</button>
-                    </div>
-                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Broadcast</h4>
+                  </div>
                 </div>
               </div>
             </div>
@@ -313,8 +265,8 @@ use App\Http\Controllers\DashboardController;
               <div class=" rounded bg-white mt-2 mb-2">
                 <div class="row">
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Employee Task List</h4>
-                    <table class="table table-responsive" style="display: inline-table!important;">
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Project's Task List</h4>
+                    <table class="table table-striped table-responsive" style="display: inline-table!important;">
                       <thead>
                         <tr>
                           <th style="width:10%">Action</th>
@@ -358,8 +310,9 @@ use App\Http\Controllers\DashboardController;
                             {
                               $color="ivory";
                             }
+                            
                           @endphp
-                          <tr style="background-color:{{$color}}" > 
+                          <tr style="background-color:{{$color}}">
                             <td>
                               @if($task->status==0)
                               <button id="startButton" data-id="{{$task->id}}" title="Start" class="btn btn-sm btn-info" type="button" onClick="task_start({{$task->id}})">

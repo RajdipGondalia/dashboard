@@ -57,6 +57,14 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
 
     Route::get('todolist', [DashboardController::class, 'get_todolist'])->name('todolist');
     Route::post('add-todolist',[DashboardController::class, 'store_todolist_data'])->name('todolist_add');
+
+    Route::get('client_master', [DashboardController::class, 'get_clients'])->name('all_client');
+    Route::post('add-client-master',[DashboardController::class, 'store_client_master_data'])->name('client_master_add');
+
+    Route::get('project', [DashboardController::class, 'get_projects'])->name('all_projects');
+    Route::post('add-project',[DashboardController::class, 'store_project_data'])->name('project_add');
+    Route::get('get-single-project/{id}',[DashboardController::class, 'get_single_project'])->name('api_single_project');
+    Route::get('project_details/{id}', [DashboardController::class, 'get_project_details'])->name('project_details');
 	//Place all Protected nested page Routes
 });
 

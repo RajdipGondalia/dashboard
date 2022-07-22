@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\Project;
 
 class Task extends Model
 {
@@ -23,5 +24,7 @@ class Task extends Model
     public function assign_to_name(){
         return $this->belongsTo(User::class,'assign_to');
     }
-    
+    public function project_name(){
+        return $this->belongsTo(Project::class,'project_id');
+    }
 }

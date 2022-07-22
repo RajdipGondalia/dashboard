@@ -19,13 +19,14 @@ return new class extends Migration
             $table->string('given_name');
             $table->date('dob');
             $table->string('edu_qualification')->nullable();
-            $table->string('job_role')->nullable();
+            $table->tinyInteger('job_role')->nullable();
             $table->string('work_location')->nullable();
             $table->string('present_address')->nullable();
             $table->string('permanent_address')->nullable();
             $table->string('skills')->nullable();
             $table->string('contact_number')->nullable();
-            $table->string('working_location')->nullable();
+            $table->string('contact_number_2')->nullable();
+            $table->tinyInteger('working_location')->nullable();
             $table->string('email')->nullable();
             $table->unsignedBigInteger('user_id'); 
             $table->foreign('user_id')->references('id')->on('users');

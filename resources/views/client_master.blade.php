@@ -1,3 +1,6 @@
+<?php
+use App\Http\Controllers\DashboardController;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,6 +25,9 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+ 
+
   <!-- endinject -->
   <style>
     .file {
@@ -52,7 +58,7 @@
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-top"> 
         <ul class="navbar-nav">
-          <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+          <li class="nav-item font-weight-semibold d-nfunction  d-lg-block ms-0">
             <!-- <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">John Doe</span></h1>
             <h3 class="welcome-sub-text">Your performance summary this week </h3> -->
           </li>
@@ -85,7 +91,6 @@
           </div>
         </div>
       </div>
-      
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -237,113 +242,108 @@
         <div class="content-wrapper">
           <div class="row">
             <div class="col-sm-12">
-                <div class="container rounded bg-white mt-5 mb-5">
-                    <div class="row">
-                    <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                        <h4 class="text-center" style="font-size: 40px;color:#404040;">Profile</h4>
-                        </div>
-                        <form action="{{ route('user_profile_update') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('POST')
-                            <div class="row mt-2">
-                              <div class="col-md-6">
-                                <label class="labels">Given Name<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="Given Name" name="given_name">
-                                <span style="color:red">@error('given_name'){{$message}}@enderror</span>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Family Name<code>*</code></label>
-                                <input type="text" class="form-control" name="family_name" placeholder="Family Name">
-                                <span style="color:red">@error('family_name'){{$message}}@enderror</span>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">DOB</label>
-                                <input type="date" class="form-control" placeholder="Select DOB" name="dob">
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Job Role</label>
-                                <select class="form-control" name="job_role">
-                                  <option value="0">Select Job Role</option>
-                                  @foreach($job_roles as $job_role)
-                                  <option value="{{ $job_role->id }}">{{ $job_role->name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Education Qualification</label>
-                                <textarea type="text" class="form-control" placeholder="enter Education Qualification" name="education_qualification">
-                                </textarea>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Skills</label>
-                                <textarea type="text" class="form-control" placeholder="enter Skills" name="skills"></textarea>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Present Address</label>
-                                <textarea type="text" class="form-control" placeholder="enter Present Address" name="present_address"></textarea>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Permanent Address</label>
-                                <textarea type="text" class="form-control" placeholder="enter Permanent Address" name="permanent_address"></textarea>
-                              </div>
-                            </div>
-                            <div class="row mt-3">  
-                              <div class="col-md-6">
-                                <label class="labels">Primary Contact Number<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="enter Primary Contact Number" name="contact_number" id="contact_number">
-                                <span style="color:red">@error('contact_number'){{$message}}@enderror</span>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Secondary Contact Number</label>
-                                <input type="text" class="form-control" placeholder="enter Secondary Contact Number" name="contact_number_2">
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Working Location</label>
-                                <select class="form-control" name="working_location">
-                                  <option value ="0">Select Working Location</option>
-                                  @foreach($working_locations as $working_location)
-                                    <option value="{{ $working_location->id }}">{{ $working_location->name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Email<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="enter Email" name="email">
-                                <span style="color:red">@error('email'){{$message}}@enderror</span>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <div id="msg"></div>
-                                <label class="labels">Profile Photo</label>
-                                <input type="file" name="img" class="file" accept="image/*">
-                                <div class="input-group my-3">
-                                  <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
-                                  <div class="input-group-append">
-                                    <button type="button" class="browse btn btn-primary">Browse...</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                              </div>
-                              <div class="col-md-6">
-                                <img  id="preview" class="img-thumbnail">
-                              </div>
-                            </div>
-                            <div class="mt-5 mb-5 text-center">
-                              <button class="btn btn-primary profile-button" type="submit" >Save Profile</button>
-                            </div>
-                        </form>
+              <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Add Client</h4>
+                  </div>
+                  
+                  <form action="{{ route('client_master_add') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('POST')
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <label class="labels">Company Name<code>*</code></label>
+                        <input type="text" class="form-control" placeholder="Company Name" name="company_name">
+                        <span style="color:red">@error('company_name'){{$message}}@enderror</span>
+                      </div>
                     </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6">
+                        <label class="labels">First Name<code>*</code></label>
+                        <input type="text" class="form-control" placeholder="First Name" name="first_name">
+                        <span style="color:red">@error('first_name'){{$message}}@enderror</span>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="labels">Last Name<code>*</code></label>
+                        <input type="text" class="form-control" placeholder="Last Name" name="last_name">
+                        <span style="color:red">@error('last_name'){{$message}}@enderror</span>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <label class="labels">Email<code>*</code></label>
+                        <input type="text" class="form-control" placeholder="Email" name="email">
+                        <span style="color:red">@error('email'){{$message}}@enderror</span>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <label class="labels">Address</label>
+                        <textarea type="text" class="form-control" placeholder="Address" name="address"></textarea>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-4">
+                        <label class="labels">Category<code>*</code></label>
+                        <select class="form-control" name="client_category_id" id="client_category_id">
+                          <option value="">Select Client Category</option>
+                          @foreach($client_categories as $client_category)
+                          <option selected="1" value="{{ $client_category->id }}">{{ $client_category->name }}</option>
+                          @endforeach
+                        </select>
+                        <span style="color:red">@error('client_category_id'){{$message}}@enderror</span>
+                      </div>
+                    </div>
+                    <div class="mt-5 mb-5 text-center">
+                      <button class="btn btn-primary profile-button" type="submit" >Save</button>
+                    </div>
+                  </form>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class=" rounded bg-white mt-2 mb-2">
+                <div class="row">
+                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Client List</h4>
+                    <table class="table table-striped table-responsive" style="display: inline-table!important;">
+                      <thead>
+                        <tr>
+                          <th style="width:5%">Sr. No.</th>
+                          <th>Company Name</th>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Email</th>
+                          <th>Address</th>
+                          <th>Category</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                        @php
+                        $count = 0
+                        
+                        @endphp
+                        @foreach($clients as $client)
+                          <tr>
+                            <td>{{++$count}}</td>
+                            <td>{{$client->company_name}}</td>
+                            <td>{{$client->first_name}}</td>
+                            <td>{{$client->last_name}}</td>
+                            <td>{{$client->email}}</td>
+                            <td>{{$client->address}}</td>
+                            <td>{{$client->client_category_name->name}}</td>
+                            
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -387,33 +387,17 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
 
 </body>
 
 </html>
 <script>
-  // $(document).ready(function(){
-  //     $("#contact_number").numeric();
-  // });
-  $('input[name="contact_number"]').keyup(function(e)
-  {
-    if (/\D/g.test(this.value))
-    {
-      // Filter non-digits from input value.
-      this.value = this.value.replace(/\D/g, '');
-    }
-  });
-  $('input[name="contact_number_2"]').keyup(function(e)
-  {
-    if (/\D/g.test(this.value))
-    {
-      // Filter non-digits from input value.
-      this.value = this.value.replace(/\D/g, '');
-    }
-  });
+  // $("#assign_to").select2();
+  // $("#assign_to").fselect();
     $(document).on("click", ".browse", function() {
     var file = $(this).parents().find(".file");
     file.trigger("click");
@@ -430,5 +414,149 @@
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
     });
+    // $('#startButton').on('click', function(){
+    //   console.log("Function called");
+    //   var user_id = `{{Auth::user()->id}}`;
+    //   let id = $(this).attr('data-id');
+    //   task_start(user_id,id);
+
+    // })
+    function task_start(id){
+
+      var user_id = `{{Auth::user()->id}}`;
+      var tdate = new Date();
+      var dd = tdate.getDate(); //yields day
+      var MM = tdate.getMonth(); //yields month
+      var yyyy = tdate.getFullYear(); //yields year
+      var hh = tdate.getHours();
+      var ii = tdate.getMinutes();
+      var ss = tdate.getSeconds();
+
+      var date =yyyy + "-" +( MM+1) + "-" + dd + "-" + hh + "-" + ii + "-" + ss;
+
+      var url = `{{ route('task_start') }}`;
+
+      // console.log("Function called",date);
+      // console.log("Task Id",id);
+      const form_data = new FormData();
+      form_data.append("id",id);
+      form_data.append("user_id",user_id);
+      form_data.append("start_time",date);
+
+      axios.post(url,form_data).then(response => {
+        
+        console.log(response);
+        // `{{ route('time_tracker') }}`;
+        // window.location.href(`{{ route('time_tracker') }}`);
+        location.reload();
+      }).catch(error=>{
+        // console.log(error);
+      });
+    }
+    function task_stop(id){
+      var user_id = `{{Auth::user()->id}}`;
+      var tdate = new Date();
+      var dd = tdate.getDate(); //yields day
+      var MM = tdate.getMonth(); //yields month
+      var yyyy = tdate.getFullYear(); //yields year
+      var hh = tdate.getHours();
+      var ii = tdate.getMinutes();
+      var ss = tdate.getSeconds();
+
+      var date =yyyy + "-" +( MM+1) + "-" + dd + "-" + hh + "-" + ii + "-" + ss;
+
+      var url = `{{ route('task_stop') }}`;
+      // console.log("Function called",date);
+      // console.log("User Id",user_id);
+      const form_data = new FormData();
+      form_data.append("id",id);
+      form_data.append("user_id",user_id);
+      form_data.append("stop_time",date);
+      axios.post(url,form_data).then(response => {
+        // console.log(response);
+        // `{{ route('time_tracker') }}`;
+        // window.location.href(`{{ route('time_tracker') }}`);
+        location.reload();
+      }).catch(error=>{
+        // console.log(error);
+      });
+      }
+
+      function task_complete(id){
+        var user_id = `{{Auth::user()->id}}`;
+        var tdate = new Date();
+        var dd = tdate.getDate(); //yields day
+        var MM = tdate.getMonth(); //yields month
+        var yyyy = tdate.getFullYear(); //yields year
+        var hh = tdate.getHours();
+        var ii = tdate.getMinutes();
+        var ss = tdate.getSeconds();
+
+        var date =yyyy + "-" +( MM+1) + "-" + dd + "-" + hh + "-" + ii + "-" + ss;
+
+        var url = `{{ route('task_complete') }}`;
+        // console.log("Function called",date);
+        // console.log("User Id",user_id);
+        const form_data = new FormData();
+        form_data.append("id",id);
+        form_data.append("user_id",user_id);
+        form_data.append("complete_time",date);
+        axios.post(url,form_data).then(response => {
+          // console.log(response);
+          // `{{ route('time_tracker') }}`;
+          // window.location.href(`{{ route('time_tracker') }}`);
+          location.reload();
+        }).catch(error=>{
+          // console.log(error);
+        });
+      }
+
+      function task_cancel(id)
+      {
+        var user_id = `{{Auth::user()->id}}`;
+        var tdate = new Date();
+        var dd = tdate.getDate(); //yields day
+        var MM = tdate.getMonth(); //yields month
+        var yyyy = tdate.getFullYear(); //yields year
+        var hh = tdate.getHours();
+        var ii = tdate.getMinutes();
+        var ss = tdate.getSeconds();
+
+        var date =yyyy + "-" +( MM+1) + "-" + dd + "-" + hh + "-" + ii + "-" + ss;
+
+        var url = `{{ route('task_cancel') }}`;
+        // console.log("Function called",date);
+        // console.log("User Id",user_id);
+        const form_data = new FormData();
+        form_data.append("id",id);
+        form_data.append("user_id",user_id);
+        form_data.append("cancel_time",date);
+        axios.post(url,form_data).then(response => {
+          // console.log(response);
+          // `{{ route('time_tracker') }}`;
+          // window.location.href(`{{ route('time_tracker') }}`);
+          location.reload();
+        }).catch(error=>{
+          // console.log(error);
+        });
+      }
+  $(document).ready(function (){
+    // console.log("Page Loaded");
+    
+    // $('#stopButton').on('click', function(){
+    //   var user_id = `{{Auth::user()->id}}`;
+    //   task_stop(user_id);
+    // })
+    // $('#completeButton').on('click', function(){
+    //   var user_id = `{{Auth::user()->id}}`;
+    //   task_complete(user_id);
+    // })
+    // $('#cancelButton').on('click', function(){
+    //   var user_id = `{{Auth::user()->id}}`;
+    //   task_cancel(user_id);
+    // })
+    
+    
+  });
 </script>
 

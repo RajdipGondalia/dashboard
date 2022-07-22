@@ -125,6 +125,18 @@
               <span class="menu-title">Employee To-Do List</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('all_client') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Clients</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('all_projects') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Projects</span>
+            </a>
+          </li>
 
           <li class="nav-item">
             <a href="#sectionA" class="nav-link active" data-toggle="tab">Section A</a>

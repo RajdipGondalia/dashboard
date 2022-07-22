@@ -8,6 +8,15 @@ use App\Models\profile;
 use App\Models\TimeTracker;
 use App\Models\Task;
 use App\Models\Todolist;
+use App\Models\ClientMaster;
+use App\Models\ClientCategoryMaster;
+use App\Models\Project;
+use App\Models\JobRoleMaster;
+use App\Models\WorkingLocationMaster;
+
+
+
+
 
 class DashboardController extends Controller
 {
@@ -67,7 +76,11 @@ class DashboardController extends Controller
         return view('employee')->with('employees',$employees);
     }
     public function profile(){     
-        return view('profile');
+        $job_roles = JobRoleMaster::all();
+        $working_locations = WorkingLocationMaster::all();
+
+        
+        return view('profile')->with(['job_roles'=>$job_roles,'working_locations'=>$working_locations]);
     }
     // public function task(){     
     //     return view('task');
@@ -140,7 +153,38 @@ class DashboardController extends Controller
     }
     public function get_single_employee(Request $request, $id){
         $employee = Profile::find($id);
-        return response()->json(['employee'=>$employee],200);
+        $dob = date("d-m-Y",strtotime($employee->dob));
+        if($employee->job_role!=0)
+        {
+            $job_role = $employee->job_role_name->name;
+        }
+        else
+        {
+            $job_role = "";
+        }
+        if($employee->working_location!=0)
+        {
+            $working_location = $employee->working_location_name->name;
+        }
+        else
+        {
+            $working_location = "";
+        }
+        $data['given_name'] = ($employee->given_name!=null) ? $employee->given_name : "";
+        $data['family_name'] = ($employee->family_name!=null) ? $employee->family_name : "";
+        $data['dob'] = ($dob!=null) ? $dob : "";
+        $data['job_role'] = ($job_role!=null) ? $job_role : "";
+        $data['edu_qualification'] = ($employee->edu_qualification!=null) ? $employee->edu_qualification : "";
+        $data['skills'] = ($employee->skills!=null) ? $employee->skills : "";
+        $data['present_address'] = ($employee->present_address!=null) ? $employee->present_address : "";
+        $data['permanent_address'] = ($employee->permanent_address!=null) ? $employee->permanent_address : "";
+        $data['contact_number'] = ($employee->contact_number!=null) ? $employee->contact_number : "";
+        $data['contact_number_2'] = ($employee->contact_number_2!=null) ? $employee->contact_number_2 : "";
+        $data['working_location'] = ($working_location!=null) ? $working_location : "";
+        $data['email'] = ($employee->email!=null) ? $employee->email : "";
+
+        return response()->json(['employee'=>$data],200);
+        // return response()->json(['employee'=>$employee],200);
     }
     public function get_single_task(Request $request, $id){
         $task = Task::find($id);
@@ -306,6 +350,8 @@ class DashboardController extends Controller
         // $single_start_trackers = TimeTracker::where('user_id', '=', $user_id)->where('id', '<', $id)->where('flag', '=', "start")->orderBy('id',"DESC")->first();
 
         $users = User::all();
+        $projects = Project::all();
+
         // foreach($tasks as $task){
         //     $array = explode(',',$task->assign_to);
             
@@ -317,14 +363,17 @@ class DashboardController extends Controller
            
         // }
         
-        return view('task')->with(['tasks'=>$tasks,'users'=>$users]);
+        return view('task')->with(['tasks'=>$tasks,'users'=>$users,'projects'=>$projects]);
     }
+    
+    
     public function store_task_data(Request $request){
 
         
         //dd($request->all());
         // dd($request->img[0]);
         $task = new Task;
+        $task->project_id = $request->project_id;
         $task->task_title = $request->task_title;
         $task->task_desc = $request->task_desc;
 
@@ -342,7 +391,7 @@ class DashboardController extends Controller
         {
             $task->assign_to = "";
         }
-
+        $task->priority = $request->priority;
         $task->status = '0';
         $task->user_id = auth()->user()->id;
 
@@ -352,8 +401,10 @@ class DashboardController extends Controller
         // $task->task_photo = $request->file('img');
 
         $validated = $request->validate([
+            'project_id' => 'required',
             'task_title' => 'required',
             'assign_to' => 'required',
+            'priority' => 'required',
         ]);
         //Remaining attributes
         $task->save();
@@ -398,5 +449,142 @@ class DashboardController extends Controller
         // dd($assign_to_data);
 
         return $assign_to_data;
+    }
+    public function get_clients(){
+        $login_user_id = auth()->user()->id;
+        $login_user_type = auth()->user()->type;
+
+        // if($login_user_type==1 || $login_user_type==2 )
+        // {
+            $clients = ClientMaster::orderBy('id',"DESC")->get();
+        // }
+        // else
+        // {
+        //     $clients = ClientMaster::where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get();
+        // }
+
+        // $single_start_trackers = TimeTracker::where('user_id', '=', $user_id)->where('id', '<', $id)->where('flag', '=', "start")->orderBy('id',"DESC")->first();
+
+        $users = User::all();
+        $client_categories = ClientCategoryMaster::all();
+        
+        
+        return view('client_master')->with(['clients'=>$clients,'client_categories'=>$client_categories,'users'=>$users]);
+    }
+    public function store_client_master_data(Request $request){
+
+        //dd($request->all());
+        // dd($request->img[0]);
+        $client_master = new ClientMaster;
+        $client_master->company_name = $request->company_name;
+        $client_master->first_name = $request->first_name;
+        $client_master->last_name = $request->last_name;
+        $client_master->email = $request->email;
+        $client_master->address = $request->address;
+        $client_master->client_category_id = $request->client_category_id;
+        $client_master->user_id = auth()->user()->id;
+
+
+        $validated = $request->validate([
+            'company_name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'client_category_id' => 'required',
+        ]);
+        //Remaining attributes
+        $client_master->save();
+
+        if($client_master){
+            return redirect()->route('all_client');
+        }else{
+            $message = 'Data not Saved';
+            Session('message',$message);
+        }
+    }
+
+    public function get_projects(){
+        $login_user_id = auth()->user()->id;
+        $login_user_type = auth()->user()->type;
+
+        // if($login_user_type==1 || $login_user_type==2 )
+        // {
+            $projects = Project::orderBy('id',"DESC")->get();
+        // }
+        // else
+        // {
+        //     $projects = Project::where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get();
+        // }
+
+        // $single_start_trackers = TimeTracker::where('user_id', '=', $user_id)->where('id', '<', $id)->where('flag', '=', "start")->orderBy('id',"DESC")->first();
+
+        $users = User::all();
+        $clients = ClientMaster::all();
+
+        // foreach($tasks as $task){
+        //     $array = explode(',',$task->assign_to);
+            
+        //     foreach($array as $assigned){
+        //         $data['assign_to'] = ;
+                
+        //         dd($data-);
+        //     }
+           
+        // }
+        
+        return view('project')->with(['projects'=>$projects,'clients'=>$clients,'users'=>$users]);
+    }
+    public function store_project_data(Request $request){
+
+        
+        //dd($request->all());
+        // dd($request->img[0]);
+        $project = new Project;
+        $project->title = $request->title;
+        $project->client_id = $request->client_id;
+
+        $due_date = $request->due_date;
+        $DueDate = date("Y-m-d",strtotime($due_date));
+        $project->due_date = $DueDate;
+
+        $assign_to = $request->assign_to;
+        if($assign_to!="")
+        {
+            $AssignTo = implode(',', $assign_to);
+            $project->assign_to = $AssignTo;
+        }
+        else
+        {
+            $project->assign_to = "";
+        }
+        $project->project_manager = $request->project_manager;
+
+        $project->status = '0';
+        $project->user_id = auth()->user()->id;
+
+
+        $validated = $request->validate([
+            'title' => 'required',
+            'assign_to' => 'required',
+        ]);
+        //Remaining attributes
+        $project->save();
+
+        if($project){
+            return redirect()->route('all_projects');
+        }else{
+            $message = 'Data not Saved';
+            Session('message',$message);
+        }
+    }
+    public function get_project_details(Request $request, $id){
+        // $project = Project::find($id);
+        // return response()->json(['project'=>$project],200);
+
+        // $tasks = Task::where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get();
+        $tasks = Task::where('project_id', '=', $id)->orderBy('id',"DESC")->get();
+        $users = User::all();
+        $clients = ClientMaster::all();
+        return view('project_details')->with(['tasks'=>$tasks,'clients'=>$clients,'users'=>$users]);
     }
 }
