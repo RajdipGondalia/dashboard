@@ -1,3 +1,6 @@
+<?php
+use App\Http\Controllers\DashboardController;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,13 +25,18 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+ 
+
   <!-- endinject -->
   <style>
     .file {
         visibility: hidden;
         position: absolute;
     }
+
   </style>
+  
   <link rel="shortcut icon" href="../images/favicon.png" />
 </head>
 <body>
@@ -52,7 +60,7 @@
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-top"> 
         <ul class="navbar-nav">
-          <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+          <li class="nav-item font-weight-semibold d-nfunction  d-lg-block ms-0">
             <!-- <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">John Doe</span></h1>
             <h3 class="welcome-sub-text">Your performance summary this week </h3> -->
           </li>
@@ -85,7 +93,6 @@
           </div>
         </div>
       </div>
-      
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -243,113 +250,120 @@
         <div class="content-wrapper">
           <div class="row">
             <div class="col-sm-12">
-                <div class="container rounded bg-white mt-5 mb-5">
-                    <div class="row">
+              <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
                     <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                        <h4 class="text-center" style="font-size: 40px;color:#404040;">Profile</h4>
-                        </div>
-                        <form action="{{ route('user_profile_update') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('POST')
-                            <div class="row mt-2">
-                              <div class="col-md-6">
-                                <label class="labels">Given Name<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="Given Name" name="given_name">
-                                <span style="color:red">@error('given_name'){{$message}}@enderror</span>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Family Name<code>*</code></label>
-                                <input type="text" class="form-control" name="family_name" placeholder="Family Name">
-                                <span style="color:red">@error('family_name'){{$message}}@enderror</span>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">DOB</label>
-                                <input type="date" class="form-control" placeholder="Select DOB" name="dob">
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Job Role</label>
-                                <select class="form-control" name="job_role">
-                                  <option value="0">Select Job Role</option>
-                                  @foreach($job_roles as $job_role)
-                                    <option value="{{ $job_role->id }}">{{ $job_role->name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Education Qualification</label>
-                                <textarea type="text" class="form-control" placeholder="enter Education Qualification" name="education_qualification">
-                                </textarea>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Skills</label>
-                                <textarea type="text" class="form-control" placeholder="enter Skills" name="skills"></textarea>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Present Address</label>
-                                <textarea type="text" class="form-control" placeholder="enter Present Address" name="present_address"></textarea>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Permanent Address</label>
-                                <textarea type="text" class="form-control" placeholder="enter Permanent Address" name="permanent_address"></textarea>
-                              </div>
-                            </div>
-                            <div class="row mt-3">  
-                              <div class="col-md-6">
-                                <label class="labels">Primary Contact Number<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="enter Primary Contact Number" name="contact_number" id="contact_number">
-                                <span style="color:red">@error('contact_number'){{$message}}@enderror</span>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Secondary Contact Number</label>
-                                <input type="text" class="form-control" placeholder="enter Secondary Contact Number" name="contact_number_2">
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <label class="labels">Working Location</label>
-                                <select class="form-control" name="working_location">
-                                  <option value ="0">Select Working Location</option>
-                                  @foreach($working_locations as $working_location)
-                                    <option value="{{ $working_location->id }}">{{ $working_location->name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="labels">Email<code>*</code></label>
-                                <input type="text" class="form-control" placeholder="enter Email" name="email">
-                                <span style="color:red">@error('email'){{$message}}@enderror</span>
-                              </div>
-                            </div>
-                            <div class="row mt-3">
-                              <div class="col-md-6">
-                                <div id="msg"></div>
-                                <label class="labels">Profile Photo</label>
-                                <input type="file" name="img" class="file" accept="image/*">
-                                <div class="input-group my-3">
-                                  <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
-                                  <div class="input-group-append">
-                                    <button type="button" class="browse btn btn-primary">Browse...</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                              </div>
-                              <div class="col-md-6">
-                                <img  id="preview" class="img-thumbnail">
-                              </div>
-                            </div>
-                            <div class="mt-5 mb-5 text-center">
-                              <button class="btn btn-primary profile-button" type="submit" >Save Profile</button>
-                            </div>
-                        </form>
+                        <h4 class="text-center" style="font-size: 40px;color:#404040;">Add User</h4>
                     </div>
+                    <!-- Validation Errors -->
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
+                    <form method="POST" action="{{ route('user_add') }}">
+                        @csrf
+                        <!-- Type -->
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <label class="labels">Type<code>*</code></label>
+                                <select class="form-control" name="type" id="type" >
+                                    <option value="">Select Type</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">Senior Employee</option>
+                                    <option value="3">Employee</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <!-- Name -->
+                                <label class="labels">Name<code>*</code></label>
+                                <x-input  id="name" class="block mt-1 w-full form-control" type="text" name="name" :value="old('name')" required autofocus />
+                            </div>
+                        </div>
+                        <!-- Email Address -->
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <label class="labels">Email<code>*</code></label>
+                                <x-input id="email" class="block mt-1 w-full form-control" type="email" name="email" :value="old('email')" required />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <!-- Password -->
+                                <label class="labels">Password<code>*</code></label>
+                                <x-input id="password" class="block mt-1 w-full form-control"
+                                            type="password"
+                                            name="password"
+                                            required autocomplete="new-password" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <!-- Confirm Password -->
+                                <label class="labels">Confirm Password<code>*</code></label>
+
+
+                                <x-input id="password_confirmation" class="block mt-1 w-full form-control"
+                                        type="password"
+                                        name="password_confirmation" required />
+                            </div>
+
+                        </div>
+
+                        <div class="flex items-center justify-end mt-4">
+                            <!-- <a class="underline text-sm text-gray-600 hover:text-gray-900 " href="{{ route('login') }}">
+                                {{ __('Already registered?') }}
+                            </a> -->
+
+                            <x-button class="ml-4 btn btn-primary profile-button">
+                                Save
+                            </x-button>
+                        </div>
+                    </form>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class=" rounded bg-white mt-2 mb-2">
+                <div class="row">
+                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">User List</h4>
+                    <table class="table table-responsive" style="display: inline-table!important;">
+                      <thead>
+                        <tr>
+                          <th style="width:5%">Sr. No.</th>
+                          <th>Type</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- {{$count=0}} -->
+                        <!-- @define $count = 0 -->
+                        
+                        @php
+                        $count = 0
+                        @endphp
+                        @foreach($users as $user)
+                          <tr>
+                            <td>{{++$count}}</td>
+                            <td>
+                              @php
+                                $TypeArray = array(0=>"","1"=>"Admin","2"=>"Senior Employee","3"=>"Employee");
+                              @endphp
+                              {{$TypeArray[$user->type]}}
+                            </td>
+                            <td>{{$user->name}}</td>
+                            <td>{{$user->email}}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -393,33 +407,16 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
 </body>
 
 </html>
 <script>
-  // $(document).ready(function(){
-  //     $("#contact_number").numeric();
-  // });
-  $('input[name="contact_number"]').keyup(function(e)
-  {
-    if (/\D/g.test(this.value))
-    {
-      // Filter non-digits from input value.
-      this.value = this.value.replace(/\D/g, '');
-    }
-  });
-  $('input[name="contact_number_2"]').keyup(function(e)
-  {
-    if (/\D/g.test(this.value))
-    {
-      // Filter non-digits from input value.
-      this.value = this.value.replace(/\D/g, '');
-    }
-  });
+  // $("#assign_to").select2();
+  // $("#assign_to").fselect();
     $(document).on("click", ".browse", function() {
     var file = $(this).parents().find(".file");
     file.trigger("click");
@@ -436,5 +433,6 @@
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
     });
+    
 </script>
 

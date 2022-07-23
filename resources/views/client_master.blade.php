@@ -143,6 +143,12 @@ use App\Http\Controllers\DashboardController;
               <span class="menu-title">Projects</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('all_users') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Users</span>
+            </a>
+          </li>
 
           <li class="nav-item">
             <a href="#sectionA" class="nav-link active" data-toggle="tab">Section A</a>

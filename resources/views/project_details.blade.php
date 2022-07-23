@@ -29,6 +29,209 @@ use App\Http\Controllers\DashboardController;
  
 
   <!-- endinject -->
+  <!-- for chatbox start -->
+  <style>
+    #custom-search-input {
+      background: #e8e6e7 none repeat scroll 0 0;
+      margin: 0;
+      padding: 10px;
+    }
+    #custom-search-input .search-query {
+    background: #fff none repeat scroll 0 0 !important;
+    border-radius: 4px;
+    height: 33px;
+    margin-bottom: 0;
+    padding-left: 7px;
+    padding-right: 7px;
+    }
+    #custom-search-input button {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 0 none;
+    border-radius: 3px;
+    color: #666666;
+    left: auto;
+    margin-bottom: 0;
+    margin-top: 7px;
+    padding: 2px 5px;
+    position: absolute;
+    right: 0;
+    z-index: 9999;
+    }
+    .search-query:focus + button {
+    z-index: 3;   
+    }
+    .all_conversation button {
+    background: #f5f3f3 none repeat scroll 0 0;
+    border: 1px solid #dddddd;
+    height: 38px;
+    text-align: left;
+    width: 100%;
+    }
+    .all_conversation i {
+    background: #e9e7e8 none repeat scroll 0 0;
+    border-radius: 100px;
+    color: #636363;
+    font-size: 17px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+    }
+    .all_conversation .caret {
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    right: 15px;
+    top: 0;
+    }
+    .all_conversation .dropdown-menu {
+    background: #f5f3f3 none repeat scroll 0 0;
+    border-radius: 0;
+    margin-top: 0;
+    padding: 0;
+    width: 100%;
+    }
+    .all_conversation ul li {
+    border-bottom: 1px solid #dddddd;
+    line-height: normal;
+    width: 100%;
+    }
+    .all_conversation ul li a:hover {
+    background: #dddddd none repeat scroll 0 0;
+    color:#333;
+    }
+    .all_conversation ul li a {
+      color: #333;
+      line-height: 30px;
+      padding: 3px 20px;
+    }
+    .member_list .chat-body {
+    margin-left: 47px;
+    margin-top: 0;
+    }
+    .top_nav {
+    overflow: visible;
+    }
+    .member_list .contact_sec {
+    margin-top: 3px;
+    }
+    .member_list li {
+    padding: 6px;
+    }
+    .member_list ul {
+    border: 1px solid #dddddd;
+    }
+    .chat-img img {
+    height: 34px;
+    width: 34px;
+    }
+    .member_list li {
+    border-bottom: 1px solid #dddddd;
+    padding: 6px;
+    }
+    .member_list li:last-child {
+    border-bottom:none;
+    }
+    .member_list {
+    height: 380px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    }
+    .sub_menu_ {
+      background: #e8e6e7 none repeat scroll 0 0;
+      left: 100%;
+      max-width: 233px;
+      position: absolute;
+      width: 100%;
+    }
+    .sub_menu_ {
+      background: #f5f3f3 none repeat scroll 0 0;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      display: none;
+      left: 100%;
+      margin-left: 0;
+      max-width: 233px;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    .all_conversation ul li:hover .sub_menu_ {
+      display: block;
+    }
+    .new_message_head button {
+      background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+      border: medium none;
+    }
+    .new_message_head {
+      background: #f5f3f3 none repeat scroll 0 0;
+      float: left;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 18px 10px;
+      width: 100%;
+    }
+    .message_section {
+      border: 1px solid #dddddd;
+    }
+    .chat_area {
+      float: left;
+      height: 300px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      width: 100%;
+    }
+    .chat_area li {
+      padding: 14px 14px 0;
+    }
+    .chat_area li .chat-img1 img {
+      height: 40px;
+      width: 40px;
+    }
+    .chat_area .chat-body1 {
+      margin-left: 50px;
+    }
+    .chat-body1 p {
+      background: #fbf9fa none repeat scroll 0 0;
+      padding: 10px;
+    }
+    .chat_area .admin_chat .chat-body1 {
+      margin-left: 0;
+      margin-right: 50px;
+    }
+    .chat_area li:last-child {
+      padding-bottom: 10px;
+    }
+    .message_write {
+      background: #f5f3f3 none repeat scroll 0 0;
+      float: left;
+      padding: 15px;
+      width: 100%;
+    }
+
+    .message_write textarea.form-control {
+      height: 70px;
+      padding: 10px;
+    }
+    .chat_bottom {
+      float: left;
+      margin-top: 13px;
+      width: 100%;
+    }
+    .upload_btn {
+      color: #777777;
+    }
+    .sub_menu_ > li a, .sub_menu_ > li {
+      float: left;
+      width:100%;
+    }
+    .member_list li:hover {
+      background: #428bca none repeat scroll 0 0;
+      color: #fff;
+      cursor:pointer;
+    }
+  </style>
+  <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+  <!-- for chatbox end -->
   <style>
     .file {
         visibility: hidden;
@@ -71,7 +274,7 @@ use App\Http\Controllers\DashboardController;
       </div>
     </nav>
     <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
+    <div class="container-fluid page-body-wrapper" >
       <!-- partial:partials/_settings-panel.html -->
       <div class="theme-setting-wrapper">
         <div id="settings-trigger"><i class="ti-settings"></i></div>
@@ -141,6 +344,12 @@ use App\Http\Controllers\DashboardController;
             <a class="nav-link" href="{{ route('all_projects') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Projects</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('all_users') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Users</span>
             </a>
           </li>
 
@@ -242,7 +451,7 @@ use App\Http\Controllers\DashboardController;
         <div class="content-wrapper">
           <div class="row">
             <div class="col-sm-6">
-              <div class="container rounded bg-white mt-5 mb-5">
+              <div class="bg-white mt-5 mb-5">
                 <div class="row">
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
                     <h4 class="text-center" style="font-size: 40px;color:#404040;">Files</h4>
@@ -250,14 +459,99 @@ use App\Http\Controllers\DashboardController;
                 </div>
               </div>
             </div>
-            <div class="col-sm-6">
-              <div class="container rounded bg-white mt-5 mb-5">
+            <div class="col-sm-6 message_section">
+              
+              <!--chat_sidebar-->
+                <div class="row">
+                  <div class="new_message_head justify-content-between">
+                    <div class="pull-left">
+                      <button>
+                        <i class="fa fa-plus-square-o" aria-hidden="true"></i> Broadcast </button>
+                    </div>
+                  </div>
+                  <!--new_message_head-->
+                  <div class="chat_area">
+                    <ul class="list-unstyled">
+                      @foreach($project_comments as $project_comment)
+                        @php
+                          $CreatedAt=$project_comment->created_at;
+                          if($CreatedAt!="" && $CreatedAt!="NULL" && $CreatedAt!="0000-00-00 00:00:00")
+                          {
+                            $created_at = date("d-m-Y h:i A",strtotime($CreatedAt));
+                          }
+                          else
+                          {
+                            $created_at ="";
+                          }
+                          $login_user_id = Auth::user()->id;
+                          if($login_user_id == $project_comment->user_id)
+                          {
+                            $rightSideClass = "admin_chat";
+                            $pull_img = "pull-right";
+                            $pull_date = "pull-left";
+                          }
+                          else
+                          {
+                            $rightSideClass="";
+                            $pull_img = "pull-left";
+                            $pull_date = "pull-right";
+                          }
+                        @endphp
+                        <li class="left clearfix {{$rightSideClass}}">
+                          <span class="chat-img1 {{$pull_img}}">
+                            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="User Avatar" class="img-circle">
+                          </span>
+                          <div class="chat-body1 clearfix">
+                            <p style="margin-bottom:0px" >{{$project_comment->comment}}</p>
+                            <div class="chat_time {{$pull_date}}" style="color: darkgray;">{{$created_at}}</div>
+                          </div>
+                        </li>
+                      @endforeach
+                    </ul>
+                  </div>
+                  <!--chat_area-->
+                  
+                  <div class="message_write">
+                    <form action="{{ route('project_comment_add') }}" method="POST" enctype="multipart/form-data">
+                      @csrf
+                      @method('POST')
+                      <textarea class="form-control" placeholder="type a Comment Hear.." name="comment"></textarea>
+                      <input type="hidden" class="form-control" value="{{$project_id}}" name="project_id">
+
+                      <div class="clearfix"></div>
+                      <div class="chat_bottom">
+                        <a href="#" class="pull-left upload_btn">
+                          <i class="fa fa-cloud-upload" aria-hidden="true"></i> Add Files 
+                        </a>
+                        <button class="pull-right btn btn-success" type="submit" >Send</button>
+                      </div>
+                    </form>
+                  </div>
+                  
+                </div>
+              <!--message_section-->
+              <!-- <div class="container rounded bg-white mt-5 mb-5">
                 <div class="row">
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
                     <h4 class="text-center" style="font-size: 40px;color:#404040;">Broadcast</h4>
+                    <form action="{{ route('project_comment_add') }}" method="POST" enctype="multipart/form-data">
+                      @csrf
+                      @method('POST')
+                      <div class="row mt-2">
+                        <div class="col-md-9">
+                          <input type="text" class="form-control" placeholder="Write Your Comment Hear.." name="comment">
+                          <input type="hidden" class="form-control" value="1" name="project_id">
+
+                          <span style="color:red">@error('comment'){{$message}}@enderror</span>
+                        </div>
+                        <div class="col-md-3">
+                          <button class="btn btn-primary profile-button" type="submit" >Send</button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="row">
@@ -316,23 +610,23 @@ use App\Http\Controllers\DashboardController;
                             <td>
                               @if($task->status==0)
                               <button id="startButton" data-id="{{$task->id}}" title="Start" class="btn btn-sm btn-info" type="button" onClick="task_start({{$task->id}})">
-                                  <i class="fa fa-eye">Start</i>
+                                  Start</i>
                               </button>
                               @endif
                               @if($task->status==1)
                               <button id="stopButton" data-id="{{$task->id}}" title="Stop" class="btn btn-sm btn-secondary"  type="button" onClick="task_stop({{$task->id}})">
-                                  <i class="fa fa-eye">Stop</i>
+                                  Stop</i>
                               </button>
                               @endif
                               </br></br>
                               @if($task->status!=4 && $task->status!=3 && (Auth::user()->type==1 || Auth::user()->type==2 ))
                               <button id="completeButton" data-id="{{$task->id}}"  title="Complete" class="btn btn-sm btn-success" type="button" onClick="task_complete({{$task->id}})">
-                                  <i class="fa fa-eye">Complete</i>
+                                  Complete</i>
                               </button>
                               @endif
                               @if($task->status!=4 && $task->status!=3 && (Auth::user()->type==1 || Auth::user()->type==2 ))
                               <button id="cancelButton" data-id="{{$task->id}}" title="Cancel" class="btn btn-sm btn-danger" type="button" onClick="task_cancel({{$task->id}})">
-                                  <i class="fa fa-eye">Cancel</i>
+                                  Cancel</i>
                               </button>
                               @endif
                             </td>
@@ -475,7 +769,13 @@ use App\Http\Controllers\DashboardController;
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  
+  <!-- for chatbox start-->
+  <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> -->
+  <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+  <!------ Include the above in your HEAD tag ---------->
+
+  <script src="https://use.fontawesome.com/45e03a14ce.js"></script>
+  <!-- for chatbox end-->   
 
 </body>
 

@@ -13,6 +13,9 @@ use App\Models\ClientCategoryMaster;
 use App\Models\Project;
 use App\Models\JobRoleMaster;
 use App\Models\WorkingLocationMaster;
+use App\Models\ProjectVsComment;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 
 
@@ -585,6 +588,66 @@ class DashboardController extends Controller
         $tasks = Task::where('project_id', '=', $id)->orderBy('id',"DESC")->get();
         $users = User::all();
         $clients = ClientMaster::all();
-        return view('project_details')->with(['tasks'=>$tasks,'clients'=>$clients,'users'=>$users]);
+        $project_comments = ProjectVsComment::where('project_id', '=', $id)->orderBy('id',"ASC")->get();
+        return view('project_details')->with(['tasks'=>$tasks,'clients'=>$clients,'users'=>$users,'project_id'=>$id,'project_comments'=>$project_comments]);
+    }
+
+    public function store_project_comment_data(Request $request){
+
+        $project_comment = new ProjectVsComment;
+        $project_comment->comment = $request->comment;
+        $project_comment->project_id = $request->project_id;
+
+        $project_comment->user_id = auth()->user()->id;
+
+
+        $validated = $request->validate([
+            'comment' => 'required',
+        ]);
+        //Remaining attributes
+        $project_comment->save();
+
+        if($project_comment){
+            return redirect()->route('project_details', $project_comment->project_id);
+        }else{
+            $message = 'Data not Saved';
+            Session('message',$message);
+        }
+    }
+    public function get_users(){
+        $users = User::all();
+        
+        return view('user')->with('users',$users);
+    }
+    public function store_user_data(Request $request){
+
+        
+        //dd($request->all());
+        // dd($request->img[0]);
+        // dd($request);
+        $user = new User;
+        $user->type = $request->type;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+
+        $validated = $request->validate([
+            'type' => ['required'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+
+        $user->save();
+
+        if($user){
+            return redirect()->route('all_users');
+        }else{
+            $message = 'Data not Saved';
+            Session('message',$message);
+        }
+
+        
     }
 }

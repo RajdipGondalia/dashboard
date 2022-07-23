@@ -27,9 +27,9 @@ use App\Http\Controllers\DashboardController;
 Route::get('employee_details', function () {
     return view('employee_details');
 })->name('employee_details');
-Route::get('register', function () {
-    return view('register');
-})->name('register');
+// Route::get('register', function () {
+//     return view('register');
+// })->name('register');
 
 
 
@@ -65,6 +65,12 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
     Route::post('add-project',[DashboardController::class, 'store_project_data'])->name('project_add');
     Route::get('get-single-project/{id}',[DashboardController::class, 'get_single_project'])->name('api_single_project');
     Route::get('project_details/{id}', [DashboardController::class, 'get_project_details'])->name('project_details');
+
+    Route::post('add-project-comment',[DashboardController::class, 'store_project_comment_data'])->name('project_comment_add');
+
+    Route::get('user', [DashboardController::class, 'get_users'])->name('all_users');
+    Route::post('add-user',[DashboardController::class, 'store_user_data'])->name('user_add');
+
 	//Place all Protected nested page Routes
 });
 

@@ -34,7 +34,9 @@ use App\Http\Controllers\DashboardController;
         visibility: hidden;
         position: absolute;
     }
+
   </style>
+  
   <link rel="shortcut icon" href="../images/favicon.png" />
 </head>
 <body>
@@ -141,6 +143,12 @@ use App\Http\Controllers\DashboardController;
             <a class="nav-link" href="{{ route('all_projects') }}">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Projects</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('all_users') }}">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Users</span>
             </a>
           </li>
 
@@ -522,8 +530,7 @@ use App\Http\Controllers\DashboardController;
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  
-
+            
 </body>
 
 </html>
