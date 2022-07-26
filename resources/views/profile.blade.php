@@ -330,9 +330,9 @@
                               <div class="col-md-6">
                                 <div id="msg"></div>
                                 <label class="labels">Profile Photo</label>
-                                <input type="file" name="img" class="file" accept="image/*">
+                                <input type="file" name="image_path" class="file" >
                                 <div class="input-group my-3">
-                                  <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
+                                  <input type="text" class="form-control" disabled placeholder="Upload File" id="file" name="image_path">
                                   <div class="input-group-append">
                                     <button type="button" class="browse btn btn-primary">Browse...</button>
                                   </div>

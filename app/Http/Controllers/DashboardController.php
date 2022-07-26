@@ -38,6 +38,14 @@ class DashboardController extends Controller
         
         //dd($request->all());
         // dd($request->img[0]);
+        $validated = $request->validate([
+            'given_name' => 'required',
+            'family_name' => 'required',
+            'contact_number' => 'required',
+            'email' => 'required|email',
+            'image_path' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+        ]);
+        
         $profile = new Profile;
         $profile->given_name = $request->given_name;
         $profile->family_name = $request->family_name;
@@ -54,12 +62,14 @@ class DashboardController extends Controller
         $profile->user_id = auth()->user()->id;
         // $profile->profile_photo = $request->file('img');
 
-        $validated = $request->validate([
-            'given_name' => 'required',
-            'family_name' => 'required',
-            'contact_number' => 'required',
-            'email' => 'required|email',
-        ]);
+
+        $imageName = $request->given_name.'_'.time().'.'.$request->image_path->extension();
+        // move Public Folder
+        $request->image_path->move(public_path('images/profile'), $imageName);
+        $profile->image_path = $imageName;
+
+
+        
         //Remaining attributes
         $profile->save();
 
@@ -173,6 +183,15 @@ class DashboardController extends Controller
         {
             $working_location = "";
         }
+        if($employee->image_path!="" && $employee->image_path!="null" )
+        {
+            $image = asset('images/profile')."/".$employee->image_path;
+            
+        }
+        else
+        {
+            $image = asset('images')."/default.png";
+        }
         $data['given_name'] = ($employee->given_name!=null) ? $employee->given_name : "";
         $data['family_name'] = ($employee->family_name!=null) ? $employee->family_name : "";
         $data['dob'] = ($dob!=null) ? $dob : "";
@@ -185,6 +204,8 @@ class DashboardController extends Controller
         $data['contact_number_2'] = ($employee->contact_number_2!=null) ? $employee->contact_number_2 : "";
         $data['working_location'] = ($working_location!=null) ? $working_location : "";
         $data['email'] = ($employee->email!=null) ? $employee->email : "";
+        $data['image_path'] = ($image!=null) ? $image : "";
+
 
         return response()->json(['employee'=>$data],200);
         // return response()->json(['employee'=>$employee],200);
@@ -615,7 +636,7 @@ class DashboardController extends Controller
         }
     }
     public function get_users(){
-        $users = User::all();
+        $users = User::orderBy('id',"DESC")->get();
         
         return view('user')->with('users',$users);
     }
@@ -625,19 +646,25 @@ class DashboardController extends Controller
         //dd($request->all());
         // dd($request->img[0]);
         // dd($request);
-        $user = new User;
-        $user->type = $request->type;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
 
         $validated = $request->validate([
             'type' => ['required'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'image_path' => ['required','image','mimes:png,jpg,jpeg','max:2048'],
         ]);
 
+        $user = new User;
+        $user->type = $request->type;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+
+        $imageName = $request->name.'_'.time().'.'.$request->image_path->extension();
+        // move Public Folder
+        $request->image_path->move(public_path('images/user'), $imageName);
+        $user->image_path = $imageName;
 
         $user->save();
 
@@ -646,8 +673,6 @@ class DashboardController extends Controller
         }else{
             $message = 'Data not Saved';
             Session('message',$message);
-        }
-
-        
+        }  
     }
 }

@@ -258,7 +258,7 @@ use App\Http\Controllers\DashboardController;
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                    <form method="POST" action="{{ route('user_add') }}">
+                    <form method="POST" action="{{ route('user_add') }}" enctype="multipart/form-data">
                         @csrf
                         <!-- Type -->
                         <div class="row mt-2">
@@ -309,6 +309,24 @@ use App\Http\Controllers\DashboardController;
                             </div>
 
                         </div>
+                        <div class="row mt-3">
+                          <div class="col-md-6">
+                            <div id="msg"></div>
+                            <label class="labels">User Photo</label>
+                            <input type="file" name="image_path" class="file" >
+                            <div class="input-group my-3">
+                              <input type="text" class="form-control" disabled placeholder="Upload File" id="file" name="image_path">
+                              <div class="input-group-append">
+                                <button type="button" class="browse btn btn-primary">Browse...</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                          </div>
+                          <div class="col-md-6">
+                            <img  id="preview" class="img-thumbnail">
+                          </div>
+                        </div>
 
                         <div class="flex items-center justify-end mt-4">
                             <!-- <a class="underline text-sm text-gray-600 hover:text-gray-900 " href="{{ route('login') }}">
@@ -334,6 +352,7 @@ use App\Http\Controllers\DashboardController;
                       <thead>
                         <tr>
                           <th style="width:5%">Sr. No.</th>
+                          <th>Photo</th>
                           <th>Type</th>
                           <th>Name</th>
                           <th>Email</th>
@@ -345,10 +364,23 @@ use App\Http\Controllers\DashboardController;
                         
                         @php
                         $count = 0
+                        
                         @endphp
                         @foreach($users as $user)
+                          @php
+                            if($user->image_path!="" && $user->image_path!="null" )
+                            {
+                              $image = asset('images/user')."/".$user->image_path;
+                                
+                            }
+                            else
+                            {
+                              $image = asset('images')."/default.png";
+                            }
+                          @endphp
                           <tr>
                             <td>{{++$count}}</td>
+                            <td><img src="{{$image}}" style="width: 50px;height: 50px;" class="img-circle" ></img></td>
                             <td>
                               @php
                                 $TypeArray = array(0=>"","1"=>"Admin","2"=>"Senior Employee","3"=>"Employee");

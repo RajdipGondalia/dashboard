@@ -389,18 +389,19 @@ use App\Models\JobRoleMaster;
 
         $(".modal-body").html(
           `<table class="table table-bordered">
-          <tr><td>Given Name : </td><td>${object.given_name}</td></tr>
-          <tr><td>Family Name : </td><td>${object.family_name}</td></tr>
-          <tr><td>DOB : </td><td>${object.dob}</td></tr>
-          <tr><td>Job Role : </td><td>${object.job_role}</td></tr>
-          <tr><td>Education Qualification : </td><td>${object.edu_qualification}</td></tr>
-          <tr><td>Skills : </td><td>${object.skills}</td></tr>
-          <tr><td>Present Address : </td><td>${object.present_address}</td></tr>
-          <tr><td>Permanent Address : </td><td>${object.permanent_address}</td></tr>
-          <tr><td>Primary Contact Number : </td><td>${object.contact_number}</td></tr>
-          <tr><td>Secondary Contact Number : </td><td>${object.contact_number_2}</td></tr>
-          <tr><td>Working Location : </td><td>${object.working_location}</td></tr>
-          <tr><td>Email : </td><td>${object.email}</td></tr>
+            <tr><td colspan="2" style="text-align: center;" ><img src="${object.image_path}" style="width: 200px;height: 200px;" ></img></td></tr>
+            <tr><td>Given Name : </td><td>${object.given_name}</td></tr>
+            <tr><td>Family Name : </td><td>${object.family_name}</td></tr>
+            <tr><td>DOB : </td><td>${object.dob}</td></tr>
+            <tr><td>Job Role : </td><td>${object.job_role}</td></tr>
+            <tr><td>Education Qualification : </td><td>${object.edu_qualification}</td></tr>
+            <tr><td>Skills : </td><td>${object.skills}</td></tr>
+            <tr><td>Present Address : </td><td>${object.present_address}</td></tr>
+            <tr><td>Permanent Address : </td><td>${object.permanent_address}</td></tr>
+            <tr><td>Primary Contact Number : </td><td>${object.contact_number}</td></tr>
+            <tr><td>Secondary Contact Number : </td><td>${object.contact_number_2}</td></tr>
+            <tr><td>Working Location : </td><td>${object.working_location}</td></tr>
+            <tr><td>Email : </td><td>${object.email}</td></tr>
           </table>`
         );
         

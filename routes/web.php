@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImageController;
 
 
 /*
@@ -71,8 +72,11 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
     Route::get('user', [DashboardController::class, 'get_users'])->name('all_users');
     Route::post('add-user',[DashboardController::class, 'store_user_data'])->name('user_add');
 
+    
+
 	//Place all Protected nested page Routes
 });
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

@@ -489,23 +489,39 @@ use App\Http\Controllers\DashboardController;
                             $rightSideClass = "admin_chat";
                             $pull_img = "pull-right";
                             $pull_date = "pull-left";
+                            $text_align ="right";
                           }
                           else
                           {
                             $rightSideClass="";
                             $pull_img = "pull-left";
                             $pull_date = "pull-right";
+                            $text_align ="left";
                           }
+                          $image_path = $project_comment->user_details->image_path;
+                          if($image_path!="" && $image_path!="null" )
+                          {
+                              $image = asset('images/user')."/".$image_path;
+                              
+                          }
+                          else
+                          {
+                            
+                              $image = asset('images/user')."/default.png";
+                          }
+                          
                         @endphp
+                        @if($project_comment->comment!="" && $project_comment->comment!="null")
                         <li class="left clearfix {{$rightSideClass}}">
                           <span class="chat-img1 {{$pull_img}}">
-                            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="User Avatar" class="img-circle">
+                            <img src="{{$image}}" alt="User Avatar" class="img-circle" style="border-radius: 100%;">
                           </span>
                           <div class="chat-body1 clearfix">
-                            <p style="margin-bottom:0px" >{{$project_comment->comment}}</p>
+                            <p style="margin-bottom:0px; text-align:{{$text_align}}" >{{$project_comment->comment}}</p>
                             <div class="chat_time {{$pull_date}}" style="color: darkgray;">{{$created_at}}</div>
                           </div>
                         </li>
+                        @endif
                       @endforeach
                     </ul>
                   </div>
