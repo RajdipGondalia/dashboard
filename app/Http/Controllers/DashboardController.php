@@ -235,10 +235,7 @@ class DashboardController extends Controller
         else{
             $message = 'Data not Saved';
             Session('message',$message); 
-        }
-       
-
-       
+        }  
     }
     public function task_stop(Request $request){
         $task_id = $request->id;
@@ -567,6 +564,10 @@ class DashboardController extends Controller
         $project->title = $request->title;
         $project->client_id = $request->client_id;
 
+        $start_date = $request->start_date;
+        $StartDate = date("Y-m-d",strtotime($start_date));
+        $project->start_date = $StartDate;
+
         $due_date = $request->due_date;
         $DueDate = date("Y-m-d",strtotime($due_date));
         $project->due_date = $DueDate;
@@ -601,6 +602,87 @@ class DashboardController extends Controller
             Session('message',$message);
         }
     }
+    public function project_start(Request $request){
+        $project_id = $request->id;
+        $project_start = Project::find($project_id);
+        if($project_start){
+            $project_start->start_by = $request->user_id;
+            $project_start->start_time = $request->start_time;
+            $project_start->status = '1';           
+    
+            $project_start->save(); 
+            if($project_start){
+                return redirect()->route('all_projects');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }  
+        }
+        else{
+            $message = 'Data not Saved';
+            Session('message',$message); 
+        }  
+    }
+    public function project_hold(Request $request){
+        $project_id = $request->id;
+        $project_hold = Project::find($project_id);
+        if($project_hold){
+            // $project_hold->start_by = $request->user_id;
+            // $project_hold->start_time = $request->start_time;
+            $project_hold->status = '2';  
+            $project_hold->save(); 
+            if($project_hold){
+                return redirect()->route('all_projects');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }  
+        }
+        else{
+            $message = 'Data not Saved';
+            Session('message',$message); 
+        }  
+    }
+    public function project_complete(Request $request){
+        $project_id = $request->id;
+        $project_complete = Project::find($project_id);
+        if($project_complete){
+            $project_complete->complete_by = $request->user_id;
+            $project_complete->complete_time = $request->complete_time;
+            $project_complete->status = '3';  
+            $project_complete->save(); 
+            if($project_complete){
+                return redirect()->route('all_projects');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }  
+        }
+        else{
+            $message = 'Data not Saved';
+            Session('message',$message); 
+        }  
+    }
+    public function project_cancel(Request $request){
+        $project_id = $request->id;
+        $project_cancel = Project::find($project_id);
+        if($project_cancel){
+            // $project_cancel->start_by = $request->user_id;
+            // $project_cancel->start_time = $request->start_time;
+            $project_cancel->status = '4';  
+            $project_cancel->save(); 
+            if($project_cancel){
+                return redirect()->route('all_projects');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }  
+        }
+        else{
+            $message = 'Data not Saved';
+            Session('message',$message); 
+        }  
+    }
     public function get_project_details(Request $request, $id){
         // $project = Project::find($id);
         // return response()->json(['project'=>$project],200);
@@ -610,7 +692,9 @@ class DashboardController extends Controller
         $users = User::all();
         $clients = ClientMaster::all();
         $project_comments = ProjectVsComment::where('project_id', '=', $id)->orderBy('id',"ASC")->get();
-        return view('project_details')->with(['tasks'=>$tasks,'clients'=>$clients,'users'=>$users,'project_id'=>$id,'project_comments'=>$project_comments]);
+        $project_comments_attachments = ProjectVsComment::where('project_id', '=', $id)->where('attachment_path', '!=', "")->where('attachment_path', '!=', "null")->orderBy('id',"DESC")->get();
+
+        return view('project_details')->with(['tasks'=>$tasks,'clients'=>$clients,'users'=>$users,'project_id'=>$id,'project_comments'=>$project_comments,'project_comments_attachments'=>$project_comments_attachments]);
     }
 
     public function store_project_comment_data(Request $request){
@@ -620,14 +704,34 @@ class DashboardController extends Controller
         $project_comment->project_id = $request->project_id;
 
         $project_comment->user_id = auth()->user()->id;
+        $user_name = auth()->user()->name;
 
+        if($request->attachment_path!="" && $request->attachment_path!="null")
+        {
+            $attachmentName = $user_name.'_'.time().'.'.$request->attachment_path->extension();
+            // move Public Folder
+            $request->attachment_path->move(public_path('images/project_attachment'), $attachmentName);
+            $project_comment->attachment_path = $attachmentName;
+        }
 
         $validated = $request->validate([
-            'comment' => 'required',
+            // 'comment' => 'required',
         ]);
-        //Remaining attributes
-        $project_comment->save();
 
+        //Remaining attributes
+        if($request->comment!="" && $request->comment!="null")
+        {
+            $project_comment->save();
+        }
+        else if($request->attachment_path!="" && $request->attachment_path!="null")
+        {
+            $project_comment->save();
+        }
+        else
+        {
+            $message = 'Please Enter Message Or Select Files';
+            Session('message',$message);
+        }
         if($project_comment){
             return redirect()->route('project_details', $project_comment->project_id);
         }else{

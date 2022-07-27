@@ -67,6 +67,11 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
     Route::get('get-single-project/{id}',[DashboardController::class, 'get_single_project'])->name('api_single_project');
     Route::get('project_details/{id}', [DashboardController::class, 'get_project_details'])->name('project_details');
 
+    Route::post('project_start',[DashboardController::class, 'project_start'])->name('project_start');
+    Route::post('project_hold',[DashboardController::class, 'project_hold'])->name('project_hold');
+    Route::post('project_complete',[DashboardController::class, 'project_complete'])->name('project_complete');
+    Route::post('project_cancel',[DashboardController::class, 'project_cancel'])->name('project_cancel');
+
     Route::post('add-project-comment',[DashboardController::class, 'store_project_comment_data'])->name('project_comment_add');
 
     Route::get('user', [DashboardController::class, 'get_users'])->name('all_users');

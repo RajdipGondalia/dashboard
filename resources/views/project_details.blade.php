@@ -451,10 +451,55 @@ use App\Http\Controllers\DashboardController;
         <div class="content-wrapper">
           <div class="row">
             <div class="col-sm-6">
-              <div class="bg-white mt-5 mb-5">
+              <div class="bg-white">
                 <div class="row">
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Files</h4>
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Project's Files</h4>
+                    <table class="table table-striped table-responsive" style="float: left;height: 400px;overflow-x: hidden;overflow-y: auto; width: 100%;" >
+                      <thead>
+                        <tr>
+                          <th style="width:5%">Sr. No.</th>
+                          <th>File Name</th>
+                          <th>Add Date & Time</th>
+                          <th>Added By</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- {{$count=0}} -->
+                        <!-- @define $count = 0 -->
+                        
+                        @php
+                        $count = 0
+                        
+                        @endphp
+                        @foreach($project_comments_attachments as $project_comments_attachment)
+                        @php
+                          $CreatedAt=$project_comments_attachment->created_at;
+                          if($CreatedAt!="" && $CreatedAt!="NULL" && $CreatedAt!="0000-00-00 00:00:00")
+                          {
+                            $created_at = date("d-m-Y h:i A",strtotime($CreatedAt));
+                          }
+                          else
+                          {
+                            $created_at ="";
+                          }
+                          $user_name = $project_comments_attachment->user_details->name;
+                        @endphp
+                        <tr>
+                          <td>{{++$count}}</td>
+                          <td>{{$project_comments_attachment->attachment_path}}</td>
+                          <td>{{$created_at}}</td>
+                          <td>{{$user_name}}</td>
+                          <td>
+                            <a href="{{asset('images/project_attachment').'/'.$project_comments_attachment->attachment_path}}" target="_blank" ><i class="fa fa-eye"></i></a>
+                            <a style="margin-left: 10px;" href="{{asset('images/project_attachment').'/'.$project_comments_attachment->attachment_path}}" download><i class="fa fa-download"></i></a>
+                          </td>
+
+                        </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -470,14 +515,17 @@ use App\Http\Controllers\DashboardController;
                     </div>
                   </div>
                   <!--new_message_head-->
-                  <div class="chat_area">
+                  <div class="chat_area" id="chatBox">
                     <ul class="list-unstyled">
                       @foreach($project_comments as $project_comment)
                         @php
                           $CreatedAt=$project_comment->created_at;
                           if($CreatedAt!="" && $CreatedAt!="NULL" && $CreatedAt!="0000-00-00 00:00:00")
                           {
-                            $created_at = date("d-m-Y h:i A",strtotime($CreatedAt));
+                            $created_at_time = date("h:i A",strtotime($CreatedAt));
+
+                            $created_at_date = date("F j, Y",strtotime($CreatedAt));
+                            $created_at = $created_at_time." | ".$created_at_date;
                           }
                           else
                           {
@@ -488,62 +536,68 @@ use App\Http\Controllers\DashboardController;
                           {
                             $rightSideClass = "admin_chat";
                             $pull_img = "pull-right";
-                            $pull_date = "pull-left";
+                            $pull_date = "pull-right";
                             $text_align ="right";
                           }
                           else
                           {
                             $rightSideClass="";
                             $pull_img = "pull-left";
-                            $pull_date = "pull-right";
+                            $pull_date = "pull-left";
                             $text_align ="left";
                           }
                           $image_path = $project_comment->user_details->image_path;
+                          $user_name = $project_comment->user_details->name;
                           if($image_path!="" && $image_path!="null" )
                           {
-                              $image = asset('images/user')."/".$image_path;
-                              
+                            $image = asset('images/user')."/".$image_path; 
                           }
                           else
                           {
-                            
-                              $image = asset('images/user')."/default.png";
+                            $image = asset('images/user')."/default.png";
                           }
-                          
                         @endphp
-                        @if($project_comment->comment!="" && $project_comment->comment!="null")
+                        
                         <li class="left clearfix {{$rightSideClass}}">
                           <span class="chat-img1 {{$pull_img}}">
                             <img src="{{$image}}" alt="User Avatar" class="img-circle" style="border-radius: 100%;">
                           </span>
                           <div class="chat-body1 clearfix">
-                            <p style="margin-bottom:0px; text-align:{{$text_align}}" >{{$project_comment->comment}}</p>
-                            <div class="chat_time {{$pull_date}}" style="color: darkgray;">{{$created_at}}</div>
+                            @if($project_comment->comment!="" && $project_comment->comment!="null")
+                              <p style="margin-bottom:0px; text-align:{{$text_align}}" >{{$project_comment->comment}}</p>
+                            @elseif($project_comment->attachment_path!="" && $project_comment->attachment_path!="null")
+                              <p style="margin-bottom:0px; text-align:{{$text_align}};color: darkslateblue;font-size: 0.6rem;">
+                                File Name : {{$project_comment->attachment_path}}
+                                <a style="margin-left: 5%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" target="_blank" ><i class="fa fa-eye"></i></a>
+                                <a style="margin-left: 2%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" download><i class="fa fa-download"></i></a>
+                              </p>
+                            @endif
+                            <div class="chat_time {{$pull_date}}" style="color: darkgray;">{{$user_name." - ".$created_at}}</div>
                           </div>
-                        </li>
-                        @endif
+                        </li> 
                       @endforeach
                     </ul>
                   </div>
                   <!--chat_area-->
-                  
                   <div class="message_write">
-                    <form action="{{ route('project_comment_add') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('project_comment_add') }}" method="POST" enctype="multipart/form-data" >
                       @csrf
                       @method('POST')
-                      <textarea class="form-control" placeholder="type a Comment Hear.." name="comment"></textarea>
+                      <textarea class="form-control" placeholder="Type Your Comment Hear.." name="comment"></textarea>
                       <input type="hidden" class="form-control" value="{{$project_id}}" name="project_id">
 
                       <div class="clearfix"></div>
                       <div class="chat_bottom">
-                        <a href="#" class="pull-left upload_btn">
-                          <i class="fa fa-cloud-upload" aria-hidden="true"></i> Add Files 
-                        </a>
+                        <input type="file" name="attachment_path">
+                        <!-- <div class="input-group my-3">
+                          <div class="input-group-append pull-left upload_btn">
+                          <i type="button" class="fa fa-cloud-upload browse" aria-hidden="true">Upload File..</i> 
+                          </div>
+                        </div> -->
                         <button class="pull-right btn btn-success" type="submit" >Send</button>
                       </div>
                     </form>
                   </div>
-                  
                 </div>
               <!--message_section-->
               <!-- <div class="container rounded bg-white mt-5 mb-5">
@@ -823,7 +877,7 @@ use App\Http\Controllers\DashboardController;
 
     // })
     function task_start(id){
-
+      
       var user_id = `{{Auth::user()->id}}`;
       var tdate = new Date();
       var dd = tdate.getDate(); //yields day
@@ -854,6 +908,7 @@ use App\Http\Controllers\DashboardController;
         // console.log(error);
       });
     }
+
     function task_stop(id){
       var user_id = `{{Auth::user()->id}}`;
       var tdate = new Date();
@@ -959,5 +1014,14 @@ use App\Http\Controllers\DashboardController;
     
     
   });
-</script>
+  // jQuery(document).ready(function(){
+  //   $(.chat_area).scrollTo(300, 500);
+  // })
 
+  // on page load scroll chatbox down start
+  $(document).ready(function(){
+      $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+  });
+  // on page load scroll chatbox down end 
+  
+</script>

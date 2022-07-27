@@ -26,6 +26,9 @@ use App\Http\Controllers\DashboardController;
   <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
  
 
   <!-- endinject -->
@@ -276,9 +279,14 @@ use App\Http\Controllers\DashboardController;
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="labels">Due Date</label>
-                            <input type="date" class="form-control" placeholder="Due Date" name="due_date" id="due_date">
+                          <label class="labels">Start Date</label>
+                          <input type="date" class="form-control" placeholder="Start Date" name="start_date" id="start_date">
                         </div>
+                        <div class="col-md-3">
+                          <label class="labels">Due Date</label>
+                          <input type="date" class="form-control" placeholder="Due Date" name="due_date" id="due_date">
+                        </div>
+
                     </div>
                     <div class="row mt-2">
                       <div class="col-md-6">
@@ -318,11 +326,13 @@ use App\Http\Controllers\DashboardController;
                     <table class="table table-striped table-responsive" style="display: inline-table!important;">
                       <thead>
                         <tr>
-                          <th style="width:5%">Sr. No.</th>
+                          <th style="width:5%" >Action</th>
+                          <th style="width:5%" >Sr. No.</th>
                           <th>Title</th>
                           <th>Client</th>
                           <th>Assign To</th>
                           <th>Project Manager</th>
+                          <th>Start Date</th>
                           <th>Due Date</th>
                           <th>Project Created By</th>
                           <th>Status</th>
@@ -333,8 +343,29 @@ use App\Http\Controllers\DashboardController;
                           $count = 0;
                         @endphp
                         @foreach($projects as $project)
-                          <tr class='clickable-row' data-href="{{ route('project_details', $project->id) }}" style="cursor: pointer;" >
-                            <td>{{++$count}}</td>
+                          <tr>
+                            <td>
+                              @if($project->status==0 || $project->status==2)
+                                <button id="startButton" data-id="{{$project->id}}" title="Start" class="btn btn-sm btn-info" type="button" onClick="project_start({{$project->id}})">Start</button>
+                              @endif
+                              @if(($project->status==1) && (Auth::user()->type==1 || Auth::user()->type==2 ))
+                                <button id="holdButton" data-id="{{$project->id}}" title="Hold" class="btn btn-sm btn-secondary"  type="button" onClick="project_hold({{$project->id}})">Hold</button>
+                              @endif
+                              <button class='clickable-row btn btn-sm btn-info' data-href="{{ route('project_details', $project->id) }}" style="cursor: pointer;" title="Project Details" >
+                                <i class="fa fa-arrows-alt"></i>
+                              </button>
+                              </br></br>
+                              @if($project->status!=4 && $project->status!=3 && $project->status!=0 && (Auth::user()->type==1 || Auth::user()->type==2 ))
+                              <button id="completeButton" data-id="{{$project->id}}"  title="Complete" class="btn btn-sm btn-success" type="button" onClick="project_complete({{$project->id}})">Complete
+                              </button>
+                              @endif
+                              @if($project->status!=4 && $project->status!=3 && (Auth::user()->type==1 || Auth::user()->type==2 ))
+                              <button id="cancelButton" data-id="{{$project->id}}" title="Cancel" class="btn btn-sm btn-danger" type="button" onClick="project_cancel({{$project->id}})">Cancel
+                              </button>
+                              @endif
+                              
+                            </td>
+                            <td><a href="{{ route('project_details', $project->id) }}">{{++$count}}</a></td>
                             <td>{{$project->title}}</td>
                             <td>
                               @if($project->client_id!=0)
@@ -360,6 +391,15 @@ use App\Http\Controllers\DashboardController;
                               @if($project->project_manager!=0)
                                 {{$project->project_manager_name->name}}
                               @endif
+                            </td>
+                            <td>
+                              @php
+                                $startdate=$project->start_date;
+                                if($startdate!="" && $startdate!="NULL" && $startdate!="0000-00-00"  && $startdate!="1970-01-01")
+                                {
+                                echo date("d-m-Y",strtotime($startdate));
+                                }
+                              @endphp
                             </td>
                             <td>
                               @php
@@ -436,36 +476,157 @@ use App\Http\Controllers\DashboardController;
 
 </html>
 <script>
-  // $("#assign_to").select2();
-  // $("#assign_to").fselect();
-    $(document).on("click", ".browse", function() {
-    var file = $(this).parents().find(".file");
-    file.trigger("click");
-    });
-    $('input[type="file"]').change(function(e) {
-    var fileName = e.target.files[0].name;
-    $("#file").val(fileName);
+  $(document).on("click", ".browse", function() {
+  var file = $(this).parents().find(".file");
+  file.trigger("click");
+  });
+  $('input[type="file"]').change(function(e) {
+  var fileName = e.target.files[0].name;
+  $("#file").val(fileName);
 
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        // get loaded data and render thumbnail.
-        document.getElementById("preview").src = e.target.result;
-    };
-    // read the image file as a data URL.
-    reader.readAsDataURL(this.files[0]);
-    });
-    // $('#startButton').on('click', function(){
-    //   console.log("Function called");
-    //   var user_id = `{{Auth::user()->id}}`;
-    //   let id = $(this).attr('data-id');
-    //   task_start(user_id,id);
+  var reader = new FileReader();
+  reader.onload = function(e) {
+      // get loaded data and render thumbnail.
+      document.getElementById("preview").src = e.target.result;
+  };
+  // read the image file as a data URL.
+  reader.readAsDataURL(this.files[0]);
+  });
+  jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+          window.location = $(this).data("href");
+      });
+  });
 
-    // })
+  function project_start(id){
 
-    jQuery(document).ready(function($) {
-        $(".clickable-row").click(function() {
-            window.location = $(this).data("href");
-        });
+    var user_id = `{{Auth::user()->id}}`;
+    var tdate = new Date();
+    var dd = tdate.getDate(); //yields day
+    var MM = tdate.getMonth(); //yields month
+    var yyyy = tdate.getFullYear(); //yields year
+    var hh = tdate.getHours();
+    var ii = tdate.getMinutes();
+    var ss = tdate.getSeconds();
+
+    var date =yyyy + "-" +( MM+1) + "-" + dd + "-" + hh + "-" + ii + "-" + ss;
+
+    var url = `{{ route('project_start') }}`;
+
+    // console.log("Function called",date);
+    // console.log("Task Id",id);
+    const form_data = new FormData();
+    form_data.append("id",id);
+    form_data.append("user_id",user_id);
+    form_data.append("start_time",date);
+
+    axios.post(url,form_data).then(response => {
+      
+      console.log(response);
+      // `{{ route('time_tracker') }}`;
+      // window.location.href(`{{ route('time_tracker') }}`);
+      location.reload();
+    }).catch(error=>{
+      // console.log(error);
     });
+  }
+  function project_hold(id){
+
+    var user_id = `{{Auth::user()->id}}`;
+    var tdate = new Date();
+    var dd = tdate.getDate(); //yields day
+    var MM = tdate.getMonth(); //yields month
+    var yyyy = tdate.getFullYear(); //yields year
+    var hh = tdate.getHours();
+    var ii = tdate.getMinutes();
+    var ss = tdate.getSeconds();
+
+    var date =yyyy + "-" +( MM+1) + "-" + dd + "-" + hh + "-" + ii + "-" + ss;
+
+    var url = `{{ route('project_hold') }}`;
+
+    // console.log("Function called",date);
+    // console.log("Task Id",id);
+    const form_data = new FormData();
+    form_data.append("id",id);
+    form_data.append("user_id",user_id);
+    form_data.append("hold_time",date);
+
+    axios.post(url,form_data).then(response => {
+      
+      console.log(response);
+      // `{{ route('time_tracker') }}`;
+      // window.location.href(`{{ route('time_tracker') }}`);
+      location.reload();
+    }).catch(error=>{
+      // console.log(error);
+    });
+  }
+  
+  function project_complete(id){
+
+    var user_id = `{{Auth::user()->id}}`;
+    var tdate = new Date();
+    var dd = tdate.getDate(); //yields day
+    var MM = tdate.getMonth(); //yields month
+    var yyyy = tdate.getFullYear(); //yields year
+    var hh = tdate.getHours();
+    var ii = tdate.getMinutes();
+    var ss = tdate.getSeconds();
+
+    var date =yyyy + "-" +( MM+1) + "-" + dd + "-" + hh + "-" + ii + "-" + ss;
+
+    var url = `{{ route('project_complete') }}`;
+
+    // console.log("Function called",date);
+    // console.log("Task Id",id);
+    const form_data = new FormData();
+    form_data.append("id",id);
+    form_data.append("user_id",user_id);
+    form_data.append("complete_time",date);
+
+    axios.post(url,form_data).then(response => {
+      
+      console.log(response);
+      // `{{ route('time_tracker') }}`;
+      // window.location.href(`{{ route('time_tracker') }}`);
+      location.reload();
+    }).catch(error=>{
+      // console.log(error);
+    });
+  }
+  
+  function project_cancel(id){
+
+    var user_id = `{{Auth::user()->id}}`;
+    var tdate = new Date();
+    var dd = tdate.getDate(); //yields day
+    var MM = tdate.getMonth(); //yields month
+    var yyyy = tdate.getFullYear(); //yields year
+    var hh = tdate.getHours();
+    var ii = tdate.getMinutes();
+    var ss = tdate.getSeconds();
+
+    var date =yyyy + "-" +( MM+1) + "-" + dd + "-" + hh + "-" + ii + "-" + ss;
+
+    var url = `{{ route('project_cancel') }}`;
+
+    // console.log("Function called",date);
+    // console.log("Task Id",id);
+    const form_data = new FormData();
+    form_data.append("id",id);
+    form_data.append("user_id",user_id);
+    form_data.append("cancel_time",date);
+
+    axios.post(url,form_data).then(response => {
+      
+      console.log(response);
+      // `{{ route('time_tracker') }}`;
+      // window.location.href(`{{ route('time_tracker') }}`);
+      location.reload();
+    }).catch(error=>{
+      // console.log(error);
+    });
+  }
 </script>
 
