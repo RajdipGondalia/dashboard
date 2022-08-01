@@ -20,10 +20,10 @@
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <!-- <link rel="stylesheet" href="/datatables.net-bs4/dataTables.bootstrap4.css"> -->
-  <link rel="stylesheet" href="../js/select.dataTables.min.css">
+  <link rel="stylesheet" href="../../js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -38,7 +38,7 @@
         position: absolute;
     }
   </style>
-  <link rel="shortcut icon" href="../images/favicon.png" />
+  <link rel="shortcut icon" href="../../images/favicon.png" />
 </head>
 <body>
   <div class="container-scroller">
@@ -52,10 +52,10 @@
         </div>
         <div>
           <a class="navbar-brand brand-logo" href="index.html">
-            <img src="../images/logo.svg" alt="logo" />
+            <img src="../../images/logo.svg" alt="logo" />
           </a>
           <a class="navbar-brand brand-logo-mini" href="index.html">
-            <img src="../images/logo-mini.svg" alt="logo" />
+            <img src="../../images/logo-mini.svg" alt="logo" />
           </a>
         </div>
       </div>
@@ -185,16 +185,16 @@
               <div class="container rounded bg-white mt-5 mb-5">
                 <div class="row">
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Add Project</h4>
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Edit Project</h4>
                   </div>
                   
-                  <form action="{{ route('project_add') }}" method="POST" enctype="multipart/form-data">
+                  <form action="{{ route('project_update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('POST')
                     <div class="row mt-2">
                       <div class="col-md-12">
                         <label class="labels">Title<code>*</code></label>
-                        <input type="text" class="form-control" placeholder="Title" name="title">
+                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{$project->title}}">
                         <span style="color:red">@error('title'){{$message}}@enderror</span>
                       </div>
                     </div>
@@ -204,17 +204,17 @@
                             <select class="form-control" name="client_id" id="client_id">
                                 <option value="0">Select Client</option>
                                 @foreach($clients as $client)
-                                <option value="{{ $client->id }}">{{ $client->company_name }}</option>
+                                <option {{ ($project->client_id == $client->id)?"selected":"" }} value="{{ $client->id }}">{{ $client->company_name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-3">
                           <label class="labels">Start Date</label>
-                          <input type="date" class="form-control" placeholder="Start Date" name="start_date" id="start_date">
+                          <input type="date" class="form-control" placeholder="Start Date" name="start_date" id="start_date"  value="{{$project->start_date}}">
                         </div>
                         <div class="col-md-3">
                           <label class="labels">Due Date</label>
-                          <input type="date" class="form-control" placeholder="Due Date" name="due_date" id="due_date">
+                          <input type="date" class="form-control" placeholder="Due Date" name="due_date" id="due_date"  value="{{$project->due_date}}">
                         </div>
 
                     </div>
@@ -224,7 +224,15 @@
                         <select class="form-control" name="assign_to[]" id="assign_to" multiple="multiple">
                           <option value="">Select Assign To</option>
                           @foreach($users as $user)
-                          <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            
+                            @php
+                                $assigns = (explode(",",$project->assign_to));
+                                $i=0;
+                            @endphp
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @php
+                                $i++;
+                            @endphp
                           @endforeach
                         </select>
                         <span style="color:red">@error('assign_to'){{$message}}@enderror</span>
@@ -234,131 +242,16 @@
                         <select class="form-control" name="project_manager" id="project_manager">
                             <option value="0">Select Project Manager</option>
                             @foreach($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            <option {{ ($project->project_manager == $user->id)?"selected":"" }} value="{{ $user->id }}">{{ $user->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     </div>
                     <div class="mt-5 mb-5 text-center">
-                      <button class="btn btn-primary profile-button" type="submit" >Save</button>
+                        <input type="hidden" id="project_id" name="project_id" value="{{$project->id}}">
+                        <button class="btn btn-primary profile-button" type="submit" >Save</button>
                     </div>
                   </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class=" rounded bg-white mt-2 mb-2">
-                <div class="row">
-                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Project List</h4>
-                    <table class="table table-striped table-responsive" style="display: inline-table!important;">
-                      <thead>
-                        <tr>
-                          <th style="width:5%" >Action</th>
-                          <th style="width:5%" >Sr. No.</th>
-                          <th>Title</th>
-                          <th>Client</th>
-                          <th>Assign To</th>
-                          <th>Project Manager</th>
-                          <th>Start Date</th>
-                          <th>Due Date</th>
-                          <th>Project Created By</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @php
-                          $count = 0;
-                        @endphp
-                        @foreach($projects as $project)
-                          <tr>
-                            <td>
-                              <a href="{{ route('single_project_edit', $project->id) }}" title="Edit" style="margin-left: 10px;color: green;text-decoration: none" >
-                                <i class="fa fa-edit"></i>
-                              </a>
-                              <a onclick="return confirm('Are you sure Delete This Project..?')"  href="{{ route('single_project_delete', $project->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
-                                <i class="fa fa-trash-o"></i>
-                              </a>
-                              </br></br>
-                              @if($project->status==0 || $project->status==2)
-                                <button id="startButton" data-id="{{$project->id}}" title="Start" class="btn btn-sm btn-info" type="button" onClick="project_start({{$project->id}})">Start</button>
-                              @endif
-                              @if(($project->status==1) && (Auth::user()->type==1 || Auth::user()->type==2 ))
-                                <button id="holdButton" data-id="{{$project->id}}" title="Hold" class="btn btn-sm btn-secondary"  type="button" onClick="project_hold({{$project->id}})">Hold</button>
-                              @endif
-                              <button class='clickable-row btn btn-sm btn-info' data-href="{{ route('project_details', $project->id) }}" style="cursor: pointer;" title="Project Details" >
-                                <i class="fa fa-arrows-alt"></i>
-                              </button>
-                              </br></br>
-                              @if($project->status!=4 && $project->status!=3 && $project->status!=0 && (Auth::user()->type==1 || Auth::user()->type==2 ))
-                              <button id="completeButton" data-id="{{$project->id}}"  title="Complete" class="btn btn-sm btn-success" type="button" onClick="project_complete({{$project->id}})">Complete
-                              </button>
-                              @endif
-                              @if($project->status!=4 && $project->status!=3 && (Auth::user()->type==1 || Auth::user()->type==2 ))
-                              <button id="cancelButton" data-id="{{$project->id}}" title="Cancel" class="btn btn-sm btn-danger" type="button" onClick="project_cancel({{$project->id}})">Cancel
-                              </button>
-                              @endif
-                              
-                            </td>
-                            <td><a href="{{ route('project_details', $project->id) }}">{{++$count}}</a></td>
-                            <td>{{$project->title}}</td>
-                            <td>
-                              @if($project->client_id!=0)
-                                {{$project->client_name->company_name}}
-                              @endif
-                            </td>
-                            <td>
-                              @php
-                                $assign_to_ids = $project->assign_to;
-                                $assign_to_ids_arrays = (explode(",",$assign_to_ids));
-                              @endphp
-                              @foreach($assign_to_ids_arrays as $assign_to_ids_array)
-                                @php
-                                  $result = app('app\Http\Controllers\DashboardController')->get_assignto_names_from_ids($assign_to_ids_array);
-                                  $json_toArray = json_decode($result,true);
-                                  $array_names = array_map(function ($array) {return $array['name'];}, $json_toArray);
-                                  $assign_to_names = (implode(",",$array_names));
-                                @endphp
-                                {{$assign_to_names}}<br>
-                              @endforeach
-                            </td>
-                            <td>
-                              @if($project->project_manager!=0)
-                                {{$project->project_manager_name->name}}
-                              @endif
-                            </td>
-                            <td>
-                              @php
-                                $startdate=$project->start_date;
-                                if($startdate!="" && $startdate!="NULL" && $startdate!="0000-00-00"  && $startdate!="1970-01-01")
-                                {
-                                echo date("d-m-Y",strtotime($startdate));
-                                }
-                              @endphp
-                            </td>
-                            <td>
-                              @php
-                                $duedate=$project->due_date;
-                                if($duedate!="" && $duedate!="NULL" && $duedate!="0000-00-00"  && $duedate!="1970-01-01")
-                                {
-                                echo date("d-m-Y",strtotime($duedate));
-                                }
-                              @endphp
-                            </td>
-                            <td>{{$project->user_name->name}}</td>
-                            <td>
-                              @php
-                                $StatuaArray = array("0"=>"Not Started","1"=>"In Progress","2"=>"On Hold","3"=>"Completed","4"=>"Cancel");
-                              @endphp
-                              {{$StatuaArray[$project->status]}}
-                            </td>
-                          </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                  </div>
                 </div>
               </div>
             </div>

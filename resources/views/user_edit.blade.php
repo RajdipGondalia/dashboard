@@ -1,3 +1,6 @@
+<?php
+  use App\Http\Controllers\DashboardController;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,19 +20,22 @@
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <!-- <link rel="stylesheet" href="/datatables.net-bs4/dataTables.bootstrap4.css"> -->
-  <link rel="stylesheet" href="../js/select.dataTables.min.css">
+  <link rel="stylesheet" href="../../js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <!-- endinject -->
   <style>
     .file {
-        visibility: hidden;
-        position: absolute;
+      visibility: hidden;
+      position: absolute;
     }
   </style>
-  <link rel="shortcut icon" href="../images/favicon.png" />
+  <link rel="shortcut icon" href="../../images/favicon.png" />
 </head>
 <body>
   <div class="container-scroller">
@@ -43,16 +49,16 @@
         </div>
         <div>
           <a class="navbar-brand brand-logo" href="index.html">
-            <img src="../images/logo.svg" alt="logo" />
+            <img src="../../images/logo.svg" alt="logo" />
           </a>
           <a class="navbar-brand brand-logo-mini" href="index.html">
-            <img src="../images/logo-mini.svg" alt="logo" />
+            <img src="../../images/logo-mini.svg" alt="logo" />
           </a>
         </div>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-top"> 
         <ul class="navbar-nav">
-          <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+          <li class="nav-item font-weight-semibold d-nfunction  d-lg-block ms-0">
             <!-- <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">John Doe</span></h1>
             <h3 class="welcome-sub-text">Your performance summary this week </h3> -->
           </li>
@@ -143,14 +149,12 @@
               <span class="menu-title">Users</span>
             </a>
           </li>
-
           <li class="nav-item">
             <a href="#sectionA" class="nav-link active" data-toggle="tab">Section A</a>
           </li>
           <li class="nav-item">
               <a href="#sectionB" class="nav-link" data-toggle="tab">Section B</a>
           </li>
-
           <li class="nav-item nav-category">UI Elements</li>
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
@@ -173,69 +177,83 @@
         <div class="content-wrapper">
           <div class="row">
             <div class="col-sm-12">
-                <div class="container rounded bg-white mt-5 mb-5">
-                    <div class="row">
-                    <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                        <h4 class="text-center" style="font-size: 40px;color:#404040;">Employee To-Do</h4>
-                        </div>
-                        <form action="{{ route('todolist_add') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('POST')
-                            <div class="row mt-2">
-                                <div class="col-md-12">
-                                    <label class="labels">To-Do Title<code>*</code></label>
-                                    <input type="text" class="form-control" placeholder="Task Title" name="todo_title">
-                                    <span style="color:red">@error('todo_title'){{$message}}@enderror</span>
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-md-12">
-                                    <label class="labels">To-Do Description</label>
-                                    <textarea type="text" class="form-control" placeholder="Task Description" name="todo_desc"></textarea>
-                                </div>
-                            </div>
-                            <div class="mt-5 mb-5 text-center">
-                                <button class="btn btn-primary profile-button" type="submit" >Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class=" rounded bg-white mt-2 mb-2">
+              <div class="container rounded bg-white mt-5 mb-5">
                 <div class="row">
-                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Employee To-Do List</h4>
-                    <table class="table table-striped table-responsive" style="display: inline-table!important;">
-                      <thead>
-                        <tr>
-                          <th style="width:5%">Sr. No.</th>
-                          <th>To-Do Title</th>
-                          <th>To-Do Description</th>
-                          <th>User Name</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <!-- {{$count=0}} -->
-                        <!-- @define $count = 0 -->
-                        
+                    <div class="justify-content-between align-items-center col-md-12 mt-5" >
+                        <h4 class="text-center" style="font-size: 40px;color:#404040;">Edit User</h4>
+                    </div>
+                    <!-- Validation Errors -->
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
+                    <form method="POST" action="{{ route('user_update') }}" enctype="multipart/form-data">
+                        @csrf
                         @php
-                        $count = 0
-                        
+                            if($user->image_path!="" && $user->image_path!="null" )
+                            {
+                                $image = asset('images/user')."/".$user->image_path;
+                            }
+                            else
+                            {
+                                $image = asset('images')."/default.png";
+                            }
                         @endphp
-                        @foreach($todolists as $todolist)
-                          <tr>
-                            <td>{{++$count}}</td>
-                            <td>{{$todolist->todo_title}}</td>
-                            <td>{{$todolist->todo_desc}}</td>
-                            <td>{{$todolist->user_name->name}}</td>
-                          </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                  </div>
+                        <!-- Type -->
+                        <div class="row mt-2">
+                          <div class="col-md-6">
+                            <label class="labels">Type<code>*</code></label>
+                            <select class="form-control" name="type" id="type" >
+                              <option  value="">Select Type</option>
+                              <option {{ ($user->type == 1)?"selected":"" }} value="1" >Admin</option>
+                              <option {{ ($user->type == 2)?"selected":"" }} value="2" >Senior Employee</option>
+                              <option {{ ($user->type == 3)?"selected":"" }} value="3" >Employee</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row mt-2">
+                          <div class="col-md-6">
+                            <!-- Name -->
+                            <label class="labels">Name<code>*</code></label>
+                            <x-input  id="name" class="block mt-1 w-full form-control" type="text" name="name"  value="{{$user->name}}" required autofocus />
+                          </div>
+                        </div>
+                        <!-- Email Address -->
+                        <div class="row mt-2">
+                          <div class="col-md-6">
+                            <label class="labels">Email<code>*</code></label>
+                            <x-input id="email" class="block mt-1 w-full form-control" type="email" name="email"  value="{{$user->email}}" required />
+                          </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                          <div class="col-md-6">
+                            <div id="msg"></div>
+                            <label class="labels">User Photo</label>
+                            <input type="hidden" name="image_path" value="" >
+                            <input type="file" name="image_path" class="file" >
+                            <div class="input-group my-3">
+                              <input type="text" class="form-control" disabled placeholder="Upload File" id="file" name="image_path">
+                              <div class="input-group-append">
+                                <button type="button" class="browse btn btn-primary">Browse...</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                          </div>
+                          <div class="col-md-6">
+                            <img  id="preview" class="img-thumbnail"  src="{{$image}}" style="width: 300px;">
+                          </div>
+                        </div>
+
+                        <div class="flex items-center justify-end mt-4">
+                          <!-- <a class="underline text-sm text-gray-600 hover:text-gray-900 " href="{{ route('login') }}">
+                              {{ __('Already registered?') }}
+                          </a> -->
+                          <input type="hidden" id="user_id" name="user_id" value="{{$user->id}}">
+                          <x-button class="ml-4 btn btn-primary profile-button">
+                            Save
+                          </x-button>
+                        </div>
+                    </form>
                 </div>
               </div>
             </div>
@@ -281,28 +299,26 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-  
-
-
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
 </body>
-
 </html>
 <script>
-    $(document).on("click", ".browse", function() {
+  $(document).on("click", ".browse", function() {
     var file = $(this).parents().find(".file");
     file.trigger("click");
-    });
-    $('input[type="file"]').change(function(e) {
+  });
+  $('input[type="file"]').change(function(e) {
     var fileName = e.target.files[0].name;
     $("#file").val(fileName);
-
     var reader = new FileReader();
     reader.onload = function(e) {
-        // get loaded data and render thumbnail.
-        document.getElementById("preview").src = e.target.result;
+      // get loaded data and render thumbnail.
+      document.getElementById("preview").src = e.target.result;
     };
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
-    });
+  });
 </script>
 

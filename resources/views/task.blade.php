@@ -26,6 +26,7 @@ use App\Http\Controllers\DashboardController;
   <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  
 
   <!-- endinject -->
@@ -174,75 +175,6 @@ use App\Http\Controllers\DashboardController;
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">Forms and Datas</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Form elements</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-              <i class="menu-icon mdi mdi-chart-line"></i>
-              <span class="menu-title">Charts</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="charts">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
-              <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Tables</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="tables">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic table</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-              <i class="menu-icon mdi mdi-layers-outline"></i>
-              <span class="menu-title">Icons</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="icons">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Mdi icons</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item nav-category">pages</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="menu-icon mdi mdi-account-circle-outline"></i>
-              <span class="menu-title">User Pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item nav-category">help</li>
-          <li class="nav-item">
-            <a class="nav-link" href="http://bootstrapdash.com/demo/star-admin2-free/docs/documentation.html">
-              <i class="menu-icon mdi mdi-file-document"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
-          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -369,25 +301,28 @@ use App\Http\Controllers\DashboardController;
                           @endphp
                           <tr style="background-color:{{$color}}" > 
                             <td>
+                              <a onclick="return confirm('Are you sure Delete This Task..?')"  href="{{ route('single_task_delete', $task->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                <i class="fa fa-trash-o"></i>
+                              </a>
                               @if($task->status==0)
                               <button id="startButton" data-id="{{$task->id}}" title="Start" class="btn btn-sm btn-info" type="button" onClick="task_start({{$task->id}})">
-                                  <i class="fa fa-eye">Start</i>
+                                Start
                               </button>
                               @endif
                               @if($task->status==1)
                               <button id="stopButton" data-id="{{$task->id}}" title="Stop" class="btn btn-sm btn-secondary"  type="button" onClick="task_stop({{$task->id}})">
-                                  <i class="fa fa-eye">Stop</i>
+                                Stop
                               </button>
                               @endif
                               </br></br>
                               @if($task->status!=4 && $task->status!=3 && (Auth::user()->type==1 || Auth::user()->type==2 ))
                               <button id="completeButton" data-id="{{$task->id}}"  title="Complete" class="btn btn-sm btn-success" type="button" onClick="task_complete({{$task->id}})">
-                                  <i class="fa fa-eye">Complete</i>
+                                Complete
                               </button>
                               @endif
                               @if($task->status!=4 && $task->status!=3 && (Auth::user()->type==1 || Auth::user()->type==2 ))
                               <button id="cancelButton" data-id="{{$task->id}}" title="Cancel" class="btn btn-sm btn-danger" type="button" onClick="task_cancel({{$task->id}})">
-                                  <i class="fa fa-eye">Cancel</i>
+                                Cancel
                               </button>
                               @endif
                             </td>
@@ -422,12 +357,12 @@ use App\Http\Controllers\DashboardController;
                             </td>
                             <td>
                             @php
-                                $duedate=$task->due_date;
-                                if($duedate!="" && $duedate!="NULL" && $duedate!="0000-00-00"  && $duedate!="1970-01-01")
-                                {
-                                  echo date("d-m-Y",strtotime($duedate));
-                                }
-                                $StatuaArray = array("0"=>"pendding","1"=>"Start","2"=>"Stop","3"=>"Completed","4"=>"Cancel");
+                              $duedate=$task->due_date;
+                              if($duedate!="" && $duedate!="NULL" && $duedate!="0000-00-00"  && $duedate!="1970-01-01")
+                              {
+                                echo date("d-m-Y",strtotime($duedate));
+                              }
+                              $StatuaArray = array("0"=>"pendding","1"=>"Start","2"=>"Stop","3"=>"Completed","4"=>"Cancel");
                             @endphp
                             </td>
                             <td>{{$task->user_name->name}}</td>

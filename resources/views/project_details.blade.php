@@ -375,75 +375,6 @@ use App\Http\Controllers\DashboardController;
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">Forms and Datas</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Form elements</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-              <i class="menu-icon mdi mdi-chart-line"></i>
-              <span class="menu-title">Charts</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="charts">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
-              <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Tables</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="tables">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic table</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-              <i class="menu-icon mdi mdi-layers-outline"></i>
-              <span class="menu-title">Icons</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="icons">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Mdi icons</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item nav-category">pages</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="menu-icon mdi mdi-account-circle-outline"></i>
-              <span class="menu-title">User Pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item nav-category">help</li>
-          <li class="nav-item">
-            <a class="nav-link" href="http://bootstrapdash.com/demo/star-admin2-free/docs/documentation.html">
-              <i class="menu-icon mdi mdi-file-document"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
-          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -494,6 +425,9 @@ use App\Http\Controllers\DashboardController;
                           <td>
                             <a href="{{asset('images/project_attachment').'/'.$project_comments_attachment->attachment_path}}" target="_blank" ><i class="fa fa-eye"></i></a>
                             <a style="margin-left: 10px;" href="{{asset('images/project_attachment').'/'.$project_comments_attachment->attachment_path}}" download><i class="fa fa-download"></i></a>
+                            <a onclick="return confirm('Are you sure Delete This Project File..?')"  href="{{ route('single_project_comment_delete', $project_comments_attachment->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                <i class="fa fa-trash-o"></i>
+                            </a>
                           </td>
 
                         </tr>
@@ -537,6 +471,7 @@ use App\Http\Controllers\DashboardController;
                             $rightSideClass = "admin_chat";
                             $pull_img = "pull-right";
                             $pull_date = "pull-right";
+                            $pull_dlt_btn = "pull-left";
                             $text_align ="right";
                           }
                           else
@@ -544,6 +479,7 @@ use App\Http\Controllers\DashboardController;
                             $rightSideClass="";
                             $pull_img = "pull-left";
                             $pull_date = "pull-left";
+                            $pull_dlt_btn = "pull-right";
                             $text_align ="left";
                           }
                           $image_path = $project_comment->user_details->image_path;
@@ -557,19 +493,29 @@ use App\Http\Controllers\DashboardController;
                             $image = asset('images/user')."/default.png";
                           }
                         @endphp
-                        
                         <li class="left clearfix {{$rightSideClass}}">
                           <span class="chat-img1 {{$pull_img}}">
                             <img src="{{$image}}" alt="User Avatar" class="img-circle" style="border-radius: 100%;">
                           </span>
                           <div class="chat-body1 clearfix">
                             @if($project_comment->comment!="" && $project_comment->comment!="null")
-                              <p style="margin-bottom:0px; text-align:{{$text_align}}" >{{$project_comment->comment}}</p>
+                              <p style="margin-bottom:0px; text-align:{{$text_align}}" >{{$project_comment->comment}}
+                                <a class="{{$pull_dlt_btn}}" onclick="return confirm('Are you sure Delete This Project Comment..?')"  href="{{ route('single_project_comment_delete', $project_comment->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                  <i class="fa fa-trash-o"></i>
+                                </a>
+                              </p>
                             @elseif($project_comment->attachment_path!="" && $project_comment->attachment_path!="null")
                               <p style="margin-bottom:0px; text-align:{{$text_align}};color: darkslateblue;font-size: 0.6rem;">
                                 File Name : {{$project_comment->attachment_path}}
-                                <a style="margin-left: 5%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" target="_blank" ><i class="fa fa-eye"></i></a>
-                                <a style="margin-left: 2%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" download><i class="fa fa-download"></i></a>
+                                <a style="margin-left: 5%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" target="_blank" >
+                                  <i class="fa fa-eye"></i>
+                                </a>
+                                <a style="margin-left: 2%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" download>
+                                  <i class="fa fa-download"></i>
+                                </a>
+                                <a onclick="return confirm('Are you sure Delete This Project File..?')"  href="{{ route('single_project_comment_delete', $project_comment->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                  <i class="fa fa-trash-o"></i>
+                                </a>
                               </p>
                             @endif
                             <div class="chat_time {{$pull_date}}" style="color: darkgray;">{{$user_name." - ".$created_at}}</div>
@@ -611,7 +557,6 @@ use App\Http\Controllers\DashboardController;
                         <div class="col-md-9">
                           <input type="text" class="form-control" placeholder="Write Your Comment Hear.." name="comment">
                           <input type="hidden" class="form-control" value="1" name="project_id">
-
                           <span style="color:red">@error('comment'){{$message}}@enderror</span>
                         </div>
                         <div class="col-md-3">
@@ -678,25 +623,28 @@ use App\Http\Controllers\DashboardController;
                           @endphp
                           <tr style="background-color:{{$color}}">
                             <td>
+                              <a onclick="return confirm('Are you sure Delete This Task..?')"  href="{{ route('single_task_delete', $task->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                <i class="fa fa-trash-o"></i>
+                              </a>
                               @if($task->status==0)
                               <button id="startButton" data-id="{{$task->id}}" title="Start" class="btn btn-sm btn-info" type="button" onClick="task_start({{$task->id}})">
-                                  Start</i>
+                                  Start
                               </button>
                               @endif
                               @if($task->status==1)
                               <button id="stopButton" data-id="{{$task->id}}" title="Stop" class="btn btn-sm btn-secondary"  type="button" onClick="task_stop({{$task->id}})">
-                                  Stop</i>
+                                  Stop
                               </button>
                               @endif
                               </br></br>
                               @if($task->status!=4 && $task->status!=3 && (Auth::user()->type==1 || Auth::user()->type==2 ))
                               <button id="completeButton" data-id="{{$task->id}}"  title="Complete" class="btn btn-sm btn-success" type="button" onClick="task_complete({{$task->id}})">
-                                  Complete</i>
+                                  Complete
                               </button>
                               @endif
                               @if($task->status!=4 && $task->status!=3 && (Auth::user()->type==1 || Auth::user()->type==2 ))
                               <button id="cancelButton" data-id="{{$task->id}}" title="Cancel" class="btn btn-sm btn-danger" type="button" onClick="task_cancel({{$task->id}})">
-                                  Cancel</i>
+                                  Cancel
                               </button>
                               @endif
                             </td>

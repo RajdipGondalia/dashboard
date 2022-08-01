@@ -158,75 +158,6 @@ use App\Models\JobRoleMaster;
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">Forms and Datas</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Form elements</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-              <i class="menu-icon mdi mdi-chart-line"></i>
-              <span class="menu-title">Charts</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="charts">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
-              <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Tables</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="tables">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic table</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-              <i class="menu-icon mdi mdi-layers-outline"></i>
-              <span class="menu-title">Icons</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="icons">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Mdi icons</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item nav-category">pages</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="menu-icon mdi mdi-account-circle-outline"></i>
-              <span class="menu-title">User Pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item nav-category">help</li>
-          <li class="nav-item">
-            <a class="nav-link" href="http://bootstrapdash.com/demo/star-admin2-free/docs/documentation.html">
-              <i class="menu-icon mdi mdi-file-document"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
-          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -241,7 +172,7 @@ use App\Models\JobRoleMaster;
                     <table class="table table-striped table-responsive" style="display: inline-table!important;">
                       <thead>
                         <tr>
-                          <th style="width:2%"></th>
+                          <th style="width:7%">Action</th>
                           <th style="width:4%">Sr. No.</th>
                           <th>Given Name</th>
                           <!-- <th>Family Name</th> -->
@@ -268,9 +199,17 @@ use App\Models\JobRoleMaster;
                         @foreach($employees as $employee)
                           <tr>
                             <td>
-                              <a data-toggle="modal" id="smallButton" data-target="#smallModal"
-                              data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="show">
-                                  <i class="fa fa-eye"></i>
+                              <a data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="View" style="cursor:pointer;color: blue;" >
+                                <i class="fa fa-eye"></i>
+                              </a>
+                              <!-- <a data-toggle="employeemodal" id="employeeEditButton" data-target="#employeeEditModal" data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="Edit" style="margin-left: 10px;">
+                                <i class="fa fa-edit"></i>
+                              </a> -->
+                              <a href="{{ route('single_profile_edit', $employee->id) }}" title="Edit" style="margin-left: 10px;color: green;text-decoration: none" >
+                                <i class="fa fa-edit"></i>
+                              </a>
+                              <a onclick="return confirm('Are you sure Delete This Employee..?')"  href="{{ route('single_profile_delete', $employee->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                <i class="fa fa-trash-o"></i>
                               </a>
                             </td>
                             <td>{{++$count}}</td>
@@ -279,7 +218,7 @@ use App\Models\JobRoleMaster;
                             <!-- <td>{{$employee->dob}}</td> -->
                             <td>
                               @if($employee->job_role!=0)
-                              {{$employee->job_role_name->name}}
+                                {{$employee->job_role_name->name}}
                               @endif
                             </td>
                             <!-- <td>{{$employee->edu_qualification}}</td> -->
@@ -290,7 +229,7 @@ use App\Models\JobRoleMaster;
                             <!-- <td>{{$employee->contact_number_2}}</td> -->
                             <td>
                               @if($employee->working_location!=0)
-                              {{$employee->working_location_name->name}}
+                                {{$employee->working_location_name->name}}
                               @endif
                             </td>
                             <td>{{$employee->email}}</td>
@@ -329,6 +268,27 @@ use App\Models\JobRoleMaster;
           <h4 class="modal-title">Employee Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- the result to be displayed apply here -->
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Employee edit modal -->
+<div class="modal fade" id="employeeEditModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document" >
+    <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Employee</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
@@ -386,13 +346,18 @@ use App\Models\JobRoleMaster;
         // console.log(result.employee);
         $('#smallModal').modal("show");
         var object = result.employee;
+        var date    = new Date(object.dob),
+        yr      = date.getFullYear(),
+        month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+        day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+        dob = day + '-' + month + '-' + yr;
 
         $(".modal-body").html(
           `<table class="table table-bordered">
             <tr><td colspan="2" style="text-align: center;" ><img src="${object.image_path}" style="width: 200px;height: 200px;" ></img></td></tr>
             <tr><td>Given Name : </td><td>${object.given_name}</td></tr>
             <tr><td>Family Name : </td><td>${object.family_name}</td></tr>
-            <tr><td>DOB : </td><td>${object.dob}</td></tr>
+            <tr><td>DOB : </td><td>${dob}</td></tr>
             <tr><td>Job Role : </td><td>${object.job_role}</td></tr>
             <tr><td>Education Qualification : </td><td>${object.edu_qualification}</td></tr>
             <tr><td>Skills : </td><td>${object.skills}</td></tr>
@@ -403,6 +368,148 @@ use App\Models\JobRoleMaster;
             <tr><td>Working Location : </td><td>${object.working_location}</td></tr>
             <tr><td>Email : </td><td>${object.email}</td></tr>
           </table>`
+        );
+        
+        //$('#smallBody').html(result).show();
+        //$("#given_name").prev().val(result.employee[given_name]);
+        // $("#file").val(fileName);
+      },
+      complete: function() {
+        $('#loader').hide();
+      },
+      error: function(jqXHR, testStatus, error) {
+        console.log(error);                                                                                                                                  
+        alert("Page " + href + " cannot open. Error:" + error);
+        $('#loader').hide();
+      },
+      timeout: 8000
+    })
+  });
+
+  $(document).on('click', '#employeeEditButton', function(event) {
+    event.preventDefault();
+    let href = $(this).attr('data-attr');
+    let id = $(this).attr('data-id');
+    // console.log(href);
+    $.ajax({
+      url: href,
+      beforeSend: function() {
+        $('#loader').show();
+      },
+      // return the result
+      success: function(result) {
+        // console.log(result.employee);
+        $('#employeeEditModal').modal("show");
+        var object = result.employee;
+        var pre_job_role = object.job_role;
+
+        $(".modal-body").html(
+          `<form action="{{ route('user_profile_update') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('POST')
+            <div class="row mt-2">  
+              <div class="col-md-6">
+                <label class="labels">Given Name<code>*</code></label>
+                <input type="text" class="form-control" placeholder="Given Name" name="given_name" value="${object.given_name}">
+                <span style="color:red">@error('given_name'){{$message}}@enderror</span>
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Family Name<code>*</code></label>
+                <input type="text" class="form-control" name="family_name" placeholder="Family Name" value="${object.family_name}">
+                <span style="color:red">@error('family_name'){{$message}}@enderror</span>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label class="labels">DOB</label>
+                <input type="date" class="form-control" placeholder="Select DOB" name="dob" value="${object.dob}">
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Job Role</label>
+                <input type="hidden" id="preJobRole" value="${object.job_role_id}">
+                <select class="form-control" name="job_role">
+                  <option value="0">Select Job Role</option>
+                  @foreach($job_roles as $job_role)
+                    @php
+                    $pre_job_role=`$("#preJobRole").val(value);`;
+                    echo $pre_job_role."aa";
+                    @endphp
+                    <option {{ ($pre_job_role == $job_role->id)?"selected":"" }} value="{{ $job_role->id }}">{{ $job_role->name }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label class="labels">Education Qualification</label>
+                <textarea type="text" class="form-control" placeholder="enter Education Qualification" name="education_qualification" >${object.edu_qualification}
+                </textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Skills</label>
+                <textarea type="text" class="form-control" placeholder="enter Skills" name="skills"> ${object.skills}</textarea>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label class="labels">Present Address</label>
+                <textarea type="text" class="form-control" placeholder="enter Present Address" name="present_address">${object.present_address}</textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Permanent Address</label>
+                <textarea type="text" class="form-control" placeholder="enter Permanent Address" name="permanent_address">${object.permanent_address}</textarea>
+              </div>
+            </div>
+            <div class="row mt-3">  
+              <div class="col-md-6">
+                <label class="labels">Primary Contact Number<code>*</code></label>
+                <input type="text" class="form-control" placeholder="enter Primary Contact Number" name="contact_number" id="contact_number" value="${object.contact_number}">
+                <span style="color:red">@error('contact_number'){{$message}}@enderror</span>
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Secondary Contact Number</label>
+                <input type="text" class="form-control" placeholder="enter Secondary Contact Number" name="contact_number_2" value="${object.contact_number_2}">
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label class="labels">Working Location</label>
+                <select class="form-control" name="working_location">
+                  <option value ="0">Select Working Location</option>
+                  @foreach($working_locations as $working_location)
+                    <option value="{{ $working_location->id }}">{{ $working_location->name }}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Email<code>*</code></label>
+                <input type="text" class="form-control" placeholder="enter Email" name="email" value="${object.email}">
+                <span style="color:red">@error('email'){{$message}}@enderror</span>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div id="msg"></div>
+                <label class="labels">Profile Photo</label>
+                <input type="file" name="image_path" class="file" >
+                <div class="input-group my-3">
+                  <input type="text" class="form-control" disabled placeholder="Upload File" id="file" name="image_path">
+                  <div class="input-group-append">
+                    <button type="button" class="browse btn btn-primary">Browse...</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+              </div>
+              <div class="col-md-6">
+                <img id="preview" class="img-thumbnail" src="${object.image_path}">
+              </div>
+            </div>
+            <div class="mt-5 mb-5 text-center">
+              <input type="hidden" id="profile_id" name="profile_id" value="${object.id}">
+              <button class="btn btn-primary profile-button" type="submit" >Save Profile</button>
+            </div>
+          </form>`
         );
         
         //$('#smallBody').html(result).show();

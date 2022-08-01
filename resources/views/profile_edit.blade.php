@@ -17,10 +17,10 @@
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <!-- <link rel="stylesheet" href="/datatables.net-bs4/dataTables.bootstrap4.css"> -->
-  <link rel="stylesheet" href="../js/select.dataTables.min.css">
+  <link rel="stylesheet" href="../../js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <!-- endinject -->
   <style>
@@ -29,7 +29,7 @@
         position: absolute;
     }
   </style>
-  <link rel="shortcut icon" href="../images/favicon.png" />
+  <link rel="shortcut icon" href="../../images/favicon.png" />
 </head>
 <body>
   <div class="container-scroller">
@@ -43,10 +43,10 @@
         </div>
         <div>
           <a class="navbar-brand brand-logo" href="index.html">
-            <img src="../images/logo.svg" alt="logo" />
+            <img src="../../images/logo.svg" alt="logo" />
           </a>
           <a class="navbar-brand brand-logo-mini" href="index.html">
-            <img src="../images/logo-mini.svg" alt="logo" />
+            <img src="../../images/logo-mini.svg" alt="logo" />
           </a>
         </div>
       </div>
@@ -85,6 +85,7 @@
           </div>
         </div>
       </div>
+      
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -176,68 +177,124 @@
                 <div class="container rounded bg-white mt-5 mb-5">
                     <div class="row">
                     <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                        <h4 class="text-center" style="font-size: 40px;color:#404040;">Employee To-Do</h4>
+                        <h4 class="text-center" style="font-size: 40px;color:#404040;">Edit Profile</h4>
                         </div>
-                        <form action="{{ route('todolist_add') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('user_profile_update', $profile->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('POST')
+                            @php
+                              if($profile->image_path!="" && $profile->image_path!="null" )
+                              {
+                                $image = asset('images/profile')."/".$profile->image_path;
+                                  
+                              }
+                              else
+                              {
+                                $image = asset('images')."/default.png";
+                              }
+                            @endphp
+
                             <div class="row mt-2">
-                                <div class="col-md-12">
-                                    <label class="labels">To-Do Title<code>*</code></label>
-                                    <input type="text" class="form-control" placeholder="Task Title" name="todo_title">
-                                    <span style="color:red">@error('todo_title'){{$message}}@enderror</span>
-                                </div>
+                              <div class="col-md-6">
+                                <label class="labels">Given Name<code>*</code></label>
+                                <input type="text" class="form-control" placeholder="Given Name" name="given_name"  value="{{$profile->given_name}}">
+                                <span style="color:red">@error('given_name'){{$message}}@enderror</span>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="labels">Family Name<code>*</code></label>
+                                <input type="text" class="form-control" name="family_name" placeholder="Family Name" value="{{$profile->family_name}}">
+                                <span style="color:red">@error('family_name'){{$message}}@enderror</span>
+                              </div>
                             </div>
-                            <div class="row mt-2">
-                                <div class="col-md-12">
-                                    <label class="labels">To-Do Description</label>
-                                    <textarea type="text" class="form-control" placeholder="Task Description" name="todo_desc"></textarea>
+                            <div class="row mt-3">
+                              <div class="col-md-6">
+                                <label class="labels">DOB</label>
+                                <input type="date" class="form-control" placeholder="Select DOB" name="dob" value="{{$profile->dob}}">
+                              </div>
+                              <div class="col-md-6">
+                                <label class="labels">Job Role</label>
+                                <select class="form-control" name="job_role">
+                                  <option value="0">Select Job Role</option>
+                                  @foreach($job_roles as $job_role)
+                                    <option {{ ($profile->job_role == $job_role->id)?"selected":"" }}  value="{{ $job_role->id }}" >{{ $job_role->name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+                            </div>
+                            <div class="row mt-3">
+                              <div class="col-md-6">
+                                <label class="labels">Education Qualification</label>
+                                <textarea type="text" class="form-control" placeholder="enter Education Qualification" name="education_qualification"> {{$profile->edu_qualification}}
+                                </textarea>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="labels">Skills</label>
+                                <textarea type="text" class="form-control" placeholder="enter Skills" name="skills">{{$profile->skills}}</textarea>
+                              </div>
+                            </div>
+                            <div class="row mt-3">
+                              <div class="col-md-6">
+                                <label class="labels">Present Address</label>
+                                <textarea type="text" class="form-control" placeholder="enter Present Address" name="present_address">{{$profile->present_address}}</textarea>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="labels">Permanent Address</label>
+                                <textarea type="text" class="form-control" placeholder="enter Permanent Address" name="permanent_address">{{$profile->permanent_address}}</textarea>
+                              </div>
+                            </div>
+                            <div class="row mt-3">  
+                              <div class="col-md-6">
+                                <label class="labels">Primary Contact Number<code>*</code></label>
+                                <input type="text" class="form-control" placeholder="enter Primary Contact Number" name="contact_number" id="contact_number"  value="{{$profile->contact_number}}">
+                                <span style="color:red">@error('contact_number'){{$message}}@enderror</span>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="labels">Secondary Contact Number</label>
+                                <input type="text" class="form-control" placeholder="enter Secondary Contact Number" name="contact_number_2" value="{{$profile->contact_number_2}}">
+                              </div>
+                            </div>
+                            <div class="row mt-3">
+                              <div class="col-md-6">
+                                <label class="labels">Working Location</label>
+                                <select class="form-control" name="working_location">
+                                  <option value ="0">Select Working Location</option>
+                                  @foreach($working_locations as $working_location)
+                                    <option {{ ($profile->working_location == $working_location->id)?"selected":"" }} value="{{ $working_location->id }}">{{ $working_location->name }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="labels">Email<code>*</code></label>
+                                <input type="text" class="form-control" placeholder="enter Email" name="email" value="{{$profile->email}}">
+                                <span style="color:red">@error('email'){{$message}}@enderror</span>
+                              </div>
+                            </div>
+                            <div class="row mt-3">
+                              <div class="col-md-6">
+                                <div id="msg"></div>
+                                <label class="labels">Profile Photo</label>
+                                <input type="hidden" name="image_path" value="" >
+                                <input type="file" name="image_path" class="file" >
+                                <div class="input-group my-3">
+                                  <input type="text" class="form-control" disabled placeholder="Upload File" id="file" name="image_path" >
+                                  <div class="input-group-append">
+                                    <button type="button" class="browse btn btn-primary">Browse...</button>
+                                  </div>
                                 </div>
+                              </div>
+                              <div class="col-md-6">
+                              </div>
+                              <div class="col-md-6">
+                                <img  id="preview" class="img-thumbnail" src="{{$image}}" style="width: 300px;">
+                              </div>
                             </div>
                             <div class="mt-5 mb-5 text-center">
-                                <button class="btn btn-primary profile-button" type="submit" >Save</button>
+                              <input type="hidden" id="profile_id" name="profile_id" value="{{$profile->id}}">
+                              <button class="btn btn-primary profile-button" type="submit" >Save</button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class=" rounded bg-white mt-2 mb-2">
-                <div class="row">
-                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
-                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Employee To-Do List</h4>
-                    <table class="table table-striped table-responsive" style="display: inline-table!important;">
-                      <thead>
-                        <tr>
-                          <th style="width:5%">Sr. No.</th>
-                          <th>To-Do Title</th>
-                          <th>To-Do Description</th>
-                          <th>User Name</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <!-- {{$count=0}} -->
-                        <!-- @define $count = 0 -->
-                        
-                        @php
-                        $count = 0
-                        
-                        @endphp
-                        @foreach($todolists as $todolist)
-                          <tr>
-                            <td>{{++$count}}</td>
-                            <td>{{$todolist->todo_title}}</td>
-                            <td>{{$todolist->todo_desc}}</td>
-                            <td>{{$todolist->user_name->name}}</td>
-                          </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -281,6 +338,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js"></script>
   
 
 
@@ -288,6 +346,25 @@
 
 </html>
 <script>
+  // $(document).ready(function(){
+  //     $("#contact_number").numeric();
+  // });
+  $('input[name="contact_number"]').keyup(function(e)
+  {
+    if (/\D/g.test(this.value))
+    {
+      // Filter non-digits from input value.
+      this.value = this.value.replace(/\D/g, '');
+    }
+  });
+  $('input[name="contact_number_2"]').keyup(function(e)
+  {
+    if (/\D/g.test(this.value))
+    {
+      // Filter non-digits from input value.
+      this.value = this.value.replace(/\D/g, '');
+    }
+  });
     $(document).on("click", ".browse", function() {
     var file = $(this).parents().find(".file");
     file.trigger("click");
