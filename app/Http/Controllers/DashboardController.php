@@ -16,6 +16,8 @@ use App\Models\WorkingLocationMaster;
 use App\Models\ProjectVsComment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Models\ProjectVsEvents;
+
 
 
 
@@ -1050,7 +1052,8 @@ class DashboardController extends Controller
         if($validated){
             
             $user = User::find($user_id);
-
+            
+            $user->password = Hash::make($request->password);
             $user->type = $request->type;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -1061,6 +1064,36 @@ class DashboardController extends Controller
                 $request->image_path->move(public_path('images/user'), $imageName);
                 $user->image_path = $imageName;
             }
+    
+            //Remaining attributes
+            $user->save();
+            if($user){
+                return redirect()->route('all_users');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }   
+        }
+        else{
+            $errors = $validated->errors();
+            Session('message',$errors);
+        }   
+    }
+
+    public function change_password_user_data(Request $request){
+        // dd($request->all());
+        // dd($request->image_path);
+        $user_id = $request->user_id;
+
+        $validated = $request->validate([
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+
+        if($validated){
+            $user = User::find($user_id);
+
+            $user->password = Hash::make($request->password);
     
             //Remaining attributes
             $user->save();
@@ -1091,4 +1124,100 @@ class DashboardController extends Controller
             Session('message',$message);
         }  
     }
+
+    public function get_calender(Request $request , $project_id)
+    {
+        // dd($request);
+
+        $project_event = new ProjectVsEvents;
+        // $login_user_id = auth()->user()->id;
+    	// if($request)
+    	// {
+    		$data = ProjectVsEvents::where('isDelete', '=', 0)
+                        ->whereDate('start', '>=', $request->start)
+                        ->whereDate('end',   '<=', $request->end)
+                        ->where('project_id',   '=', $project_id)
+                        ->get();
+            return response()->json($data);
+    	// }
+        // return redirect()->route('project_details', $login_user_id);
+    }
+    public function action_calender(Request $request)
+    {
+        // dd($request);
+        $login_user_id = auth()->user()->id;
+    	// if($request->)
+    	// {
+    		if($request->type === 'add')
+    		{
+                // dd($login_user_id);
+    			// $event = ProjectVsEvents::create([
+    			// 	'title'		=>	$request->title,
+    			// 	'start'		=>	$request->start,
+    			// 	'end'		=>	$request->end,
+                //     'project_id'=>  $request->project_id,
+                //     'user_id'   =>  $login_user_id
+    			// ]);
+
+                $event = new ProjectVsEvents;
+                $event->title = $request->title;
+                $event->start = $request->start;
+                $event->end = $request->end;
+                $event->project_id = $request->project_id;
+                $event->user_id = $login_user_id;
+
+                $event->save();
+
+    			//return response()->json($event);
+                if($event){
+                    return response()->json($event);
+                }else{
+                    $message = 'Data not Saved';
+                    Session('message',$message);
+                }
+    		}
+
+    		else if($request->type === 'update')
+    		{
+                $event = ProjectVsEvents::find($request->id);
+                $event->title = $request->title;
+                $event->start = $request->start;
+                $event->end = $request->end;
+
+    			// $event = ProjectVsEvents::find($request->id)->update([
+    			// 	'title'		=>	$request->title,
+    			// 	'start'		=>	$request->start,
+    			// 	'end'		=>	$request->end
+    			// ]);
+                $event->save();
+
+                if($event){
+                    return response()->json($event);
+                }else{
+                    $message = 'Data not Saved';
+                    Session('message',$message);
+                }
+    			
+    		}
+
+    		else if($request->type === 'delete')
+    		{
+                $event = ProjectVsEvents::find($request->id);
+                $event->isDelete = 1;
+                
+                // $event = ProjectVsEvents::find($request->id)->update([
+    			// 	'isDelete'		=>	1
+    			// ]);
+                $event->save();
+                if($event){
+                    return response()->json($event);
+                }else{
+                    $message = 'Data not Saved';
+                    Session('message',$message);
+                }
+    			//return response()->json($event);
+    		}
+    	// }
+    }
+
 }

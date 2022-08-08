@@ -297,8 +297,11 @@
                             @endphp
                             <tr>
                               <td>
-                                <a href="{{ route('single_project_edit', $user->id) }}" title="Edit" style="margin-left: 10px;color: green;text-decoration: none" >
+                                <a href="{{ route('single_user_edit', $user->id) }}" title="Edit" style="color: green;text-decoration: none" >
                                   <i class="fa fa-edit"></i>
+                                </a>
+                                <a data-toggle="modal" id="smallButton" data-target="#smallModal" data-id="{{ $user->id }}" title="Change Password" style="margin-left: 10px;cursor:pointer;color: blue;" >
+                                  <i class="fa fa-key"></i>
                                 </a>
                                 <a onclick="return confirm('Are you sure Delete This User..?')"  href="{{ route('single_user_delete', $user->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
                                   <i class="fa fa-trash-o"></i>
@@ -340,7 +343,26 @@
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
+  <!-- small modal -->
+  <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Change Password</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- the result to be displayed apply here -->
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- plugins:js -->
   <!-- <script src="/js/vendor.bundle.base.js"></script> -->
   <!-- endinject -->
@@ -385,6 +407,40 @@
     };
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
+  });
+  $(document).on('click', '#smallButton', function(event) {
+    event.preventDefault();
+    let id = $(this).attr('data-id');
+    // console.log(href);
+    // return the result
+    // console.log(result.employee);
+    $('#smallModal').modal("show");
+
+    $(".modal-body").html(
+      `<form action="{{ route('user_change_password') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('POST')
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <!-- Password -->
+            <label class="labels">Password<code>*</code></label>
+            <x-input id="password" class="block mt-1 w-full form-control" type="password" name="password"  autocomplete="new-password" required minlength="8" />
+            <span style="color:red">@error('password'){{$message}}@enderror</span>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <!-- Confirm Password -->
+            <label class="labels">Confirm Password<code>*</code></label>
+            <x-input id="password_confirmation" class="block mt-1 w-full form-control " type="password" name="password_confirmation" required minlength="8"  />
+          </div>
+        </div>
+        <div class="mt-5 mb-5 text-center">
+          <input type="hidden" id="user_id" name="user_id" value="${id}">
+          <button class="btn btn-primary profile-button" type="submit" >Change Password</button>
+        </div>
+      </form>`
+    );
   });
 </script>
 

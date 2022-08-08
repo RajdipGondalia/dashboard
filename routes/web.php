@@ -35,6 +35,7 @@ Route::get('employee_details', function () {
 
 Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
 	Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::post('add-profile',[DashboardController::class, 'store_profile_data'])->name('user_profile_add');
     Route::post('update-profile',[DashboardController::class, 'update_profile_data'])->name('user_profile_update');
     Route::get('employee', [DashboardController::class, 'get_all_employees'])->name('all_employees');
@@ -42,6 +43,13 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
     Route::get('get-single-employee/{id}',[DashboardController::class, 'get_single_employee'])->name('api_single_employee');
     Route::get('profile_edit/{id}',[DashboardController::class, 'get_single_profile'])->name('single_profile_edit');
     Route::get('profile_delete/{id}',[DashboardController::class, 'delete_single_profile'])->name('single_profile_delete');
+
+    Route::get('user', [DashboardController::class, 'get_users'])->name('all_users');
+    Route::post('add-user',[DashboardController::class, 'store_user_data'])->name('user_add');
+    Route::post('update-user',[DashboardController::class, 'update_user_data'])->name('user_update');
+    Route::get('user_delete/{id}',[DashboardController::class, 'delete_single_user'])->name('single_user_delete');
+    Route::get('user_edit/{id}',[DashboardController::class, 'get_single_user'])->name('single_user_edit');
+    Route::post('change_password-user',[DashboardController::class, 'change_password_user_data'])->name('user_change_password');
 
     Route::get('time_tracker', [DashboardController::class, 'get_time_tracker'])->name('time_tracker');
     Route::get('single_time_tracker', [DashboardController::class, 'get_time_tracker'])->name('time_tracker');
@@ -86,12 +94,12 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
     Route::post('add-project-comment',[DashboardController::class, 'store_project_comment_data'])->name('project_comment_add');
     Route::get('project_comment_delete/{id}',[DashboardController::class, 'delete_single_project_comment'])->name('single_project_comment_delete');
 
+    Route::get('get_calender/{id}',[DashboardController::class, 'get_calender'])->name('get_calender');
+    Route::post('action_calender',[DashboardController::class, 'action_calender'])->name('action_calender');
 
-    Route::get('user', [DashboardController::class, 'get_users'])->name('all_users');
-    Route::post('add-user',[DashboardController::class, 'store_user_data'])->name('user_add');
-    Route::post('update-user',[DashboardController::class, 'update_user_data'])->name('user_update');
-    Route::get('user_delete/{id}',[DashboardController::class, 'delete_single_user'])->name('single_user_delete');
-    Route::get('user_edit/{id}',[DashboardController::class, 'get_single_user'])->name('single_user_edit');
+   
+
+    
 	//Place all Protected nested page Routes
 });
 // Route::get('/dashboard', function () {

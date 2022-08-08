@@ -7,7 +7,7 @@ use App\Http\Controllers\DashboardController;
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
   <title>Star Admin2 </title>
   <!-- plugins:css -->
   
@@ -24,11 +24,16 @@ use App\Http\Controllers\DashboardController;
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"> -->
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
- 
+  
 
   <!-- endinject -->
+  <!-- calender view css start -->
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+  <!-- calender view css end -->
   <!-- for chatbox start -->
   <style>
     #custom-search-input {
@@ -175,7 +180,7 @@ use App\Http\Controllers\DashboardController;
     }
     .chat_area {
       float: left;
-      height: 300px;
+      height: 1100px;
       overflow-x: hidden;
       overflow-y: auto;
       width: 100%;
@@ -381,8 +386,21 @@ use App\Http\Controllers\DashboardController;
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
+            
             <div class="col-sm-6">
               <div class="bg-white">
+                <!-- calender view start -->
+                <div class="row">
+                  <div class="justify-content-between align-items-center col-md-12 mt-5" >
+                    <h4 class="text-center" style="font-size: 40px;color:#404040;">Calendar</h4>
+                    <div class="container">
+                      <div id="calendar"></div>
+                    </div>
+                    
+                  </div>
+                </div>
+                <!-- calender view end -->
+                <!-- Project File view start -->
                 <div class="row">
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
                     <h4 class="text-center" style="font-size: 40px;color:#404040;">Project's Files</h4>
@@ -436,8 +454,10 @@ use App\Http\Controllers\DashboardController;
                     </table>
                   </div>
                 </div>
+                <!-- Project File view end -->
               </div>
             </div>
+            <!-- ChatBox view start -->
             <div class="col-sm-6 message_section">
               
               <!--chat_sidebar-->
@@ -568,6 +588,8 @@ use App\Http\Controllers\DashboardController;
                 </div>
               </div> -->
             </div>
+            <!-- ChatBox view start -->
+            
           </div>
           <div class="row">
             <div class="col-sm-12">
@@ -576,6 +598,7 @@ use App\Http\Controllers\DashboardController;
                   <div class="justify-content-between align-items-center col-md-12 mt-5" >
                     <h4 class="text-center" style="font-size: 40px;color:#404040;">Project's Task List</h4>
                     <table class="table table-striped table-responsive" style="display: inline-table!important;">
+                    
                       <thead>
                         <tr>
                           <th style="width:10%">Action</th>
@@ -794,6 +817,12 @@ use App\Http\Controllers\DashboardController;
 
   <script src="https://use.fontawesome.com/45e03a14ce.js"></script>
   <!-- for chatbox end-->   
+  <!-- calender view js start -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+  <!-- calender view js end -->
 
 </body>
 
@@ -971,5 +1000,192 @@ use App\Http\Controllers\DashboardController;
       $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
   });
   // on page load scroll chatbox down end 
+
+  // $('#test_button').on('click',function(){
+  //   const url = `{{ route('action_calender') }}`;
+  //   let data = {};
+  //   console.log('Route Url',url);
+  //   axios.post(url,data).then(response => {
+  //       console.log(url);
+  //     }).catch(error=>{
+  //       console.log(error);
+  //     });
+  // });
+   
+
+  $(document).ready(function () {
+    var project_id = `{{$project_id}}`;
+    $.ajaxSetup({
+      headers:{
+        'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    var calendar = $('#calendar').fullCalendar({
+      editable:true,
+      header:{
+        left:'prev,next today',
+        center:'title',
+        right:'month,agendaWeek,agendaDay'
+      },
+      events:`{{ route('get_calender', $project_id) }}`,
+
+      selectable:true,
+      selectHelper: true,
+      select:function(start, end, allDay)
+      {
+        var title = prompt('Event Title:');
+        if(title)
+        {
+          var start = $.fullCalendar.formatDate(start, 'Y-MM-DD HH:mm:ss');
+          var end = $.fullCalendar.formatDate(end, 'Y-MM-DD HH:mm:ss');
+          var project_id = `{{$project_id}}`;
+
+          const url = `{{ route('action_calender') }}`;
+          let data = {
+            title: title,
+            start: start,
+            end: end,
+            project_id: project_id,
+            type: 'add'
+          };
+          axios.post(url,data).then(response => {
+            calendar.fullCalendar('refetchEvents');
+            alert("Event Created Successfully");
+          }).catch(error=>{
+            console.log(error);
+          });
+
+          //   url:"`{{ route('action_calender') }}`",
+
+          //   type:"POST",
+          //   data:{
+          //     title: title,
+          //     start: start,
+          //     end: end,
+          //     project_id: project_id,
+          //     type:'add'
+          //   },
+          //   success:function(data)
+          //   {
+          //     calendar.fullCalendar('refetchEvents');
+          //     alert("Event Created Successfully");
+          //   }
+          // })
+        }
+      },
+      editable:true,
+      eventResize: function(event, delta)
+      {
+        var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
+        var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
+        var title = event.title;
+        var id = event.id;
+
+        const url = `{{ route('action_calender') }}`;
+        let data = {
+          title: title,
+          start: start,
+          end: end,
+          id: id,
+          type: 'update'
+        };
+        axios.post(url,data).then(response => {
+          calendar.fullCalendar('refetchEvents');
+          alert("Event Updated Successfully");
+        }).catch(error=>{
+          console.log(error);
+        });
+
+        // $.ajax({
+        //   url:"`{{ route('action_calender') }}`",
+        //   type:"POST",
+        //   data:{
+        //     title: title,
+        //     start: start,
+        //     end: end,
+        //     id: id,
+        //     type: 'update'
+        //   },
+        //   success:function(response)
+        //   {
+        //     calendar.fullCalendar('refetchEvents');
+        //     alert("Event Updated Successfully");
+        //   }
+        // })
+      },
+      eventDrop: function(event, delta)
+      {
+        var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
+        var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
+        var title = event.title;
+        var id = event.id;
+
+        const url = `{{ route('action_calender') }}`;
+        let data = {
+          title: title,
+          start: start,
+          end: end,
+          id: id,
+          type: 'update'
+        };
+        axios.post(url,data).then(response => {
+          calendar.fullCalendar('refetchEvents');
+          alert("Event Updated Successfully");
+        }).catch(error=>{
+          console.log(error);
+        });
+
+        // $.ajax({
+        //   url:"`{{ route('action_calender') }}`",
+        //   type:"POST",
+        //   data:{
+        //     title: title,
+        //     start: start,
+        //     end: end,
+        //     id: id,
+        //     type: 'update'
+        //   },
+        //   success:function(response)
+        //   {
+        //     calendar.fullCalendar('refetchEvents');
+        //     alert("Event Updated Successfully");
+        //   }
+        // })
+      },
+      eventClick:function(event)
+      {
+        if(confirm("Are you sure you want to remove it?"))
+        {
+          var id = event.id;
+
+          const url = `{{ route('action_calender') }}`;
+          let data = {
+            id: id,
+            type: 'delete'
+          };
+          axios.post(url,data).then(response => {
+            calendar.fullCalendar('refetchEvents');
+            alert("Event Deleted Successfully");
+          }).catch(error=>{
+            console.log(error);
+          });
+
+          // $.ajax({
+          //   url:"`{{ route('action_calender') }}`",
+          //   type:"POST",
+          //   data:{
+          //     id:id,
+          //     type:"delete"
+          //   },
+          //   success:function(response)
+          //   {
+          //     calendar.fullCalendar('refetchEvents');
+          //     alert("Event Deleted Successfully");
+          //   }
+          // })
+        }
+      }
+    });
+  });
   
 </script>
