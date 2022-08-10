@@ -26,15 +26,13 @@ use App\Models\ProjectVsEvents;
 class DashboardController extends Controller
 {
     public function index(){
-        // $DATA = 'Hello World';
-        // return view('demo')->with('data',$DATA);
-
         $users = User::where('isDelete', '=', 0)->get();
-        
         return view('main_page')->with('users',$users);
-        // return view('demo.php');
     }
-    
+    public function testing(){
+        $current_user = Auth::user()->name;
+        return view('pages.dashboard')->with('current_user',$current_user);
+    }
     public function store_profile_data(Request $request){
 
         

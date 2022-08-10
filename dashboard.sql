@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2022 at 02:14 PM
+-- Generation Time: Aug 10, 2022 at 02:18 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -24,6 +24,55 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `client_category_master`
+--
+
+CREATE TABLE `client_category_master` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `client_category_master`
+--
+
+INSERT INTO `client_category_master` (`id`, `name`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 'Default', 0, '2022-07-21 05:30:00', '2022-07-21 05:30:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_master`
+--
+
+CREATE TABLE `client_master` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `company_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `client_category_id` tinyint(4) DEFAULT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `client_master`
+--
+
+INSERT INTO `client_master` (`id`, `company_name`, `first_name`, `last_name`, `email`, `address`, `client_category_id`, `isDelete`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'omega', 'gautam', 'rathod', 'g@gmail.com', 'Lorem ipsum dolor', 1, 0, 1, '2022-07-26 06:59:07', '2022-07-26 06:59:07'),
+(2, 'vedant', 'anil', 'b', 'a@gmail.com', 'Lorem ipsum dolor', 1, 0, 1, '2022-07-26 06:59:53', '2022-08-01 04:55:08');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `failed_jobs`
 --
 
@@ -36,6 +85,28 @@ CREATE TABLE `failed_jobs` (
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_role_master`
+--
+
+CREATE TABLE `job_role_master` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `job_role_master`
+--
+
+INSERT INTO `job_role_master` (`id`, `name`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 'Developer', 0, '2022-07-20 06:40:37', '2022-07-20 06:40:37'),
+(2, 'Manager', 0, '2022-07-20 06:40:37', '2022-07-20 06:40:37');
 
 -- --------------------------------------------------------
 
@@ -64,7 +135,28 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (22, '2022_07_06_053335_create_task_table', 4),
 (23, '2022_07_06_060156_create_todolist_table', 4),
 (24, '2022_07_07_130727_create_task_table', 5),
-(25, '2022_07_08_045245_create_task_table', 6);
+(25, '2022_07_08_045245_create_task_table', 6),
+(26, '2022_07_18_051619_add_type_to_users_table', 7),
+(27, '2022_07_20_062715_create_job_role_master_table', 8),
+(28, '2022_07_20_070056_create_working_location_master_table', 9),
+(29, '2022_07_20_093012_alter_table_profile_change_job_role', 10),
+(30, '2022_07_20_104146_create_profile_table', 11),
+(32, '2022_07_20_104658_create_profile_table', 12),
+(33, '2022_07_21_052834_create_client_category_master_table', 13),
+(35, '2022_07_21_064553_create_client_master_table', 14),
+(36, '2022_07_21_085857_create_project_table', 15),
+(37, '2022_07_22_093022_add_columns_to_task_table', 16),
+(38, '2022_07_22_122522_create_comment_table', 17),
+(39, '2022_07_22_124247_create_project_vs_comment_table', 18),
+(40, '2022_07_25_111914_add_image_path_to_profile_table', 19),
+(41, '2022_07_25_112703_add_attachment_path_to_project_vs_comment_table', 20),
+(42, '2022_07_25_164748_change_dob_to_profile_table', 21),
+(43, '2022_07_26_112920_add_image_path_to_users_table', 22),
+(44, '2022_07_26_121244_add_is_delete_to_time_tracker_table', 23),
+(45, '2022_07_27_111931_add_start_time_to_project_table', 24),
+(46, '2022_07_27_114600_add_start_by_to_project_table', 25),
+(47, '2022_07_27_141606_add_start_date_to_project_table', 26),
+(48, '2022_08_02_171129_create_project_vs_events_table', 27);
 
 -- --------------------------------------------------------
 
@@ -77,6 +169,13 @@ CREATE TABLE `password_resets` (
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
+('rajdip@gmail.com', '$2y$10$jHOPmmpn3KhQXULvs6cTouNcgC5N6lAWBzw.O8UxzyfD.vc5OB01C', '2022-07-19 03:59:02');
 
 -- --------------------------------------------------------
 
@@ -106,18 +205,20 @@ CREATE TABLE `profile` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `family_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `given_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dob` date NOT NULL,
+  `dob` date DEFAULT NULL,
   `edu_qualification` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `job_role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `job_role` tinyint(4) DEFAULT NULL,
   `work_location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `present_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `permanent_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `skills` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_number_2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `working_location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `working_location` tinyint(4) DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_path` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -126,9 +227,135 @@ CREATE TABLE `profile` (
 -- Dumping data for table `profile`
 --
 
-INSERT INTO `profile` (`id`, `family_name`, `given_name`, `dob`, `edu_qualification`, `job_role`, `work_location`, `present_address`, `permanent_address`, `skills`, `contact_number`, `contact_number_2`, `working_location`, `email`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'Gondalia', 'Rajdip', '1999-05-29', 'edu q', 'Developer', NULL, 'ahmedabad', 'rajkot', 'dshj jdfsgh', '9797979797', '9898989898', 'Ahmedabad', 'test@gmail.com', 1, '2022-07-06 03:04:34', '2022-07-06 03:04:34'),
-(2, 'family name', 'Test one', '2022-07-06', 'BE in IT', 'Developer', NULL, 'near itc narmada', NULL, NULL, '9999999999', NULL, 'Ahmedabad', 'a@gmail.com', 3, '2022-07-14 06:21:49', '2022-07-14 06:21:49');
+INSERT INTO `profile` (`id`, `family_name`, `given_name`, `dob`, `edu_qualification`, `job_role`, `work_location`, `present_address`, `permanent_address`, `skills`, `contact_number`, `contact_number_2`, `working_location`, `email`, `image_path`, `user_id`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 'Gondalia', 'Rajdip', '1999-05-29', 'aa', 1, NULL, 'Lorem ipsum dolor sit amet consectetur', 'Lorem ipsum dolor sit amet consectetur', 'Lorem ipsum dolor sit amet consectetur', '5413131321312', '45456546546546', 1, 'r@gmail.com', 'Raj_1659087086.jpg', 1, 0, '2022-07-26 06:56:28', '2022-08-10 11:40:06'),
+(2, 'd', 'sagar', '2020-01-22', NULL, 1, NULL, NULL, NULL, NULL, '9846161324', NULL, 0, 's@gmail.com', 'sagar_1659086300.jpg', 1, 0, '2022-07-29 09:18:20', '2022-07-29 09:18:20'),
+(3, 'gautami', 'vinay', '2000-02-22', 'aa', 2, NULL, 'cc', 'dd', 'aa', '6758979878766', '7868687687', 2, 'vi@gmail.com', NULL, 1, 0, '2022-07-29 09:34:53', '2022-07-29 11:10:58'),
+(4, 'two', 'One', '2022-08-10', 'three', NULL, NULL, 'five', 'six', 'four', '1234567890', '234567912', NULL, 'seven@gmail.com', NULL, 1, 0, '2022-08-10 05:42:15', '2022-08-10 05:42:15'),
+(5, 'aa', 'aa', '2022-08-10', NULL, NULL, NULL, 'near Itc Narmada', NULL, NULL, '01234567890', NULL, NULL, 'r@gmail.com', NULL, 1, 0, '2022-08-10 06:24:27', '2022-08-10 06:24:27'),
+(6, 'bb', 'aa', '2022-08-10', 'cc', 1, NULL, 'ee', 'ff', 'dd', 'gg', 'hh', 2, 'i@gmail.com', NULL, 1, 0, '2022-08-10 06:26:52', '2022-08-10 06:26:52');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project`
+--
+
+CREATE TABLE `project` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `client_id` tinyint(4) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
+  `assign_to` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `project_manager` tinyint(4) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL COMMENT '0=Not Started, 1=In Progress, 2=On Hold, 3=Completed, 4=Cancel',
+  `start_time` datetime DEFAULT NULL,
+  `start_by` int(11) DEFAULT NULL,
+  `complete_time` datetime DEFAULT NULL,
+  `complete_by` int(11) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `project`
+--
+
+INSERT INTO `project` (`id`, `title`, `client_id`, `start_date`, `due_date`, `assign_to`, `project_manager`, `status`, `start_time`, `start_by`, `complete_time`, `complete_by`, `user_id`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 'finder game', 1, NULL, '2022-08-30', '1,2,3,4,5', 1, 0, '2022-07-27 12:55:44', 1, NULL, NULL, 1, 0, '2022-07-26 07:00:49', '2022-07-27 07:25:46'),
+(2, 'subway game', 2, NULL, '2022-08-19', '1,2,3', 1, 0, '2022-07-27 12:55:29', 1, '2022-07-27 12:55:32', 1, 1, 0, '2022-07-26 07:02:22', '2022-07-30 07:09:16'),
+(3, 'pubg', 2, '2022-07-27', '2022-09-28', '1,2,4,5', 2, 0, NULL, NULL, NULL, NULL, 1, 0, '2022-07-27 08:53:08', '2022-07-30 07:10:20'),
+(4, 'project one', 1, '2022-07-27', '2022-08-31', '2,3', 2, 0, '2022-07-27 14:53:26', 1, '2022-07-27 14:53:29', 1, 1, 0, '2022-07-27 09:22:47', '2022-08-01 12:13:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project_vs_comment`
+--
+
+CREATE TABLE `project_vs_comment` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `comment` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `attachment_path` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `project_id` tinyint(4) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `project_vs_comment`
+--
+
+INSERT INTO `project_vs_comment` (`id`, `comment`, `attachment_path`, `project_id`, `user_id`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 'hy', NULL, 1, 1, 0, '2022-07-26 07:21:05', '2022-07-26 07:21:05'),
+(2, 'start a project?', NULL, 1, 2, 0, '2022-07-26 07:24:10', '2022-07-26 07:24:10'),
+(3, 'today or Tomorrow?', NULL, 1, 2, 0, '2022-07-26 07:24:35', '2022-07-26 07:24:35'),
+(4, 'ok, tomorrow morning we start this project..', NULL, 1, 1, 0, '2022-07-26 08:58:28', '2022-07-26 08:58:28'),
+(5, NULL, 'Rajdip_1658831761.jpg', 1, 1, 0, '2022-07-26 10:36:01', '2022-07-26 10:36:01'),
+(6, NULL, 'Rajdip_1658832307.jpg', 1, 1, 0, '2022-07-26 10:45:07', '2022-07-26 10:45:07'),
+(7, 'abcd', NULL, 1, 1, 0, '2022-07-26 10:45:35', '2022-07-26 10:45:35'),
+(8, NULL, 'Rajdip_1658835954.xlsx', 1, 1, 0, '2022-07-26 11:45:54', '2022-07-26 11:45:54'),
+(9, 'yes, do it', NULL, 1, 2, 0, '2022-07-26 11:59:06', '2022-07-26 11:59:06'),
+(10, NULL, 'vivek_1658836766.jpg', 1, 2, 0, '2022-07-26 11:59:26', '2022-07-26 11:59:26'),
+(11, NULL, 'vivek_1658836784.xlsx', 1, 2, 0, '2022-07-26 11:59:44', '2022-07-26 11:59:44'),
+(12, NULL, 'vivek_1658837865.jpg', 1, 2, 0, '2022-07-26 12:17:45', '2022-07-26 12:17:45'),
+(13, NULL, 'vivek_1658837871.jpg', 1, 2, 0, '2022-07-26 12:17:51', '2022-07-26 12:17:51'),
+(14, NULL, 'vivek_1658837876.jpg', 1, 2, 0, '2022-07-26 12:17:56', '2022-07-26 12:17:56'),
+(15, NULL, 'vivek_1658837887.jpg', 1, 2, 0, '2022-07-26 12:18:07', '2022-07-26 12:18:07'),
+(16, NULL, 'Rajdip_1658838495.jpg', 1, 1, 0, '2022-07-26 12:28:15', '2022-07-26 12:28:15'),
+(17, 'give me update', NULL, 1, 1, 0, '2022-07-26 12:29:09', '2022-07-26 12:29:09'),
+(18, 'ok.. after 1 hour', NULL, 1, 2, 0, '2022-07-26 12:29:40', '2022-07-26 12:29:40'),
+(19, NULL, 'Rajdip_1658838610.xlsx', 1, 1, 0, '2022-07-26 12:30:10', '2022-07-26 12:30:10'),
+(20, NULL, 'vivek_1658838642.jpg', 1, 2, 0, '2022-07-26 12:30:42', '2022-07-30 09:11:13'),
+(21, 'hyy', NULL, 2, 1, 0, '2022-07-26 12:31:29', '2022-07-26 12:31:29'),
+(22, 'today is last day to update', NULL, 1, 1, 0, '2022-07-27 09:20:31', '2022-07-30 09:41:55'),
+(23, NULL, 'Rajdip_1658913644.xlsx', 1, 1, 0, '2022-07-27 09:20:44', '2022-07-30 09:09:58'),
+(24, 'hi', NULL, 4, 1, 0, '2022-07-27 09:23:49', '2022-07-27 09:23:49'),
+(25, 'ok. i will try', NULL, 4, 2, 0, '2022-07-27 09:24:32', '2022-07-27 09:24:32'),
+(26, NULL, 'Rajdip_1658913889.jpg', 4, 1, 0, '2022-07-27 09:24:49', '2022-07-27 09:24:49'),
+(27, 'file not proper', NULL, 1, 1, 0, '2022-08-06 11:04:31', '2022-08-06 11:04:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project_vs_events`
+--
+
+CREATE TABLE `project_vs_events` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `project_id` tinyint(4) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `project_vs_events`
+--
+
+INSERT INTO `project_vs_events` (`id`, `title`, `start`, `end`, `project_id`, `user_id`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 'ww', '2022-08-08 04:00:00', '2022-08-08 09:00:00', 1, 1, 0, '2022-08-08 05:39:32', '2022-08-08 06:55:55'),
+(2, 'two', '2022-08-02 00:00:00', '2022-08-03 00:00:00', 4, 1, 0, '2022-08-08 05:57:34', '2022-08-08 05:57:34'),
+(3, 'three', '2022-08-09 00:00:00', '2022-08-12 00:00:00', 4, 1, 0, '2022-08-08 05:57:41', '2022-08-08 05:57:41'),
+(4, 'hello', '2022-08-10 00:00:00', '2022-08-11 00:00:00', 1, 1, 1, '2022-08-08 06:47:50', '2022-08-08 06:52:31'),
+(5, 'ok', '2022-08-10 00:00:00', '2022-08-11 00:00:00', 1, 1, 0, '2022-08-08 06:52:49', '2022-08-08 06:52:49'),
+(6, 'add glass', '2022-08-11 16:00:00', '2022-08-11 18:00:00', 1, 1, 0, '2022-08-08 07:06:18', '2022-08-08 07:06:18'),
+(7, 'new theme', '2022-08-15 00:00:00', '2022-08-25 00:00:00', 1, 1, 0, '2022-08-08 07:06:39', '2022-08-08 07:06:39'),
+(8, 'logo create', '2022-08-16 00:00:00', '2022-08-19 00:00:00', 1, 1, 0, '2022-08-08 07:06:53', '2022-08-08 07:06:53'),
+(9, 'event one', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:07:12', '2022-08-08 07:07:12'),
+(10, 'make model', '2022-08-17 00:00:00', '2022-08-24 00:00:00', 1, 1, 0, '2022-08-08 07:13:53', '2022-08-08 07:13:53'),
+(11, 'payment process start', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:14:14', '2022-08-08 07:14:14'),
+(12, 'link insta id', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:14:36', '2022-08-08 07:14:36'),
+(13, 'link wp', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:14:48', '2022-08-08 07:14:48');
 
 -- --------------------------------------------------------
 
@@ -138,16 +365,19 @@ INSERT INTO `profile` (`id`, `family_name`, `given_name`, `dob`, `edu_qualificat
 
 CREATE TABLE `task` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `project_id` tinyint(4) DEFAULT NULL,
   `task_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `task_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `assign_to` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `due_date` date DEFAULT NULL,
+  `priority` tinyint(4) DEFAULT NULL,
   `status` int(11) DEFAULT NULL COMMENT '0=Pending, 1=Start, 2=Stop, 3=Completed, 4=Cancel',
   `start_time` datetime DEFAULT NULL,
   `start_by` int(11) DEFAULT NULL,
   `stop_time` datetime DEFAULT NULL,
   `stop_by` int(11) DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -156,20 +386,10 @@ CREATE TABLE `task` (
 -- Dumping data for table `task`
 --
 
-INSERT INTO `task` (`id`, `task_title`, `task_desc`, `assign_to`, `due_date`, `status`, `start_time`, `start_by`, `stop_time`, `stop_by`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'make game', 'new game changes on mail', '1,3', NULL, 3, '2022-07-12 18:20:59', 3, '2022-07-13 00:00:00', NULL, 3, '2022-07-08 00:18:55', '2022-07-12 23:05:49'),
-(2, 'a', 'ko', '1', NULL, 1, '2022-07-12 18:21:23', 3, '0000-00-00 00:00:00', 3, 3, '2022-07-08 07:34:05', '2022-07-12 07:21:24'),
-(3, 'one', 'ok', '3', NULL, 1, '2022-07-12 18:21:49', 3, NULL, 1, 3, '2022-07-11 22:55:09', '2022-07-12 07:21:49'),
-(4, 'demo1', 'demo1', '1,3', '2022-07-12', 3, '2022-07-14 12:57:28', 3, '2022-07-14 12:57:35', 3, 3, '2022-07-12 00:17:59', '2022-07-14 01:57:46'),
-(5, 'demo2 title', 'demo2 title desc', '1,3', '2022-07-12', 0, '2022-07-12 18:22:47', 3, NULL, 1, 3, '2022-07-12 00:19:20', '2022-07-12 07:22:47'),
-(9, 'Optio iusto molesti', 'Consequatur et nost', '1,3', '2020-02-19', 0, '2022-07-12 18:27:35', 3, NULL, NULL, 3, '2022-07-12 07:01:36', '2022-07-12 07:27:35'),
-(10, 'ggh', 'ok', '1,3', '2022-07-12', 1, '2022-07-12 18:34:51', 3, NULL, NULL, 3, '2022-07-12 07:14:46', '2022-07-12 07:34:51'),
-(14, 'new pc install', NULL, '1,3', '2022-07-13', 0, NULL, NULL, NULL, NULL, 3, '2022-07-13 01:19:24', '2022-07-13 01:19:24'),
-(15, 'aa', 'aa', '1', '2022-07-14', 0, NULL, NULL, NULL, NULL, 3, '2022-07-13 23:30:29', '2022-07-13 23:30:29'),
-(16, NULL, NULL, '', '1970-01-01', 0, NULL, NULL, NULL, NULL, 3, '2022-07-13 23:34:22', '2022-07-13 23:34:22'),
-(17, 'ss', NULL, '1', '1970-01-01', 0, NULL, NULL, NULL, NULL, 3, '2022-07-13 23:49:24', '2022-07-13 23:49:24'),
-(18, 'clean pc', 'all', '1', '2022-07-15', 3, '2022-07-14 16:59:33', 3, '2022-07-14 16:59:45', 3, 3, '2022-07-14 05:59:04', '2022-07-14 06:00:09'),
-(19, 'make new game', 'kiki', '1,2,3', '2022-07-20', 3, '2022-07-14 17:23:35', 3, '2022-07-14 17:23:42', 3, 3, '2022-07-14 06:23:21', '2022-07-14 06:23:51');
+INSERT INTO `task` (`id`, `project_id`, `task_title`, `task_desc`, `assign_to`, `due_date`, `priority`, `status`, `start_time`, `start_by`, `stop_time`, `stop_by`, `user_id`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 1, 'make design', 'colour is in project doc', '4', '2022-07-29', 2, 0, NULL, NULL, NULL, NULL, 1, 0, '2022-07-26 07:05:42', '2022-07-29 13:58:35'),
+(2, 1, 'make logo', NULL, '5', '2022-07-29', 3, 0, NULL, NULL, NULL, NULL, 1, 0, '2022-07-26 07:08:34', '2022-07-26 07:08:34'),
+(3, 1, 'pc on', 'sdjhgfsjh', '1,3', '2022-07-27', 2, 3, '2022-07-27 14:49:12', 1, '2022-07-27 14:49:19', 1, 1, 0, '2022-07-27 09:19:07', '2022-07-30 08:49:53');
 
 -- --------------------------------------------------------
 
@@ -182,6 +402,7 @@ CREATE TABLE `time_tracker` (
   `flag` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `current_time` datetime NOT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -190,26 +411,21 @@ CREATE TABLE `time_tracker` (
 -- Dumping data for table `time_tracker`
 --
 
-INSERT INTO `time_tracker` (`id`, `flag`, `user_id`, `current_time`, `created_at`, `updated_at`) VALUES
-(1, 'start', 3, '2022-07-06 18:05:21', '2022-07-06 07:05:22', '2022-07-06 07:05:22'),
-(2, 'start', 3, '2022-07-06 18:07:06', '2022-07-06 07:07:06', '2022-07-06 07:07:06'),
-(3, 'start', 3, '2022-07-06 18:10:22', '2022-07-06 07:10:22', '2022-07-06 07:10:22'),
-(4, 'start', 3, '2022-07-06 18:10:27', '2022-07-06 07:10:28', '2022-07-06 07:10:28'),
-(5, 'start', 3, '2022-07-06 18:11:02', '2022-07-06 07:11:03', '2022-07-06 07:11:03'),
-(6, 'start', 3, '2022-07-06 18:12:09', '2022-07-06 07:12:10', '2022-07-06 07:12:10'),
-(7, 'stop', 3, '2022-07-06 18:16:22', '2022-07-06 07:16:22', '2022-07-06 07:16:22'),
-(8, 'start', 3, '2022-07-07 18:39:11', '2022-07-07 07:39:12', '2022-07-07 07:39:12'),
-(9, 'stop', 3, '2022-07-07 18:39:20', '2022-07-07 07:39:20', '2022-07-07 07:39:20'),
-(10, 'start', 3, '2022-07-14 10:00:00', '2022-07-13 01:12:03', '2022-07-13 01:12:03'),
-(11, 'stop', 3, '2022-07-14 12:12:04', '2022-07-14 00:12:04', '2022-07-14 01:12:04'),
-(14, 'start', 3, '2022-07-14 15:16:02', '2022-07-14 04:16:02', '2022-07-14 04:16:02'),
-(15, 'stop', 3, '2022-07-14 15:16:12', '2022-07-14 04:16:13', '2022-07-14 04:16:13'),
-(16, 'start', 3, '2022-07-14 15:43:42', '2022-07-14 04:43:43', '2022-07-14 04:43:43'),
-(17, 'stop', 3, '2022-07-14 15:43:50', '2022-07-14 04:43:50', '2022-07-14 04:43:50'),
-(18, 'start', 3, '2022-07-14 16:57:52', '2022-07-14 05:57:52', '2022-07-14 05:57:52'),
-(19, 'stop', 3, '2022-07-14 16:58:01', '2022-07-14 05:58:01', '2022-07-14 05:58:01'),
-(20, 'start', 3, '2022-07-14 17:22:16', '2022-07-14 06:22:17', '2022-07-14 06:22:17'),
-(21, 'stop', 3, '2022-07-14 17:22:30', '2022-07-14 06:22:30', '2022-07-14 06:22:30');
+INSERT INTO `time_tracker` (`id`, `flag`, `user_id`, `current_time`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 'start', 1, '2022-07-26 12:28:04', 0, '2022-07-26 06:58:04', '2022-07-26 06:58:04'),
+(2, 'stop', 1, '2022-07-27 14:55:50', 1, '2022-07-27 09:25:50', '2022-07-29 12:28:35'),
+(3, 'stop', 1, '2022-07-29 17:58:55', 1, '2022-07-29 12:28:56', '2022-07-29 12:29:23'),
+(4, 'start', 1, '2022-07-29 18:11:51', 0, '2022-07-29 12:41:51', '2022-07-29 12:41:51'),
+(5, 'stop', 1, '2022-07-29 18:11:56', 0, '2022-07-29 12:41:56', '2022-07-29 12:41:56'),
+(6, 'start', 1, '2022-07-29 18:12:01', 0, '2022-07-29 12:42:01', '2022-07-29 12:42:01'),
+(7, 'stop', 1, '2022-07-29 18:12:05', 0, '2022-07-29 12:42:06', '2022-07-29 12:42:06'),
+(8, 'start', 1, '2022-07-29 18:12:18', 0, '2022-07-29 12:42:18', '2022-07-29 12:42:18'),
+(9, 'stop', 1, '2022-07-29 18:12:26', 1, '2022-07-29 12:42:27', '2022-07-29 12:43:27'),
+(10, 'stop', 1, '2022-07-29 18:13:30', 0, '2022-07-29 12:43:30', '2022-07-29 12:43:30'),
+(11, 'start', 1, '2022-08-06 16:30:21', 0, '2022-08-06 11:00:21', '2022-08-06 11:00:21'),
+(12, 'stop', 1, '2022-08-06 16:30:25', 0, '2022-08-06 11:00:25', '2022-08-06 11:00:25'),
+(13, 'start', 1, '2022-08-06 16:30:31', 0, '2022-08-06 11:00:31', '2022-08-06 11:00:31'),
+(14, 'stop', 1, '2022-08-06 16:30:39', 0, '2022-08-06 11:00:39', '2022-08-06 11:00:39');
 
 -- --------------------------------------------------------
 
@@ -226,14 +442,6 @@ CREATE TABLE `todolist` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `todolist`
---
-
-INSERT INTO `todolist` (`id`, `todo_title`, `todo_desc`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'one', 'one desc', 1, '2022-07-06 00:55:32', '2022-07-06 00:55:32'),
-(2, 'two', 'two desc', 1, '2022-07-06 01:57:05', '2022-07-06 01:57:05');
-
 -- --------------------------------------------------------
 
 --
@@ -242,11 +450,14 @@ INSERT INTO `todolist` (`id`, `todo_title`, `todo_desc`, `user_id`, `created_at`
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `type` int(11) DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_path` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -255,14 +466,53 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'test@gmail.com', NULL, '$2y$10$YmMWBNgF3riWEIf.WvM3E.BsZ/IFkM/hrkEj0yrWUaRxTstMzxQdG', NULL, NULL, NULL),
-(2, 'Prudhvi', 'm@gmail.com', NULL, '$2y$10$YmMWBNgF3riWEIf.WvM3E.BsZ/IFkM/hrkEj0yrWUaRxTstMzxQdG', NULL, '2022-07-01 06:24:59', '2022-07-01 06:24:59'),
-(3, 'rajdip', 'rajdip@gmail.com', NULL, '$2y$10$Guc7kRDc.6E7jdwNyp/9tuaDWxHrBmDgKQEcf.L.VmpplIu6QhOxe', 'T92TruMPpSaNZT2BXuEwdRyK73lhvVP4Ek2aXDOmrz262RJvhCeC1L0sHnLq', '2022-07-01 06:35:15', '2022-07-01 06:35:15');
+INSERT INTO `users` (`id`, `type`, `name`, `email`, `image_path`, `email_verified_at`, `password`, `remember_token`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Rajdip', 'r@gmail.com', 'Rajdip_1658818086.jpg', NULL, '$2y$10$Sy3PnqMu36jw/4OmK4F4i..rA6xH8yvNJqOJ/jp0ZOU5Ar9xBWJZq', NULL, 0, '2022-07-26 06:48:06', '2022-07-26 06:48:06'),
+(2, 2, 'vivek', 'v@gmail.com', 'vivek_1658818166.jpg', NULL, '$2y$10$uAom.RBIopnKGieO1HxPHeNkdTt3u1RyJU1wDKbo54IzhNSK6VmE.', NULL, 0, '2022-07-26 06:49:26', '2022-07-26 06:49:26'),
+(3, 3, 'yash', 'y@gmail.com', 'yash_1658818209.jpg', NULL, '$2y$10$DXxOabrtjE4mf9VVu8rxLuOis8MDOguZS9K8Op0osWe4xXV8uUUJi', NULL, 0, '2022-07-26 06:50:09', '2022-07-26 06:50:09'),
+(4, 3, 'dhruv', 'd@gmail.com', 'dhruv_1659335505.jpg', NULL, '$2y$10$2VXaTm.EuDSt9XDyuhO.EeVrHFwtUgbSaD1fXNfSGwsOQ/ID5RT5u', NULL, 0, '2022-07-26 06:50:37', '2022-08-01 06:31:45'),
+(5, 3, 'meet', 'm@gmail.com', 'meet_1658818267.jpg', NULL, '$2y$10$WUT/KWdOTMdZzhMvzDgBbevnJhfDz4BJXIdBZTtcFLgbmdayrD7Uq', NULL, 0, '2022-07-26 06:51:07', '2022-07-30 10:17:59'),
+(6, 3, 'meera m', 'meera@gmail.com', NULL, NULL, '$2y$10$tNDe.7geJhiJG0gkmJZ6QOgjcnbCwJKj/dzSu.8tcTxCFTZ.sjXr6', NULL, 0, '2022-08-01 07:20:55', '2022-08-02 05:52:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `working_location_master`
+--
+
+CREATE TABLE `working_location_master` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isDelete` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `working_location_master`
+--
+
+INSERT INTO `working_location_master` (`id`, `name`, `isDelete`, `created_at`, `updated_at`) VALUES
+(1, 'Ahmedabad', 0, '2022-07-20 07:04:49', '2022-07-20 07:04:49'),
+(2, 'Hyderabad', 0, '2022-07-20 07:04:49', '2022-07-20 07:04:49'),
+(3, 'remote', 0, '2022-07-20 07:04:49', '2022-07-20 07:04:49');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `client_category_master`
+--
+ALTER TABLE `client_category_master`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `client_master`
+--
+ALTER TABLE `client_master`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_master_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -270,6 +520,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indexes for table `job_role_master`
+--
+ALTER TABLE `job_role_master`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `migrations`
@@ -297,6 +553,27 @@ ALTER TABLE `personal_access_tokens`
 ALTER TABLE `profile`
   ADD PRIMARY KEY (`id`),
   ADD KEY `profile_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `project`
+--
+ALTER TABLE `project`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `project_vs_comment`
+--
+ALTER TABLE `project_vs_comment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_vs_comment_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `project_vs_events`
+--
+ALTER TABLE `project_vs_events`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_vs_events_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `task`
@@ -327,8 +604,26 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Indexes for table `working_location_master`
+--
+ALTER TABLE `working_location_master`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `client_category_master`
+--
+ALTER TABLE `client_category_master`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `client_master`
+--
+ALTER TABLE `client_master`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -337,10 +632,16 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `job_role_master`
+--
+ALTER TABLE `job_role_master`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -352,30 +653,54 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `project`
+--
+ALTER TABLE `project`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `project_vs_comment`
+--
+ALTER TABLE `project_vs_comment`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `project_vs_events`
+--
+ALTER TABLE `project_vs_events`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `time_tracker`
 --
 ALTER TABLE `time_tracker`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `todolist`
 --
 ALTER TABLE `todolist`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `working_location_master`
+--
+ALTER TABLE `working_location_master`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
@@ -383,10 +708,34 @@ ALTER TABLE `users`
 --
 
 --
+-- Constraints for table `client_master`
+--
+ALTER TABLE `client_master`
+  ADD CONSTRAINT `client_master_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `profile`
 --
 ALTER TABLE `profile`
   ADD CONSTRAINT `profile_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `project`
+--
+ALTER TABLE `project`
+  ADD CONSTRAINT `project_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `project_vs_comment`
+--
+ALTER TABLE `project_vs_comment`
+  ADD CONSTRAINT `project_vs_comment_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `project_vs_events`
+--
+ALTER TABLE `project_vs_events`
+  ADD CONSTRAINT `project_vs_events_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `task`
