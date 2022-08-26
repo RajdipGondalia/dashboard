@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2022 at 02:18 PM
+-- Generation Time: Aug 26, 2022 at 11:39 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -68,7 +68,8 @@ CREATE TABLE `client_master` (
 
 INSERT INTO `client_master` (`id`, `company_name`, `first_name`, `last_name`, `email`, `address`, `client_category_id`, `isDelete`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 'omega', 'gautam', 'rathod', 'g@gmail.com', 'Lorem ipsum dolor', 1, 0, 1, '2022-07-26 06:59:07', '2022-07-26 06:59:07'),
-(2, 'vedant', 'anil', 'b', 'a@gmail.com', 'Lorem ipsum dolor', 1, 0, 1, '2022-07-26 06:59:53', '2022-08-01 04:55:08');
+(2, 'vedant', 'anil', 'b', 'a@gmail.com', 'Lorem ipsum dolor', 1, 0, 1, '2022-07-26 06:59:53', '2022-08-01 04:55:08'),
+(3, 'tree', 'saurav', 'shah', 's@gmail.com', 'sdf dfg', 1, 0, 1, '2022-08-24 06:45:10', '2022-08-24 07:05:08');
 
 -- --------------------------------------------------------
 
@@ -233,7 +234,7 @@ INSERT INTO `profile` (`id`, `family_name`, `given_name`, `dob`, `edu_qualificat
 (3, 'gautami', 'vinay', '2000-02-22', 'aa', 2, NULL, 'cc', 'dd', 'aa', '6758979878766', '7868687687', 2, 'vi@gmail.com', NULL, 1, 0, '2022-07-29 09:34:53', '2022-07-29 11:10:58'),
 (4, 'two', 'One', '2022-08-10', 'three', NULL, NULL, 'five', 'six', 'four', '1234567890', '234567912', NULL, 'seven@gmail.com', NULL, 1, 0, '2022-08-10 05:42:15', '2022-08-10 05:42:15'),
 (5, 'aa', 'aa', '2022-08-10', NULL, NULL, NULL, 'near Itc Narmada', NULL, NULL, '01234567890', NULL, NULL, 'r@gmail.com', NULL, 1, 0, '2022-08-10 06:24:27', '2022-08-10 06:24:27'),
-(6, 'bb', 'aa', '2022-08-10', 'cc', 1, NULL, 'ee', 'ff', 'dd', 'gg', 'hh', 2, 'i@gmail.com', NULL, 1, 0, '2022-08-10 06:26:52', '2022-08-10 06:26:52');
+(6, 'bb', 'aa', '2022-08-10', 'cc', 1, NULL, 'ee', 'ff', 'dd', 'gg', 'hh', 2, 'i@gmail.com', NULL, 1, 1, '2022-08-10 06:26:52', '2022-08-23 04:42:20');
 
 -- --------------------------------------------------------
 
@@ -266,9 +267,10 @@ CREATE TABLE `project` (
 
 INSERT INTO `project` (`id`, `title`, `client_id`, `start_date`, `due_date`, `assign_to`, `project_manager`, `status`, `start_time`, `start_by`, `complete_time`, `complete_by`, `user_id`, `isDelete`, `created_at`, `updated_at`) VALUES
 (1, 'finder game', 1, NULL, '2022-08-30', '1,2,3,4,5', 1, 0, '2022-07-27 12:55:44', 1, NULL, NULL, 1, 0, '2022-07-26 07:00:49', '2022-07-27 07:25:46'),
-(2, 'subway game', 2, NULL, '2022-08-19', '1,2,3', 1, 0, '2022-07-27 12:55:29', 1, '2022-07-27 12:55:32', 1, 1, 0, '2022-07-26 07:02:22', '2022-07-30 07:09:16'),
-(3, 'pubg', 2, '2022-07-27', '2022-09-28', '1,2,4,5', 2, 0, NULL, NULL, NULL, NULL, 1, 0, '2022-07-27 08:53:08', '2022-07-30 07:10:20'),
-(4, 'project one', 1, '2022-07-27', '2022-08-31', '2,3', 2, 0, '2022-07-27 14:53:26', 1, '2022-07-27 14:53:29', 1, 1, 0, '2022-07-27 09:22:47', '2022-08-01 12:13:45');
+(2, 'subway game', 2, NULL, '2022-08-19', '1,2,3', 1, 4, '2022-07-27 12:55:29', 1, '2022-07-27 12:55:32', 1, 1, 0, '2022-07-26 07:02:22', '2022-08-25 04:21:21'),
+(3, 'pubg', 2, '2022-07-27', '2022-09-28', '1,2,4,5', 2, 3, '2022-08-25 09:51:09', 1, '2022-08-25 09:51:15', 1, 1, 0, '2022-07-27 08:53:08', '2022-08-25 04:21:15'),
+(4, 'project one', 1, '2022-07-27', '2022-08-31', '2,3', 2, 2, '2022-08-25 09:50:57', 1, '2022-07-27 14:53:29', 1, 1, 0, '2022-07-27 09:22:47', '2022-08-25 04:21:03'),
+(5, 'gas pump colour', 1, '2022-08-24', '2022-09-07', '1,2,3,6', 1, 1, '2022-08-25 09:50:28', 1, NULL, NULL, 1, 0, '2022-08-24 12:39:11', '2022-08-25 04:20:29');
 
 -- --------------------------------------------------------
 
@@ -295,7 +297,7 @@ INSERT INTO `project_vs_comment` (`id`, `comment`, `attachment_path`, `project_i
 (1, 'hy', NULL, 1, 1, 0, '2022-07-26 07:21:05', '2022-07-26 07:21:05'),
 (2, 'start a project?', NULL, 1, 2, 0, '2022-07-26 07:24:10', '2022-07-26 07:24:10'),
 (3, 'today or Tomorrow?', NULL, 1, 2, 0, '2022-07-26 07:24:35', '2022-07-26 07:24:35'),
-(4, 'ok, tomorrow morning we start this project..', NULL, 1, 1, 0, '2022-07-26 08:58:28', '2022-07-26 08:58:28'),
+(4, 'ok, tomorrow morning we start this project.. hjdfsgdf dfjshdfsjgh sdfkjghdfs kjhdfs kuhdfs kdfshj ', NULL, 1, 1, 0, '2022-07-26 08:58:28', '2022-07-26 08:58:28'),
 (5, NULL, 'Rajdip_1658831761.jpg', 1, 1, 0, '2022-07-26 10:36:01', '2022-07-26 10:36:01'),
 (6, NULL, 'Rajdip_1658832307.jpg', 1, 1, 0, '2022-07-26 10:45:07', '2022-07-26 10:45:07'),
 (7, 'abcd', NULL, 1, 1, 0, '2022-07-26 10:45:35', '2022-07-26 10:45:35'),
@@ -314,11 +316,18 @@ INSERT INTO `project_vs_comment` (`id`, `comment`, `attachment_path`, `project_i
 (20, NULL, 'vivek_1658838642.jpg', 1, 2, 0, '2022-07-26 12:30:42', '2022-07-30 09:11:13'),
 (21, 'hyy', NULL, 2, 1, 0, '2022-07-26 12:31:29', '2022-07-26 12:31:29'),
 (22, 'today is last day to update', NULL, 1, 1, 0, '2022-07-27 09:20:31', '2022-07-30 09:41:55'),
-(23, NULL, 'Rajdip_1658913644.xlsx', 1, 1, 0, '2022-07-27 09:20:44', '2022-07-30 09:09:58'),
+(23, NULL, 'Rajdip_1658913644.xlsx', 1, 1, 0, '2022-07-27 09:20:44', '2022-08-25 05:45:49'),
 (24, 'hi', NULL, 4, 1, 0, '2022-07-27 09:23:49', '2022-07-27 09:23:49'),
 (25, 'ok. i will try', NULL, 4, 2, 0, '2022-07-27 09:24:32', '2022-07-27 09:24:32'),
 (26, NULL, 'Rajdip_1658913889.jpg', 4, 1, 0, '2022-07-27 09:24:49', '2022-07-27 09:24:49'),
-(27, 'file not proper', NULL, 1, 1, 0, '2022-08-06 11:04:31', '2022-08-06 11:04:31');
+(27, 'file not proper', NULL, 1, 1, 0, '2022-08-06 11:04:31', '2022-08-06 11:04:31'),
+(28, 'abcd', NULL, 1, 1, 0, '2022-08-25 08:59:34', '2022-08-25 08:59:34'),
+(29, NULL, 'Rajdip_1661417988.jpg', 1, 1, 0, '2022-08-25 08:59:48', '2022-08-25 08:59:48'),
+(30, NULL, 'Rajdip_1661418007.jpg', 1, 1, 0, '2022-08-25 09:00:07', '2022-08-25 09:00:07'),
+(31, NULL, 'Rajdip_1661418017.jpg', 1, 1, 0, '2022-08-25 09:00:17', '2022-08-25 09:00:17'),
+(32, NULL, 'Rajdip_1661418026.jpg', 1, 1, 0, '2022-08-25 09:00:26', '2022-08-25 09:00:26'),
+(33, 'hi', NULL, 5, 1, 1, '2022-08-25 09:36:26', '2022-08-25 09:37:06'),
+(34, 'sdf', NULL, 1, 3, 0, '2022-08-26 09:11:40', '2022-08-26 09:11:40');
 
 -- --------------------------------------------------------
 
@@ -348,14 +357,15 @@ INSERT INTO `project_vs_events` (`id`, `title`, `start`, `end`, `project_id`, `u
 (3, 'three', '2022-08-09 00:00:00', '2022-08-12 00:00:00', 4, 1, 0, '2022-08-08 05:57:41', '2022-08-08 05:57:41'),
 (4, 'hello', '2022-08-10 00:00:00', '2022-08-11 00:00:00', 1, 1, 1, '2022-08-08 06:47:50', '2022-08-08 06:52:31'),
 (5, 'ok', '2022-08-10 00:00:00', '2022-08-11 00:00:00', 1, 1, 0, '2022-08-08 06:52:49', '2022-08-08 06:52:49'),
-(6, 'add glass', '2022-08-11 16:00:00', '2022-08-11 18:00:00', 1, 1, 0, '2022-08-08 07:06:18', '2022-08-08 07:06:18'),
+(6, 'add glass', '2022-08-20 16:00:00', '2022-08-20 18:00:00', 1, 1, 1, '2022-08-08 07:06:18', '2022-08-26 05:26:32'),
 (7, 'new theme', '2022-08-15 00:00:00', '2022-08-25 00:00:00', 1, 1, 0, '2022-08-08 07:06:39', '2022-08-08 07:06:39'),
 (8, 'logo create', '2022-08-16 00:00:00', '2022-08-19 00:00:00', 1, 1, 0, '2022-08-08 07:06:53', '2022-08-08 07:06:53'),
 (9, 'event one', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:07:12', '2022-08-08 07:07:12'),
 (10, 'make model', '2022-08-17 00:00:00', '2022-08-24 00:00:00', 1, 1, 0, '2022-08-08 07:13:53', '2022-08-08 07:13:53'),
 (11, 'payment process start', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:14:14', '2022-08-08 07:14:14'),
 (12, 'link insta id', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:14:36', '2022-08-08 07:14:36'),
-(13, 'link wp', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:14:48', '2022-08-08 07:14:48');
+(13, 'link wp', '2022-08-17 00:00:00', '2022-08-20 00:00:00', 1, 1, 0, '2022-08-08 07:14:48', '2022-08-08 07:14:48'),
+(14, 'oo', '2022-08-04 00:00:00', '2022-08-06 00:00:00', 1, 1, 1, '2022-08-25 09:54:10', '2022-08-25 09:54:22');
 
 -- --------------------------------------------------------
 
@@ -388,8 +398,10 @@ CREATE TABLE `task` (
 
 INSERT INTO `task` (`id`, `project_id`, `task_title`, `task_desc`, `assign_to`, `due_date`, `priority`, `status`, `start_time`, `start_by`, `stop_time`, `stop_by`, `user_id`, `isDelete`, `created_at`, `updated_at`) VALUES
 (1, 1, 'make design', 'colour is in project doc', '4', '2022-07-29', 2, 0, NULL, NULL, NULL, NULL, 1, 0, '2022-07-26 07:05:42', '2022-07-29 13:58:35'),
-(2, 1, 'make logo', NULL, '5', '2022-07-29', 3, 0, NULL, NULL, NULL, NULL, 1, 0, '2022-07-26 07:08:34', '2022-07-26 07:08:34'),
-(3, 1, 'pc on', 'sdjhgfsjh', '1,3', '2022-07-27', 2, 3, '2022-07-27 14:49:12', 1, '2022-07-27 14:49:19', 1, 1, 0, '2022-07-27 09:19:07', '2022-07-30 08:49:53');
+(2, 1, 'make logo', NULL, '5', '2022-07-29', 3, 4, '2022-08-23 16:31:02', 1, '2022-08-23 16:31:21', 1, 1, 0, '2022-07-26 07:08:34', '2022-08-23 11:03:03'),
+(3, 1, 'pc on', 'sdjhgfsjh', '1,3', '2022-07-27', 2, 3, '2022-07-27 14:49:12', 1, '2022-07-27 14:49:19', 1, 1, 0, '2022-07-27 09:19:07', '2022-08-23 10:25:32'),
+(4, 1, 'find ui', 'abc', '1,2,3', '2022-08-31', 2, 0, NULL, NULL, NULL, NULL, 1, 0, '2022-08-23 12:34:00', '2022-08-25 09:34:34'),
+(5, 1, 'make logo', 'in yellow color', '1,2,5', '2022-08-31', 2, 3, '2022-08-24 14:56:13', 1, '2022-08-24 14:56:21', 1, 1, 0, '2022-08-24 09:25:59', '2022-08-24 09:26:36');
 
 -- --------------------------------------------------------
 
@@ -425,7 +437,19 @@ INSERT INTO `time_tracker` (`id`, `flag`, `user_id`, `current_time`, `isDelete`,
 (11, 'start', 1, '2022-08-06 16:30:21', 0, '2022-08-06 11:00:21', '2022-08-06 11:00:21'),
 (12, 'stop', 1, '2022-08-06 16:30:25', 0, '2022-08-06 11:00:25', '2022-08-06 11:00:25'),
 (13, 'start', 1, '2022-08-06 16:30:31', 0, '2022-08-06 11:00:31', '2022-08-06 11:00:31'),
-(14, 'stop', 1, '2022-08-06 16:30:39', 0, '2022-08-06 11:00:39', '2022-08-06 11:00:39');
+(14, 'stop', 1, '2022-08-06 16:30:39', 0, '2022-08-06 11:00:39', '2022-08-06 11:00:39'),
+(15, 'start', 1, '2022-08-23 11:34:10', 0, '2022-08-23 06:04:10', '2022-08-23 06:04:10'),
+(16, 'stop', 1, '2022-08-23 11:34:42', 1, '2022-08-23 06:04:42', '2022-08-23 06:04:56'),
+(17, 'stop', 1, '2022-08-23 11:35:03', 0, '2022-08-23 06:05:03', '2022-08-23 06:05:03'),
+(18, 'start', 1, '2022-08-23 11:35:32', 0, '2022-08-23 06:05:32', '2022-08-23 06:05:32'),
+(19, 'stop', 1, '2022-08-23 11:35:40', 0, '2022-08-23 06:05:40', '2022-08-23 06:05:40'),
+(20, 'start', 1, '2022-08-23 11:35:48', 0, '2022-08-23 06:05:48', '2022-08-23 06:05:48'),
+(21, 'stop', 1, '2022-08-23 11:45:39', 0, '2022-08-23 06:15:39', '2022-08-23 06:15:39'),
+(22, 'start', 1, '2022-08-24 14:54:48', 0, '2022-08-24 09:24:48', '2022-08-24 09:24:48'),
+(23, 'stop', 1, '2022-08-24 14:54:58', 0, '2022-08-24 09:24:58', '2022-08-24 09:24:58'),
+(24, 'start', 1, '2022-08-24 14:55:09', 0, '2022-08-24 09:25:09', '2022-08-24 09:25:09'),
+(25, 'stop', 1, '2022-08-24 14:55:16', 0, '2022-08-24 09:25:17', '2022-08-24 09:25:17'),
+(26, 'start', 3, '2022-08-26 14:25:03', 0, '2022-08-26 08:55:03', '2022-08-26 08:55:03');
 
 -- --------------------------------------------------------
 
@@ -468,11 +492,12 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `type`, `name`, `email`, `image_path`, `email_verified_at`, `password`, `remember_token`, `isDelete`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Rajdip', 'r@gmail.com', 'Rajdip_1658818086.jpg', NULL, '$2y$10$Sy3PnqMu36jw/4OmK4F4i..rA6xH8yvNJqOJ/jp0ZOU5Ar9xBWJZq', NULL, 0, '2022-07-26 06:48:06', '2022-07-26 06:48:06'),
-(2, 2, 'vivek', 'v@gmail.com', 'vivek_1658818166.jpg', NULL, '$2y$10$uAom.RBIopnKGieO1HxPHeNkdTt3u1RyJU1wDKbo54IzhNSK6VmE.', NULL, 0, '2022-07-26 06:49:26', '2022-07-26 06:49:26'),
-(3, 3, 'yash', 'y@gmail.com', 'yash_1658818209.jpg', NULL, '$2y$10$DXxOabrtjE4mf9VVu8rxLuOis8MDOguZS9K8Op0osWe4xXV8uUUJi', NULL, 0, '2022-07-26 06:50:09', '2022-07-26 06:50:09'),
+(2, 2, 'vivek', 'v@gmail.com', 'vivek_1658818166.jpg', NULL, '$2y$10$Sy3PnqMu36jw/4OmK4F4i..rA6xH8yvNJqOJ/jp0ZOU5Ar9xBWJZq', NULL, 0, '2022-07-26 06:49:26', '2022-07-26 06:49:26'),
+(3, 3, 'yash', 'y@gmail.com', 'yash_1658818209.jpg', NULL, '$2y$10$Sy3PnqMu36jw/4OmK4F4i..rA6xH8yvNJqOJ/jp0ZOU5Ar9xBWJZq', NULL, 0, '2022-07-26 06:50:09', '2022-07-26 06:50:09'),
 (4, 3, 'dhruv', 'd@gmail.com', 'dhruv_1659335505.jpg', NULL, '$2y$10$2VXaTm.EuDSt9XDyuhO.EeVrHFwtUgbSaD1fXNfSGwsOQ/ID5RT5u', NULL, 0, '2022-07-26 06:50:37', '2022-08-01 06:31:45'),
 (5, 3, 'meet', 'm@gmail.com', 'meet_1658818267.jpg', NULL, '$2y$10$WUT/KWdOTMdZzhMvzDgBbevnJhfDz4BJXIdBZTtcFLgbmdayrD7Uq', NULL, 0, '2022-07-26 06:51:07', '2022-07-30 10:17:59'),
-(6, 3, 'meera m', 'meera@gmail.com', NULL, NULL, '$2y$10$tNDe.7geJhiJG0gkmJZ6QOgjcnbCwJKj/dzSu.8tcTxCFTZ.sjXr6', NULL, 0, '2022-08-01 07:20:55', '2022-08-02 05:52:30');
+(6, 3, 'meera m', 'meera@gmail.com', NULL, NULL, '$2y$10$tNDe.7geJhiJG0gkmJZ6QOgjcnbCwJKj/dzSu.8tcTxCFTZ.sjXr6', NULL, 0, '2022-08-01 07:20:55', '2022-08-25 10:55:42'),
+(7, 3, 'sumit', 'sumit@gmail.com', 'sumit_1661427245.jpg', NULL, '$2y$10$qoWecUcTN5.csNbghYqSZ.s7T9lmM4B/VYJLVduCUVu8/7886kvM2', NULL, 0, '2022-08-25 11:28:04', '2022-08-25 11:42:17');
 
 -- --------------------------------------------------------
 
@@ -623,7 +648,7 @@ ALTER TABLE `client_category_master`
 -- AUTO_INCREMENT for table `client_master`
 --
 ALTER TABLE `client_master`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -659,31 +684,31 @@ ALTER TABLE `profile`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `project_vs_comment`
 --
 ALTER TABLE `project_vs_comment`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `project_vs_events`
 --
 ALTER TABLE `project_vs_events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `time_tracker`
 --
 ALTER TABLE `time_tracker`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `todolist`
@@ -695,7 +720,7 @@ ALTER TABLE `todolist`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `working_location_master`

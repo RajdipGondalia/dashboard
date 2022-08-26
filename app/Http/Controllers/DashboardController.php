@@ -567,7 +567,7 @@ class DashboardController extends Controller
         }  
     }
     public function get_assignto_names_from_ids($request){
-        //dd([$request]);
+        // dd([$request]);
         $assign_to_data = User::where('isDelete', '=', 0)->whereIn('id', [$request])->get();
         // dd($assign_to_data);
 
@@ -604,7 +604,7 @@ class DashboardController extends Controller
 
     public function store_client_master_data(Request $request){
 
-        //dd($request->all());
+        dd($request->all());
         // dd($request->img[0]);
         $client_master = new ClientMaster;
         $client_master->company_name = $request->company_name;

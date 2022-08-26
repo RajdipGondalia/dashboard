@@ -301,9 +301,12 @@ use App\Http\Controllers\DashboardController;
                           @endphp
                           <tr style="background-color:{{$color}}" > 
                             <td>
-                              <a onclick="return confirm('Are you sure Delete This Task..?')"  href="{{ route('single_task_delete', $task->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
-                                <i class="fa fa-trash-o"></i>
-                              </a>
+                              @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                                <a onclick="return confirm('Are you sure Delete This Task..?')"  href="{{ route('single_task_delete', $task->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                  <i class="fa fa-trash-o"></i>
+                                </a>
+                              @endif
+
                               @if($task->status==0)
                               <button id="startButton" data-id="{{$task->id}}" title="Start" class="btn btn-sm btn-info" type="button" onClick="task_start({{$task->id}})">
                                 Start

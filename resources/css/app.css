@@ -22,7 +22,7 @@
 
 .signup-background {
     width: 100%;
-    background-image: url(../images/Bck.png);
+    background-image: url(../../public/theme/images/Bck.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -453,7 +453,8 @@ list-style:none;
 
 .signup-background {
     width: 100%;
-    background-image: url(../images/Bck.png);
+    background-image: url(../../public/theme/images/Bck.png);
+
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -762,6 +763,7 @@ list-style:none;
 
     .dropdown {
     position: absolute;
+    text-align: left;
     /* right: 10px; */
     background-color: #fff;
     box-shadow: 0px 0px 3px 3px #e3e7e7;    
@@ -797,5 +799,55 @@ list-style:none;
     .view_button{
         cursor:pointer;
         color: blue;
+    }
+    .start_button
+    {
+        cursor:pointer;
+        color: green;
+    }
+    .stop_button
+    {
+        cursor:pointer;
+        color: red;
+    }
+    .complete_button
+    {
+        cursor:pointer;
+        color: blue;
+    }
+    .cancel_button
+    {
+        cursor:pointer;
+        color:#761616;
+    }
+    .validation-alert-box
+    {
+        background-color: #f0f8ff!important;
+    }
+
+    
+    .validation-alert-title
+    {
+        background-color: rgb(254 202 202 / var(--tw-bg-opacity))!important;
+    }
+    .chat_area {
+        float: left;
+        height: 400px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 100%;
+      }
+    .header-uesr-image{
+        width: 40px;
+        height: 40px;
+    }
+    .grid-image{
+        width: 35px;
+        height: 35px;
+    }
+    .task-user-image
+    {
+        width: 30px;
+        height: 30px; 
     }
     /* for dropdown button end */

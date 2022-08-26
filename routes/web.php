@@ -2,11 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ImageController;
+use App\Http\Controllers\TimeTrackerController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -27,10 +32,17 @@ Route::get('/', function () {
 // })->name('employee_details');
 
 Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
+    // Route::get('/', [ViewController::class, 'index'])->name('dashboard');
     Route::get('/', [ViewController::class, 'index'])->name('dashboard');
     Route::get('admin-page', [AdminController::class, 'index'])->name('admin_page');
     Route::get('all-employees', [ViewController::class, 'view_all_employees'])->name('view_all_employees');
     Route::get('view-employee-profile/{id}',[ViewController::class, 'view_employee_profile'])->name('view_employee_profile');
+    Route::get('all-time-trackers', [ViewController::class, 'view_all_time_trackers'])->name('view_all_time_trackers');
+    Route::get('all-tasks', [ViewController::class, 'view_all_tasks'])->name('view_all_tasks');
+    Route::get('all-clients', [ViewController::class, 'view_all_clients'])->name('view_all_clients');
+    Route::get('all-projects', [ViewController::class, 'view_all_projects'])->name('view_all_projects');
+    Route::get('all-users', [ViewController::class, 'view_all_users'])->name('view_all_users');
+
 
     //Employee Routes
     Route::get('create-employee-profile',[EmployeeController::class,'create_employee_profile'])->name('create_employee_profile');
@@ -39,30 +51,60 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
     Route::post('store-profile-data',[EmployeeController::class,'store_profile_data'])->name('store_profile_data');
     Route::get('get-single-employee/{id}',[EmployeeController::class, 'get_single_employee'])->name('api_single_employee');
     
-
     //Admin Routes
     Route::get('add-job-role',[AdminController::class,'add_job_role'])->name('add_job_role');
     Route::post('store-job-role',[AdminController::class,'store_job_role'])->name('store_job_role');
     Route::get('add-work-location',[AdminController::class,'add_work_location'])->name('add_work_location');
     Route::post('store-work-location',[AdminController::class,'store_work_location'])->name('store_work_location');
 
-    //
     Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
     // Route::post('add-profile',[DashboardController::class, 'store_profile_data'])->name('user_profile_add');
 
 
-    //
-    Route::get('time_tracker', [DashboardController::class, 'get_time_tracker'])->name('time_tracker');
+    //Time Tracker Routes
+    Route::get('time_tracker_delete/{id}',[TimeTrackerController::class, 'delete_single_time_tracker'])->name('single_time_tracker_delete');
+    Route::post('time_tracker_start',[TimeTrackerController::class, 'time_tracker_start'])->name('time_tracker_start');
+    Route::post('time_tracker_stop',[TimeTrackerController::class, 'time_tracker_stop'])->name('time_tracker_stop');
 
-    //
-    Route::get('task', [DashboardController::class, 'get_tasks'])->name('all_tasks');
+    //Task Routes
+    Route::post('create-task',[TaskController::class, 'create_task'])->name('create_task');
+    Route::get('task_delete/{id}',[TaskController::class, 'delete_single_task'])->name('single_task_delete');
+    Route::post('task_start',[TaskController::class, 'task_start'])->name('task_start');
+    Route::post('task_stop',[TaskController::class, 'task_stop'])->name('task_stop');
+    Route::post('task_complete',[TaskController::class, 'task_complete'])->name('task_complete');
+    Route::post('task_cancel',[TaskController::class, 'task_cancel'])->name('task_cancel');
 
-    //
-    Route::get('client_master', [DashboardController::class, 'get_clients'])->name('all_client');
+    //Client Routes
+    Route::get('create-client',[ClientController::class,'create_client'])->name('create_client');
+    Route::get('edit-client/{id}',[ClientController::class,'edit_client'])->name('edit_client');
+    Route::get('delete-client/{id}',[ClientController::class,'delete_client'])->name('delete_client');
+    Route::post('store-client-data',[ClientController::class,'store_client_data'])->name('store_client_data');
 
-    //
-   Route::get('project', [DashboardController::class, 'get_projects'])->name('all_projects');
+    //Project Routes
+    Route::get('create-project',[ProjectController::class,'create_project'])->name('create_project');
+    Route::post('store-project-data',[ProjectController::class,'store_project_data'])->name('store_project_data');
+    Route::get('edit-project/{id}',[ProjectController::class,'edit_project'])->name('edit_project');
+    Route::get('delete-project/{id}',[ProjectController::class,'delete_project'])->name('delete_project');
+    Route::post('project_start',[ProjectController::class, 'project_start'])->name('project_start');
+    Route::post('project_hold',[ProjectController::class, 'project_hold'])->name('project_hold');
+    Route::post('project_complete',[ProjectController::class, 'project_complete'])->name('project_complete');
+    Route::post('project_cancel',[ProjectController::class, 'project_cancel'])->name('project_cancel');
+    Route::get('project_details/{id}', [ProjectController::class, 'get_project_details'])->name('project_details');
 
+    Route::get('project_comment_delete/{id}',[ProjectController::class, 'delete_single_project_comment'])->name('single_project_comment_delete');
+    Route::post('add-project-comment',[ProjectController::class, 'store_project_comment_data'])->name('project_comment_add');
+
+    Route::get('get_calender/{id}',[ProjectController::class, 'get_calender'])->name('get_calender');
+    Route::post('action_calender',[ProjectController::class, 'action_calender'])->name('action_calender');
+    Route::get('project_event_delete/{id}',[ProjectController::class, 'delete_single_project_event'])->name('single_project_event_delete');
+
+
+    //User
+    Route::post('change_password-user',[UserController::class, 'change_password_user_data'])->name('user_change_password');
+    Route::get('delete-user/{id}',[UserController::class,'delete_user'])->name('delete_user');
+    Route::get('create-user',[UserController::class,'create_user'])->name('create_user');
+    Route::post('store-user-data',[UserController::class,'store_user_data'])->name('store_user_data');
+    Route::get('edit-user/{id}',[UserController::class,'edit_user'])->name('edit_user');
 
 
 

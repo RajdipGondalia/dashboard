@@ -48,63 +48,80 @@
     <div class="container xl:px-10 md:px-10 sm:px-4 px-0 mx-auto flex flex-col xl:flex align">
       <div class="fix-width text-left ">
         <table class="table table-striped project-list-table">
-            <thead>
-                <tr class="">
-                    <th class="text-neutral-400 p-4 font-semibold text-sm text-center"></th>
-                    <th class="text-neutral-400 p-4 font-semibold text-sm text-center">Sr.No.</th>
-                    <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Given Name</th>
-                    <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Job Role</th>
-                    <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Primary Contact Number</th>
-                    <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Working Location</th>
-                    <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Email</th>
-                    <th class="text-neutral-400 p-4 font-semibold text-sm text-center"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $count = 0
-                @endphp
-                @foreach($employees as $employee)
-                <tr class="bg-white">
-                    <td class="text-sm font-semibold p-2 text-center">
-                      <a data-modal-toggle="small-modal" data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="View" style="cursor:pointer;color: blue;" >
-                        <i class="fa fa-eye"></i>
-                      </a>
-                    </td>
-                    <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td>
-                    <td class="text-sm font-semibold p-2 text-left">{{ $employee->given_name }}</td>
-                    <td class="text-sm font-semibold p-2 text-left">
-                      @if($employee->job_role!=0)
-                        {{$employee->job_role_name->name}}
-                      @endif
-                    </td>
-                    <td class="text-sm font-semibold p-2 text-left">{{ $employee->contact_number }}</td>
-                    <td class="text-sm font-semibold p-2 text-left">
-                      @if($employee->working_location!=0)
-                        {{$employee->working_location_name->name}}
-                      @endif
-                    </td>
-                    <td class="text-sm font-semibold p-2 text-left">{{ $employee->email }}</td>
-                    <td class="text-sm font-semibold p-2 text-left">
-                    <div class="dropdown_container" tabindex="-1">
-                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        <div class="dropdown">
-                            <a class="grid_dropdown_item edit_button" href="{{ route('edit_employee_profile', $employee->id) }}"><div><i class="fa fa-edit"></i> Edit</div></a>
-                            <a class="grid_dropdown_item view_button" href="#"><div><i class="fa fa-eye"></i> View</div></a>
-                            <a class="grid_dropdown_item delete_button"  onclick="return confirm('Are you sure Delete This Employee..?')"  href="{{ route('delete_employee_profile', $employee->id) }}" title="Delete"  >
-                              <div><i class="fa fa-trash-o"> Delete</i></div>
-                            </a>
-                        </div>
-                    </td>  
-                </tr>
-                @endforeach
-            </tbody>
+          <thead>
+            <tr class="">
+              <th class="text-neutral-400 p-4 font-semibold text-sm text-center"></th>
+              <th class="text-neutral-400 p-4 font-semibold text-sm text-center">Sr.No.</th>
+              <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Given Name</th>
+              <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Job Role</th>
+              <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Primary Contact Number</th>
+              <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Working Location</th>
+              <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Email</th>
+              <th class="text-neutral-400 p-4 font-semibold text-sm text-center"></th>
+            </tr>
+          </thead>
+          <tbody>
+              @php
+                $count = 0
+              @endphp
+              @foreach($employees as $employee)
+              @php
+                if($employee->image_path!="" && $employee->image_path!="null" )
+                {
+                  $image = asset('images/profile')."/".$employee->image_path;
+                }
+                else
+                {
+                  $image = asset('images')."/default.png";
+                }
+              @endphp
+              <tr class="bg-white">
+                  <td class="text-sm font-semibold p-2 text-center">
+                    <a data-modal-toggle="small-modal" data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="View" style="cursor:pointer;color: blue;" >
+                      <i class="fa fa-eye"></i>
+                    </a>
+                  </td>
+                  <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td>
+                  <td class="flex flex-row text-sm font-bold text-left">
+                    <img src="{{$image}}"  class="rounded-full grid-image mt-2 mb-2"></img>
+                    <span class="text-sm font-semibold p-2  self-center ml-2">{{$employee->given_name}}</span>
+                  </td>
+                  <td class="text-sm font-semibold p-2 text-left">
+                    @if($employee->job_role!=0)
+                      {{$employee->job_role_name->name}}
+                    @endif
+                  </td>
+                  <td class="text-sm font-semibold p-2 text-left">{{ $employee->contact_number }}</td>
+                  <td class="text-sm font-semibold p-2 text-left">
+                    @if($employee->working_location!=0)
+                      {{$employee->working_location_name->name}}
+                    @endif
+                  </td>
+                  <td class="text-sm font-semibold p-2 text-left">{{ $employee->email }}</td>
+                  <td class="text-sm font-semibold p-2 text-left">
+                  <div class="dropdown_container" tabindex="-1">
+                      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                      <div class="dropdown">
+                          <a href="#" class="grid_dropdown_item view_button" ><div><i class="fa fa-eye"></i> View</div></a>
+                          @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                            <a href="{{ route('edit_employee_profile', $employee->id) }}" class="grid_dropdown_item edit_button" ><div><i class="fa fa-edit"></i> Edit</div></a>
+                            <a onclick="return confirm('Are you sure Delete This Employee..?')"  href="{{ route('delete_employee_profile', $employee->id) }}" class="grid_dropdown_item delete_button"   title="Delete"  >
+                            <div><i class="fa fa-trash-o"> Delete</i></div>
+                          @endif
+                          </a>
+                      </div>
+                  </td>  
+              </tr>
+              @endforeach
+          </tbody>
         </table>
       </div>
     </div>
-    <div class="mb-10 mt-5 mr-40 self-center lg:self-center float-right">
+    @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+      <div class="mb-10 mt-5 mr-10 self-center lg:self-center float-right">
         <a href="{{ route('create_employee_profile') }}" class="text-white rounded-3xl bg-red-600 text-md font-normal px-4 py-2 rounded-lg">Add Employee <i class="fa fa-plus"></i></a>
-    </div>
+      </div>
+    @endif
 
     
 </section>
