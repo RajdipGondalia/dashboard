@@ -53,8 +53,7 @@ else
 </section>
 <!-- Welcome Section end-->
 <section class="lg:ml-60 md:ml-60 sm:ml-60 mt-2 relative">
-    <div class="flex flex-col xl:flex xl:flex-col pt-2  xl:justify-between xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0
-                    sm:mx-0 xl:mx-0">
+    <div class="flex flex-col xl:flex xl:flex-col pt-2  xl:justify-between xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:mx-0 xl:mx-0">
         @if($errors->any())
             <div class="validation-alert-box alert alert-danger  bg-red-100 xl:mx-10 md:mx-10 sm:mx-2 mx-0 mb-5 rounded-lg ">
                 <p><strong>Opps Something went wrong</strong></p>
@@ -203,7 +202,100 @@ else
                     <button type="submit" class="text-white rounded-3xl bg-red-500 text-md font-semibold profile-button px-10 py-2">Save</button>
                 </div>
             </form>
+            @if($mode=="edits")
+                <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0">
+                    <div class="p-4 md:p-4 text-center flex flex-col bg-white rounded-2xl">
+                        <span class="text-center text-md font-bold">Id & Documents</span>
+                        <form method="POST" enctype="multipart/form-data" >
+                            @csrf
+                            @method('POST')
+                            <div class="rounded-none p-4 xl:w-3/5 md:w-3/5 sm:w-full w-full md:p-4 text-center flex flex-col">
+                                <div class="w-full">
+                                    <div class="flex flex-row justify-between p-4">
+                                        <select class="form-select appearance-none block lg:w-full xl:w-full md:w-full sm:w-full w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border-none rounded transition ease-in-out m-0 mt-1 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example" name="document_id" id="document_id">
+                                            <option value="">Select Document Name</option>
+                                            <option value="1">Adhar Card</option>
+                                            <option value="2">Pan Card</option>
+                                            <option value="3">Resume</option>
+                                            <option value="4">Offer Latter</option>
+                                            <option value="5">Company I-Card</option>
+                                            
+                                        </select>
+                                        <span style="color:red">@error('document_id'){{$message}}@enderror</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rounded-none p-4 xl:w-3/5 md:w-3/5 sm:w-full w-full md:p-4 text-center flex flex-col">
+                                <div class="w-full">
+                                    <div class="flex flex-row justify-between p-4">
+                                        <input type="file" id="myFile" name="attachment_path" class="text-xs">
+                                        <span style="color:red">@error('attachment_path'){{$message}}@enderror</span>
+                                        <input type="hidden" value="{{$given_name}}" name="profile_name">
+                                        <input type="hidden" value="{{$id}}" name="profile_id">
+                                        <button class="text-white rounded-3xl float-right bg-green-600 text-xs font-normal px-2 py-2 rounded-lg" type="submit">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="container px-0 mx-auto flex flex-col xl:flex align">
+                            <div class="fix-width text-left ">
+                                <table class="table  project-list-table table-responsive" style="float: left;height: 400px;overflow-x: hidden;overflow-y: auto; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-center">Sr.No.</th>
+                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-center">Document Name</th>
+                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-left">Add Data & Time</th>
+                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-left">Added By</th>
+                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-left">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $count = 0
+                                        @endphp
+                                        @foreach($profile_documents as $profile_document)
+                                            @php
+                                            $CreatedAt=$profile_document->created_at;
+                                            if($CreatedAt!="" && $CreatedAt!="NULL" && $CreatedAt!="0000-00-00 00:00:00")
+                                            {
+                                                $created_at = date("d-m-Y h:i A",strtotime($CreatedAt));
+                                            }
+                                            else
+                                            {
+                                                $created_at ="";
+                                            }
+                                            $user_name = $profile_document->user_details->name;
+                                            
+                                            $DocumentArray = array("0"=>"","1"=>"Adhar Card","2"=>"Pan Card","3"=>"Resume","4"=>"Offer Latter","5"=>"Company I-Card");
+                                            @endphp
+                                            <tr class="bg-red-100 rounded-lg">
+                                                <td class=" p-4 font-semibold text-xs text-center">{{++$count}}</td>
+                                                <td class=" p-4 font-semibold text-xs text-left">{{$DocumentArray[$profile_document->document_id]}}</td>
+                                                
+                                                <td class=" p-4 font-semibold text-xs text-left">{{$created_at}}</td>
+                                                <td class=" p-4 font-semibold text-xs text-left">{{$user_name}}</td>
+                                                <td class=" p-4 font-semibold text-xs text-center">
+                                                    <a href="{{asset('images/profile_document').'/'.$profile_document->attachment_path}}" target="_blank" ><i class="fa fa-eye"></i></a>
+                                                    <a style="margin-left: 10px;" href="{{asset('images/profile_document').'/'.$profile_document->attachment_path}}" download><i class="fa fa-download"></i></a>
+                                                    @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                                                        <a onclick="return confirm('Are you sure Delete This Profile Document..?')"  title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            
+
         </div>
+        
     </div>
 </section>
 

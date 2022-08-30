@@ -850,4 +850,23 @@ list-style:none;
         width: 30px;
         height: 30px; 
     }
+    .popup-image
+    {
+        width: 80px;
+        height: 80px; 
+        float: left; 
+    }
+    .width-40p
+    {
+        width: 40%;
+    }
+    .float-right
+    {
+        float: right;
+    }
+    .float-left
+    {
+        float: left;
+    }
+    
     /* for dropdown button end */

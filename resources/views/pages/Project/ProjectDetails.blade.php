@@ -22,15 +22,15 @@
     <!-- Table Section-->
 
     <section class="lg:ml-60 md:ml-60 sm:ml-60 mt-10 relative">
-        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0">
-            <div class="p-1 md:p-1 text-center  bg-white rounded-2xl">
+        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0 -mb-40">
+            <div class="p-1 md:p-1 text-center  bg-white  rounded-2xl">
                 <span class="text-center text-md font-bold">Calender</span>
                 <div id="calendar"></div>
             </div>
-            <div class="p-4 md:p-4 text-center flex flex-col bg-white rounded-2xl">
+            <div class="p-4 md:p-4 text-center flex flex-col bg-white h-4/5  rounded-2xl">
                 <span class="text-center text-md font-bold">Calender Events</span>
-                <div class="container px-0 mx-auto flex flex-col xl:flex align">
-                    <div class="fix-width text-left ">
+                <div class="container px-0 mx-auto flex flex-col xl:flex align overflow-y-auto h-full">
+                    <div class="fix-width text-left overflow-y-auto h-full ">
                         <table class="table  project-list-table table-responsive" style="float: left;height: 400px;overflow-x: hidden;overflow-y: auto; width: 100%;">
                             <thead>
                                 <tr>
@@ -91,11 +91,11 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0">
-            <div class="p-4 md:p-4 text-center flex flex-col bg-white rounded-2xl">
+        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0 -mb-40">
+            <div class="p-4 md:p-4 text-center flex flex-col bg-white h-3/4 rounded-2xl ">
                 <span class="text-center text-md font-bold">Project's Files</span>
-                <div class="container px-0 mx-auto flex flex-col xl:flex align">
-                    <div class="fix-width text-left ">
+                <div class="container px-0 mx-auto flex flex-col xl:flex align overflow-y-auto h-full">
+                    <div class="fix-width text-left overflow-y-auto h-full">
                         <table class="table  project-list-table table-responsive" style="float: left;height: 400px;overflow-x: hidden;overflow-y: auto; width: 100%;">
                             <thead>
                                 <tr>
@@ -144,7 +144,7 @@
                     </div>
                 </div>
             </div>
-            <div class="employee-card rounded-2xl text-center flex flex-col bg-red-100">
+            <div class="employee-card rounded-2xl text-center flex flex-col bg-red-100 h-3/4">
                 <span class="text-start p-2 text-xs"><i class="fa fa-plus-circle mr-4"></i>Broadcast</span>
                 <div class="chat_area" id="chatBox">
                     <div class="bg-white pb-10">
@@ -223,39 +223,43 @@
                                     </div>
                                 </div>
                             @else       
-                                <div class="employee-input-card p-2 md:p-2 h-16 mt-10 text-center rounded-2xl self-start w-full flex flex-row">
-                                    <div class="flex flex-col text-left">
-                                        @if($project_comment->comment!="" && $project_comment->comment!="null")
-                                            <span class="self-end text-xs font-bold mr-4">{{$user_name}}</span>
-                                            <p class="text-xs font-normal bg-red-500 p-2 m-2 text-white rounded-tl-xl rounded-tr-none rounded-bl-xl rounded-br-xl">
-                                                {{$project_comment->comment}}
-                                                @if((Auth::user()->type==1 || Auth::user()->type==2 ))
-                                                    <a  onclick="return confirm('Are you sure Delete This Project Comment..?')"  href="{{ route('single_project_comment_delete', $project_comment->id) }}" title="Delete" style="margin-left: 10px;color: white;text-decoration: none" >
-                                                                <i class="fa fa-trash-o"></i>
+                                <div class="employee-input-card p-2 md:p-2 h-16 mt-10 text-center rounded-2xl self-start w-full float-right">
+                                    <div className="flex-row flex float-right" style="display:inline-flex;float:right;">
+                                        <div class="flex flex-col ">
+                                            @if($project_comment->comment!="" && $project_comment->comment!="null")
+                                                <span class="self-end text-xs font-bold mr-4">{{$user_name}}</span>
+                                                <p class="text-xs font-normal bg-red-500 p-2 m-2 text-white rounded-tl-xl rounded-tr-none rounded-bl-xl rounded-br-xl">
+                                                    
+                                                    @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                                                        <a  onclick="return confirm('Are you sure Delete This Project Comment..?')"  href="{{ route('single_project_comment_delete', $project_comment->id) }}" title="Delete" style="margin-left: 10px;color: white;text-decoration: none" >
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </a>
+                                                    @endif
+                                                    {{$project_comment->comment}}
+                                                </p>
+                                            @elseif($project_comment->attachment_path!="" && $project_comment->attachment_path!="null")
+                                                <span class="self-end text-xs font-bold mr-4">{{$user_name}}</span>
+                                                <p class="text-xs font-normal bg-red-500 p-2 m-2 text-white rounded-tl-xl rounded-tr-none rounded-bl-xl rounded-br-xl">
+                                                    File Name : {{$project_comment->attachment_path}}
+                                                    
+                                                    <a style="margin-left: 13%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" target="_blank" >
+                                                        <i class="fa fa-eye"></i>
                                                     </a>
-                                                @endif
-                                            </p>
-                                        @elseif($project_comment->attachment_path!="" && $project_comment->attachment_path!="null")
-                                            <span class="self-end text-xs font-bold mr-4">{{$user_name}}</span>
-                                            <p class="text-xs font-normal bg-red-500 p-2 m-2 text-white rounded-tl-xl rounded-tr-none rounded-bl-xl rounded-br-xl">
-                                                File Name : {{$project_comment->attachment_path}}
-                                                <a style="margin-left: 13%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" target="_blank" >
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <a style="margin-left: 2%;"  href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" download>
-                                                    <i class="fa fa-download"></i>
-                                                </a>
-                                                @if((Auth::user()->type==1 || Auth::user()->type==2 ))
-                                                    <a style="margin-left: 2%;color: white;text-decoration: none" onclick="return confirm('Are you sure Delete This Project File..?')"  href="{{ route('single_project_comment_delete', $project_comment->id) }}" title="Delete" >
-                                                        <i class="fa fa-trash-o"></i>
+                                                    <a style="margin-left: 2%;"  href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" download>
+                                                        <i class="fa fa-download"></i>
                                                     </a>
-                                                @endif
-                                            </p>
-                                        @endif
-                                        <span class="text-xs self-end text-gray-800">{{$created_at}} </span>
-                                    </div>
-                                    <div class="flex flex-row">
-                                        <img src="{{$image}}" class="grid-image rounded-full mb-3 mt-2 mr-2" alt="">
+                                                    @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                                                        <a style="margin-left: 2%;color: white;text-decoration: none" onclick="return confirm('Are you sure Delete This Project File..?')"  href="{{ route('single_project_comment_delete', $project_comment->id) }}" title="Delete" >
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </a>
+                                                    @endif
+                                                </p>
+                                            @endif
+                                            <span class="text-xs self-end text-gray-800">{{$created_at}} </span>
+                                        </div>
+                                        <!-- <div class="flex flex-row"> -->
+                                        <span><img src="{{$image}}" class="grid-image rounded-full mb-3 mt-2 mr-2" alt=""></span>
+                                        <!-- </div> -->
                                     </div>
                                 </div>
                             @endif 

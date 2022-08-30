@@ -77,7 +77,8 @@
               @endphp
               <tr class="bg-white">
                   <td class="text-sm font-semibold p-2 text-center">
-                    <a data-modal-toggle="small-modal" data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="View" style="cursor:pointer;color: blue;" >
+                    <a id="employeeDetailsShowButton" data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="View" style="cursor:pointer;color: blue;"  >
+                    <!-- onClick='openEmployeeDetails("{{ $employee->id }}")' -->
                       <i class="fa fa-eye"></i>
                     </a>
                   </td>
@@ -102,7 +103,7 @@
                   <div class="dropdown_container" tabindex="-1">
                       <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                       <div class="dropdown">
-                          <a href="#" class="grid_dropdown_item view_button" ><div><i class="fa fa-eye"></i> View</div></a>
+                          <a class="grid_dropdown_item view_button" id="employeeDetailsShowButton" data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="View" ><div><i class="fa fa-eye"></i> View</div></a>
                           @if((Auth::user()->type==1 || Auth::user()->type==2 ))
                             <a href="{{ route('edit_employee_profile', $employee->id) }}" class="grid_dropdown_item edit_button" ><div><i class="fa fa-edit"></i> Edit</div></a>
                             <a onclick="return confirm('Are you sure Delete This Employee..?')"  href="{{ route('delete_employee_profile', $employee->id) }}" class="grid_dropdown_item delete_button"   title="Delete"  >
@@ -123,65 +124,120 @@
       </div>
     @endif
 
-    
+  <!-- Change Password modal Start -->
+  <div class="modal" id="employeeDetailsShowModal" tabindex="-1" role="dialog" style="display:none" aria-labelledby="employeeDetailsShowModal"
+      aria-hidden="true"> 
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+      <div class="modal-content w-full p-0 lg:w-2/6 lg:p-4 xl:w-2/6 xl:p-4 sm:w-1/6 sm:p-2">
+        <div class="modal-header border-b-red-200 self-center border-b-2">
+          <button type="button" class="close flex float-right" data-dismiss="modal" aria-label="Close" onclick="closeEmployeeDetails()" style="color: red;font-size: 30px;" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="text-center py-2 text-4xl text-black font-bold" id="exampleModalLongTitle">Employee Details</h5>
+
+        </div>
+        <div class="employeeDetailsShowContant" ></div>
+      </div>
+    </div>
+  </div>
+  <!-- Change Password modal End-->
 </section>
 
-<script type="text/javascript">
 
-    $(document).on('click', '#employeedetailsButton', function(event) {
-        event.preventDefault();
-        let href = $(this).attr('data-attr');
-        let id = $(this).attr('data-id');
-        // console.log(href);
-        $.ajax({
-        url: href,
-        beforeSend: function() {
-            $('#loader').show();
-        },
-        // return the result
-        success: function(result) {
-            // console.log(result.employee);
-            $('#employeemodel').modal("show");
-            var object = result.employee;
-            var date    = new Date(object.dob),
-            yr      = date.getFullYear(),
-            month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
-            day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
-            dob = day + '-' + month + '-' + yr;
 
-            $(".modal-body").html(
-            `<table class="table table-bordered">
-                <tr><td colspan="2" style="text-align: center;" ><img src="${object.image_path}" style="width: 200px;height: 200px;" ></img></td></tr>
-                <tr><td>Given Name : </td><td>${object.given_name}</td></tr>
-                <tr><td>Family Name : </td><td>${object.family_name}</td></tr>
-                <tr><td>DOB : </td><td>${dob}</td></tr>
-                <tr><td>Job Role : </td><td>${object.job_role}</td></tr>
-                <tr><td>Education Qualification : </td><td>${object.edu_qualification}</td></tr>
-                <tr><td>Skills : </td><td>${object.skills}</td></tr>
-                <tr><td>Present Address : </td><td>${object.present_address}</td></tr>
-                <tr><td>Permanent Address : </td><td>${object.permanent_address}</td></tr>
-                <tr><td>Primary Contact Number : </td><td>${object.contact_number}</td></tr>
-                <tr><td>Secondary Contact Number : </td><td>${object.contact_number_2}</td></tr>
-                <tr><td>Working Location : </td><td>${object.working_location}</td></tr>
-                <tr><td>Email : </td><td>${object.email}</td></tr>
-            </table>`
-            );
-            
-            //$('#smallBody').html(result).show();
-            //$("#given_name").prev().val(result.employee[given_name]);
-            // $("#file").val(fileName);
-        },
-        complete: function() {
-            $('#loader').hide();
-        },
-        error: function(jqXHR, testStatus, error) {
-            console.log(error);                                                                                                                                  
-            alert("Page " + href + " cannot open. Error:" + error);
-            $('#loader').hide();
-        },
-        timeout: 8000
-        })
-    });
+
+<script>
+  $(document).on('click', '#employeeDetailsShowButton', function(event) {
+	document.getElementById("employeeDetailsShowModal").style.display = "block";
+	event.preventDefault();
+	let href = $(this).attr('data-attr');
+	let id = $(this).attr('data-id');
+	// alert(href);
+	// let id = $id;
+	// var href = `{{ route('api_single_employee', '1') }}`;
+	console.log(href);
+	$.ajax({
+		url: href,
+		beforeSend: function() {
+			$('#loader').show();
+		},
+		// return the result
+		success: function(result) {
+			// console.log(result.employee);
+			var object = result.employee;
+			var date    = new Date(object.dob),
+			yr      = date.getFullYear(),
+			month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+			day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+			dob = day + '-' + month + '-' + yr;
+
+			$(".employeeDetailsShowContant").html(
+				`<div class="modal-body">
+					<div class="bg-white fix-width text-right ">
+						<img class="rounded-full popup-image mt-2 mb-2 text-center" src="${object.image_path}"></img>
+					</div>
+					<table class="table table-striped">
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p">Given Name : </td><td class="text-sm font-semibold p-2 text-left" >${object.given_name}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Family Name : </td><td class="text-sm font-semibold p-2 text-left" >${object.family_name}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >DOB : </td><td class="text-sm font-semibold p-2 text-left" >${dob}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Job Role : </td><td class="text-sm font-semibold p-2 text-left" >${object.job_role}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Education Qualification : </td><td class="text-sm font-semibold p-2 text-left" >${object.edu_qualification}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Skills : </td><td class="text-sm font-semibold p-2 text-left" >${object.skills}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Present Address : </td><td class="text-sm font-semibold p-2 text-left" >${object.present_address}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Permanent Address : </td><td class="text-sm font-semibold p-2 text-left" >${object.permanent_address}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Primary Contact Number : </td><td class="text-sm font-semibold p-2 text-left" >${object.contact_number}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Secondary Contact Number : </td><td class="text-sm font-semibold p-2 text-left" >${object.contact_number_2}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Working Location : </td><td class="text-sm font-semibold p-2 text-left" >${object.working_location}</td>
+					</tr>
+					<tr class="bg-white" >
+						<td class="text-sm font-semibold p-2 text-left width-40p" >Email : </td><td class="text-sm font-semibold p-2 text-left" >${object.email}</td>
+					</tr>
+					</table>
+				</div>
+				<div class="self-right lg:self-right justify-right align-right content-right text-right pt-2">
+					<button type="button" onclick="closeEmployeeDetails()" class="rounded-3xl bg-gray-200 text-md font-semibold text-black px-10 py-2">Close</button>
+				</div>`
+			);
+			
+			//$('#smallBody').html(result).show();
+			//$("#given_name").prev().val(result.employee[given_name]);
+			//$("#file").val(fileName);
+		},
+		complete: function() {
+			$('#loader').hide();
+		},
+		error: function(jqXHR, testStatus, error) {
+			console.log(error);                                                                                                                                  
+			alert("Page " + href + " cannot open. Error:" + error);
+			$('#loader').hide();
+		},
+		timeout: 8000
+	})
+  });
+  function closeEmployeeDetails() {
+    document.getElementById("employeeDetailsShowModal").style.display = "none";
+  }
 </script>
 
 @endsection

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
 use App\Models\JobRoleMaster;
 use App\Models\WorkingLocationMaster;
+use App\Models\ProfileVsDocument;
+
 
 class EmployeeController extends Controller
 {
@@ -32,7 +34,8 @@ class EmployeeController extends Controller
         $employees = Profile::where('isDelete', '=', 0)->get();  
         $job_roles = JobRoleMaster::where('isDelete', '=', 0)->get();
         $working_locations = WorkingLocationMaster::where('isDelete', '=', 0)->get();
-        return view('pages.Employee.CreateProfile')->with(['mode'=>"edit",'profile'=>$profile,'current_user'=>$current_user,'employees'=>$employees,'job_roles'=>$job_roles,'working_locations'=>$working_locations]);
+        $profile_documents = ProfileVsDocument::where('isDelete', '=', 0)->where('profile_id', '=', $id)->where('attachment_path', '!=', "")->where('attachment_path', '!=', "null")->orderBy('id',"DESC")->get();
+        return view('pages.Employee.CreateProfile')->with(['mode'=>"edit",'profile'=>$profile,'current_user'=>$current_user,'employees'=>$employees,'job_roles'=>$job_roles,'working_locations'=>$working_locations,'profile_documents'=>$profile_documents]);
     }
     
 
@@ -53,7 +56,7 @@ class EmployeeController extends Controller
             $profile->family_name = $request->family_name;
             $profile->dob = $request->dob;
             $profile->job_role = $request->job_role;
-            $profile->edu_qualification = $request->education_qualification;
+            $profile->edu_qualification = $request->edu_qualification;
             $profile->skills = $request->skills;
             $profile->present_address = $request->present_address;
             $profile->permanent_address = $request->permanent_address;
@@ -82,6 +85,7 @@ class EmployeeController extends Controller
         }
         else if($request->mode === 'edit')
     	{
+            // dd($request);
             $profile_id = $request->profile_id;
             $profile = Profile::find($profile_id);
 
@@ -89,7 +93,7 @@ class EmployeeController extends Controller
             $profile->family_name = $request->family_name;
             $profile->dob = $request->dob;
             $profile->job_role = $request->job_role;
-            $profile->edu_qualification = $request->education_qualification;
+            $profile->edu_qualification = $request->edu_qualification;
             $profile->skills = $request->skills;
             $profile->present_address = $request->present_address;
             $profile->permanent_address = $request->permanent_address;
@@ -131,7 +135,10 @@ class EmployeeController extends Controller
     }
     public function get_single_employee(Request $request, $id)
     {
+        // dd($request);
+        // dd($id);
         $employee = Profile::find($id);
+        // dd($employee);
         // $dob = date("Y-m-d",strtotime($employee->dob));
         if($employee->job_role!=0)
         {
@@ -177,5 +184,50 @@ class EmployeeController extends Controller
 
         return response()->json(['employee'=>$data],200);
         // return response()->json(['employee'=>$employee],200);
+    }
+    public function profile_document_add(Request $request){
+        dd($request);
+        $profile_document = new ProfileVsDocument;
+        $profile_document->document_id = $request->document_id;
+        $profile_document->profile_id = $request->profile_id;
+
+        $profile_document->user_id = auth()->user()->id;
+        $profile_name = $request->profile_name;
+
+        if($request->attachment_path!="" && $request->attachment_path!="null")
+        {
+            $attachmentName = $profile_name.'_'.time().'.'.$request->attachment_path->extension();
+            // move Public Folder
+            $request->attachment_path->move(public_path('images/profile_document'), $attachmentName);
+            $profile_document->attachment_path = $attachmentName;
+        }
+
+        $validated = $request->validate([
+            'document_id' => 'required',
+            'attachment_path' => 'required',
+        ]);
+
+        //Remaining attributes
+        $profile_document->save();
+        if($profile_document){
+            return redirect()->route('edit_employee_profile', $profile_document->profile_id);
+        }else{
+            $message = 'Data not Saved';
+            Session('message',$message);
+        }
+    }
+    public function delete_single_profile_document($id){
+        $profile_document = ProfileVsDocument::find($id);
+
+        $profile_document->isDelete = 1;
+
+        $profile_document->save();
+        if($profile_document){
+            // return response()->json('success',200);
+            return redirect()->route('edit_employee_profile', $profile_document->project_id);
+        }else{
+            $message = 'Data not Deleted';
+            Session('message',$message);
+        }  
     }
 }

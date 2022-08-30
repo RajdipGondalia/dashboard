@@ -44,12 +44,20 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
     Route::get('all-users', [ViewController::class, 'view_all_users'])->name('view_all_users');
 
 
-    //Employee Routes
+    //Employee Routes 
+    Route::post('profile_document_add',[EmployeeController::class, 'profile_document_add'])->name('profile_document_add');
+    Route::get('profile_document_delete/{id}',[EmployeeController::class, 'delete_single_profile_document'])->name('single_profile_document_delete');
+
+
     Route::get('create-employee-profile',[EmployeeController::class,'create_employee_profile'])->name('create_employee_profile');
     Route::get('edit-employee-profile/{id}',[EmployeeController::class,'edit_employee_profile'])->name('edit_employee_profile');
     Route::get('delete-employee-profile/{id}',[EmployeeController::class,'delete_employee_profile'])->name('delete_employee_profile');
     Route::post('store-profile-data',[EmployeeController::class,'store_profile_data'])->name('store_profile_data');
     Route::get('get-single-employee/{id}',[EmployeeController::class, 'get_single_employee'])->name('api_single_employee');
+
+
+
+
     
     //Admin Routes
     Route::get('add-job-role',[AdminController::class,'add_job_role'])->name('add_job_role');
@@ -58,7 +66,9 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
     Route::post('store-work-location',[AdminController::class,'store_work_location'])->name('store_work_location');
 
     Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
+    
     // Route::post('add-profile',[DashboardController::class, 'store_profile_data'])->name('user_profile_add');
+    
 
 
     //Time Tracker Routes

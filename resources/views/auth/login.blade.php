@@ -110,8 +110,7 @@
                                         class="mt-1 px-3 p-1 py-4 bg-red-100 shadow-sm border-gray-500 border-0 placeholder-red-300 font-semibold focus:outline-none focus:border-sky-500 focus:ring-sky-500 block signup-input-width rounded-lg sm:text-sm focus:ring" placeholder="Password">
                                 </label>
                                 <div class="mb-10 mt-10 self-center lg:self-center"> 
-                                    <button type="submit" class="text-white rounded-lg bg-red-500 text-xl font-bold signup-input-width py-2">Sign
-                                        in</button> 
+                                    <button type="submit" class="text-white rounded-lg bg-red-500 text-xl font-bold signup-input-width py-2">Sign in </button> 
                                 </div>
                             </form>
 						</div>
