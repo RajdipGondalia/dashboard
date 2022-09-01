@@ -46,7 +46,7 @@ Route::group(['middleware'=>'auth', 'prefix' => 'dashboard'], function () {
 
     //Employee Routes 
     Route::post('profile_document_add',[EmployeeController::class, 'profile_document_add'])->name('profile_document_add');
-    Route::get('profile_document_delete/{id}',[EmployeeController::class, 'delete_single_profile_document'])->name('single_profile_document_delete');
+    Route::get('single_profile_document_delete/{id}',[EmployeeController::class, 'single_profile_document_delete'])->name('single_profile_document_delete');
 
 
     Route::get('create-employee-profile',[EmployeeController::class,'create_employee_profile'])->name('create_employee_profile');

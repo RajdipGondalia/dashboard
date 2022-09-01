@@ -271,14 +271,13 @@ else
                                             <tr class="bg-red-100 rounded-lg">
                                                 <td class=" p-4 font-semibold text-xs text-center">{{++$count}}</td>
                                                 <td class=" p-4 font-semibold text-xs text-left">{{$DocumentArray[$profile_document->document_id]}}</td>
-                                                
                                                 <td class=" p-4 font-semibold text-xs text-left">{{$created_at}}</td>
                                                 <td class=" p-4 font-semibold text-xs text-left">{{$user_name}}</td>
                                                 <td class=" p-4 font-semibold text-xs text-center">
                                                     <a href="{{asset('images/profile_document').'/'.$profile_document->attachment_path}}" target="_blank" ><i class="fa fa-eye"></i></a>
                                                     <a style="margin-left: 10px;" href="{{asset('images/profile_document').'/'.$profile_document->attachment_path}}" download><i class="fa fa-download"></i></a>
                                                     @if((Auth::user()->type==1 || Auth::user()->type==2 ))
-                                                        <a onclick="return confirm('Are you sure Delete This Profile Document..?')"  title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                                        <a onclick="return confirm('Are you sure Delete This Profile Document..?')"    title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
                                                             <i class="fa fa-trash-o"></i>
                                                         </a>
                                                     @endif
@@ -292,10 +291,7 @@ else
                     </div>
                 </div>
             @endif
-            
-
-        </div>
-        
+        </div> 
     </div>
 </section>
 
