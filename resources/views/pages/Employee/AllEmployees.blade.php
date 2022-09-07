@@ -165,11 +165,17 @@
 		success: function(result) {
 			// console.log(result.employee);
 			var object = result.employee;
-			var date    = new Date(object.dob),
-			yr      = date.getFullYear(),
-			month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
-			day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
-			dob = day + '-' + month + '-' + yr;
+			var date    = new Date(object.dob);
+			// yr      = date.getFullYear(),
+			// month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+			// day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+			// dob = day + '-' + month + '-' + yr;
+
+      var date = new Date(object.dob);
+      var dd = String(date.getDate()).padStart(2, '0');
+      var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = date.getFullYear();
+      dob = dd + '-' + mm + '-' + yyyy;
 
 			$(".employeeDetailsShowContant").html(
 				`<div class="modal-body">
